@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10211a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kanzel">
+<title>Kanzel · Order at your table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#10211a;--panel:#162b21;--moss:#2f5233;--gold:#d3c994;--cream:#f4efdd;
+ --serif:"Cormorant Garamond","Readex Pro",Georgia,serif;--sans:"Readex Pro",system-ui,sans-serif;
+ color-scheme:dark;--sb:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--forest);color:var(--cream);font-family:var(--sans);font-weight:300;min-height:100dvh;overflow-x:hidden;padding-top:env(safe-area-inset-top,0px)}
+body.lock{overflow:hidden}
+button,a{font:inherit;color:inherit;cursor:pointer;text-decoration:none}
+button{background:none;border:0}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:600px;margin:0 auto}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0}
+.bar img{height:44px;width:auto}
+.rnd{width:40px;height:40px;border-radius:50%;border:1px solid rgba(211,201,148,.55);color:var(--gold);display:grid;place-items:center;background:rgba(16,33,26,.35);transition:background .25s,transform .25s}
+.rnd:hover{background:rgba(211,201,148,.18)}.rnd:active{transform:scale(.94)}
+.rnd svg{width:22px;height:22px;display:block}
+.tbl{min-width:40px;height:40px;padding:0 14px;border-radius:99px;border:1px solid rgba(211,201,148,.55);color:var(--gold);display:grid;place-items:center;font:500 13px var(--sans);white-space:nowrap}
+.mh{padding:18px 20px 12px}
+.mh h1{font:600 36px/1.05 var(--serif)}
+.mh h1::after{content:"";display:block;height:1.5px;width:56px;background:var(--gold);margin-top:10px}
+.mh p{font-size:13px;opacity:.65;margin-top:10px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:10px;overflow-x:auto;padding:10px 16px;background:#10211af5;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);scrollbar-width:none}
+nav button{flex:none;width:116px;height:116px;border-radius:24px 6px 24px 24px;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;text-align:start;position:relative;overflow:hidden;border:1px solid #d3c99430;transition:height .3s,border-radius .3s,padding .3s}
+nav button span{position:absolute;top:-12px;inset-inline-end:6px;font:600 84px/1 var(--serif);color:#d3c9941f}
+nav button b{font:600 18px/1.1 var(--serif);white-space:nowrap}
+nav button small{font-size:11px;opacity:.65;margin-top:3px}
+nav button.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.min nav button{width:auto;height:42px;border-radius:99px;padding:0 18px;justify-content:center}
+.min nav button span,.min nav button small{display:none}
+.min nav button b{font:500 13px var(--sans)}
+section{padding:26px 16px 0;scroll-margin-top:160px}
+h2{font:italic 600 30px var(--serif);color:var(--gold);margin-bottom:12px}
+[dir=rtl] h2,[dir=rtl] nav button b{font-style:normal}
+.card{display:grid;grid-template-columns:104px 1fr;gap:14px;padding:10px;margin-bottom:10px;background:#ffffff0a;border-radius:26px 8px 26px 26px;transition:background .25s}
+.card.has{background:#d3c9940f;box-shadow:inset 0 0 0 1px #d3c99440}
+.ph{height:104px;border-radius:20px 6px 20px 20px;display:grid;place-items:center;font:600 34px var(--serif);color:#d3c99499;background:linear-gradient(135deg,#3b6340,#2a4a2f);border:1px solid #d3c99440;background-size:cover;background-position:center}
+.ci{display:flex;flex-direction:column;min-width:0}
+.card h3{font:600 20px/1.2 var(--serif)}
+.card p{font-size:12px;opacity:.6;margin:4px 0 8px}
+.pr{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px}
+.pr b{font:500 15px var(--sans);color:var(--gold)}
+.ctl{display:flex;align-items:center;gap:2px;direction:ltr}
+.q{width:38px;height:38px;border-radius:50%;border:1px solid rgba(211,201,148,.6);color:var(--gold);display:grid;place-items:center;font:400 22px/1 var(--sans);transition:background .2s,transform .15s}
+.q:hover{background:rgba(211,201,148,.18)}.q:active{transform:scale(.9)}
+.q.fill{background:var(--gold);color:var(--forest)}
+.n{min-width:28px;text-align:center;font:500 16px var(--sans)}
+.tax{font-size:11px;opacity:.6;text-align:center;padding:28px 20px calc(110px + var(--sb))}
+
+.banner{margin:6px 16px 0;padding:12px 16px;border-radius:16px;border:1px solid rgba(211,201,148,.45);background:#d3c9941a;display:flex;align-items:center;gap:10px;width:calc(100% - 32px);text-align:start;font-size:13px}
+.banner[hidden]{display:none}
+.dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);animation:pulse 1.4s infinite}
+.dot.ok{background:#8fd19e;animation:none}
+@keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
+
+.cartbar{position:fixed;inset-inline:0;bottom:0;z-index:8;padding:12px 16px calc(12px + var(--sb));background:linear-gradient(180deg,transparent,rgba(16,33,26,.92) 40%);transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.cartbar.on{transform:none}
+.cartbar button{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:568px;margin:0 auto;padding:15px 22px;border-radius:99px;background:var(--gold);color:var(--forest);font:500 15px var(--sans);box-shadow:0 8px 30px rgba(0,0,0,.45)}
+.cartbar .cnt{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:99px;background:var(--forest);color:var(--gold);font-size:13px;margin-inline-end:10px}
+.cartbar button:active{transform:scale(.98)}
+
+.sheet{position:fixed;inset:0;z-index:20;visibility:hidden}
+.sheet.on{visibility:visible}
+.sheet .bd{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0;transition:opacity .3s}
+.sheet.on .bd{opacity:1}
+.sheet .pn{position:absolute;inset-inline:0;bottom:0;max-width:600px;margin:0 auto;max-height:90dvh;overflow:auto;background:var(--panel);border-top:1px solid rgba(211,201,148,.5);border-radius:28px 28px 0 0;padding:18px 20px calc(20px + var(--sb));transform:translateY(100%);transition:transform .38s cubic-bezier(.2,.7,.2,1)}
+.sheet.on .pn{transform:none}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.sh h2{margin:0}
+.sh .rnd{width:36px;height:36px}.sh .rnd svg{width:16px;height:16px}
+.li{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(211,201,148,.2)}
+.li:first-of-type{border-top:0}
+.li .t{flex:1;min-width:0}
+.li .t b{display:block;font:500 15px/1.3 var(--sans)}
+.li .t span{font-size:12.5px;color:var(--gold)}
+.li .q{width:34px;height:34px;font-size:20px}
+.fld{display:block;margin-top:14px}
+.fld span{display:block;font-size:12px;opacity:.7;margin-bottom:6px}
+.fld textarea,.fld input{width:100%;font:inherit;font-size:14px;color:var(--cream);background:#ffffff0d;border:1px solid rgba(211,201,148,.35);border-radius:14px;padding:12px 14px;resize:none}
+.fld.err input{border-color:#e58f8f}
+.sum{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;padding-top:14px;border-top:1px solid rgba(211,201,148,.45)}
+.sum b{font:600 24px var(--serif);color:var(--gold)}
+.sum small{display:block;font-size:11px;opacity:.6;margin-top:3px}
+.send{display:block;width:100%;margin-top:16px;padding:16px;border-radius:99px;background:var(--gold);color:var(--forest);font:500 16px var(--sans);transition:opacity .2s,transform .15s}
+.send:active{transform:scale(.98)}.send:disabled{opacity:.5;cursor:default}
+.empty{padding:30px 0;text-align:center;opacity:.6;font-size:14px}
+
+.done{position:fixed;inset:0;z-index:30;background:var(--forest);display:none;overflow:auto;padding:calc(28px + env(safe-area-inset-top,0px)) 24px calc(28px + var(--sb))}
+.done.on{display:block;animation:fade .4s both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.done .in{max-width:520px;margin:0 auto;text-align:center}
+.ring{width:84px;height:84px;margin:30px auto 18px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;color:var(--gold)}
+.ring svg{width:38px;height:38px}
+.done h1{font:600 36px/1.1 var(--serif)}
+.done .st{display:inline-flex;align-items:center;gap:10px;margin:14px 0 4px;padding:10px 16px;border-radius:99px;border:1px solid rgba(211,201,148,.45);background:#d3c9941a;font-size:14px}
+.done .meta{font-size:12px;opacity:.6;margin-top:8px}
+.rcpt{margin:26px 0 0;text-align:start;padding:6px 18px;border-radius:22px 8px 22px 22px;background:#ffffff0a}
+.rcpt .r{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid rgba(211,201,148,.18);font-size:14px}
+.rcpt .r:first-child{border-top:0}
+.rcpt .r i{font-style:normal;color:var(--gold);white-space:nowrap}
+.rcpt .nt{padding:10px 0;font-size:13px;opacity:.75;border-top:1px solid rgba(211,201,148,.18)}
+.rcpt .tt{font-weight:500}
+.done .back{display:block;width:100%;margin-top:22px;padding:15px;border-radius:99px;border:1px solid var(--gold);color:var(--gold);font:500 15px var(--sans)}
+.toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translate(-50%,-30px);opacity:0;pointer-events:none;background:var(--cream);color:var(--forest);padding:12px 20px;border-radius:12px;font-size:14px;max-width:88vw;text-align:center;transition:.3s;z-index:40}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+.svc{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 12px}
+.svc button,.svc input{flex:1;min-width:130px;padding:11px 14px;border-radius:99px;border:1px solid rgba(211,201,148,.55);color:var(--gold);font:400 13px var(--sans);background:none;text-align:center}
+.svc input{color:var(--cream);background:#ffffff0d}.svc input::placeholder{color:rgba(244,239,221,.6)}
+.svc button.on{background:rgba(143,209,158,.15);color:#8fd19e;border-color:rgba(143,209,158,.5)}
+.steps{display:flex;gap:6px;margin:18px 0 6px;width:100%}.steps div{flex:1;text-align:center;font-size:11px;color:rgba(244,239,221,.55)}
+.steps div::before{content:"";display:block;height:4px;border-radius:99px;background:rgba(244,239,221,.18);margin-bottom:7px}
+.steps div.on{color:var(--gold)}.steps div.on::before{background:var(--gold)}
+.rateC{margin:18px 0 4px;padding:16px;border-radius:22px;background:rgba(211,201,148,.1);border:1px solid rgba(211,201,148,.4);text-align:center;width:100%}
+.rateC h3{font:600 24px var(--serif)}.rateC p{font-size:13px;margin:6px 0 12px;color:rgba(244,239,221,.8)}
+.rb{display:inline-block;padding:12px 22px;border-radius:99px;background:var(--gold);color:var(--forest);font:500 14px var(--sans)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="bar">
+    <span class="tbl" id="tbl"></span>
+    <img src="logo.png" alt="Kanzel Restaurant &amp; Lounge">
+    <button class="rnd" id="lang" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2"/></svg></button>
+  </div>
+  <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
+  <button class="banner" id="banner" hidden><i class="dot" id="bdot"></i><span id="btxt"></span></button>
+  <div class="svc"><input id="svcT" inputmode="numeric" maxlength="6" autocomplete="off" hidden><button id="callW" type="button"></button><button id="callB" type="button"></button></div>
+  <nav id="nav" aria-label="Categories"></nav>
+  <div id="list"></div>
+  <p class="tax" id="tax"></p>
+</div>
+
+<div class="cartbar" id="cartbar"><button id="openCart"><span><i class="cnt" id="ccnt"></i><span id="cview"></span></span><b id="ctot"></b></button></div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT">
+  <div class="bd" id="bd"></div>
+  <div class="pn">
+    <div class="sh"><h2 id="shT"></h2><button class="rnd" id="closeCart" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="items"></div>
+    <label class="fld" id="tfld" hidden><span id="tlab"></span><input id="tin" inputmode="numeric" maxlength="6" autocomplete="off"></label>
+    <label class="fld"><span id="nlab"></span><textarea id="note" rows="2" maxlength="300"></textarea></label>
+    <div class="sum"><div><span id="slab"></span><small id="stax"></small></div><b id="stot"></b></div>
+    <button class="send" id="send"></button>
+  </div>
+</div>
+
+<div class="done" id="done" role="dialog" aria-modal="true"><div class="in">
+  <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+  <h1 id="dT"></h1>
+  <div class="st"><i class="dot" id="ddot"></i><span id="dst"></span></div>
+  <p class="meta" id="dmeta"></p>
+  <div class="steps" id="steps"></div>
+  <div class="rcpt" id="rcpt"></div>
+  <div class="rateC" id="rateC" hidden><h3 id="rateT"></h3><p id="rateP"></p><a class="rb" id="rateB" target="_blank" rel="noopener"></a></div>
+  <button class="back" id="dback"></button>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="menu.js"></script>
+<script src="kz.js"></script>
+<script>
+/* ============ Orders store ============
+   Temporary: orders live in localStorage so the waiter page (next step) can read them in the same browser.
+   When the backend exists, only this object changes (send / get / subscribe).
+   Order = {id, table, items:[{id,en,ar,price,qty}], note, total, status:"new"|"confirmed", ts, confirmedAt?} */
+const Orders={
+ KEY:"kanzel-orders",
+ all(){try{return JSON.parse(localStorage.getItem(this.KEY)||"[]")}catch(e){return []}},
+ save(a){try{localStorage.setItem(this.KEY,JSON.stringify(a));return true}catch(e){return false}},
+ send(o){const a=this.all();a.push(o);return this.save(a)},
+ get(id){return this.all().find(o=>o.id===id)||null}
+};
+const $=s=>document.querySelector(s);
+const fmt=n=>n.toLocaleString("en");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+/* ---------- state ---------- */
+let lang=store.get("kanzel-lang")==="ar"?"ar":"en";
+let table=(new URLSearchParams(location.search).get("t")||"").replace(/[^\w-]/g,"").slice(0,6);
+const CK=()=>"kanzel-cart-"+(table||"x")+"-"+KZ.menuVer,LK=()=>"kanzel-last-"+(table||"x");
+let cart={};try{cart=JSON.parse(store.get(CK())||"{}")||{}}catch(e){cart={}}
+let activeId=store.get(LK())||"",sending=false,poll=0,tmToast=0;
+
+/* flat dish list with ids */
+const DISH={};MENU.forEach((m,k)=>m[2].forEach((x,j)=>{DISH[k+"-"+j]={id:k+"-"+j,en:x[0],ar:x[1],price:x[2],dEn:x[3],dAr:x[4]}}));
+Object.keys(cart).forEach(id=>{if(!DISH[id]||!(cart[id]>0))delete cart[id]});
+
+const T={
+ en:{table:"Table",h1:"Menu",sub:"Tap + to build your order, then send it to your waiter",one:"dish",many:"dishes",egp:"EGP",
+  view:"View order",your:"Your order",note:"Notes for the kitchen (optional)",notePh:"No onions, extra sauce…",tno:"Table number",tph:"e.g. 12",
+  send:"Send order to waiter",sending:"Sending…",sub2:"Subtotal",tax:"Plus 12% service and 14% tax",taxFoot:"Plus 12% service and 14% tax",
+  empty:"Your order is empty",sentT:"Order sent",wait:"Waiting for the waiter to confirm…",ok:"Confirmed by your waiter",
+  okMeta:"Your order is being prepared. You can add more anytime.",waitMeta:"Keep this page open. It updates by itself.",more:"Add more items",
+  total:"Total",noteL:"Note",ban:"Order sent: waiting for confirmation",banOk:"Order confirmed",fail:"Couldn’t send the order. Please call your waiter.",
+  needT:"Please enter your table number",noMenu:"The menu is being updated. Please check back in a moment.",
+  prep:"Your order is being prepared",ready:"Your order is ready",served:"Enjoy your meal",readyMeta:"Your waiter is bringing it to you.",servedMeta:"Anything else, just ask.",
+  s0:"Sent",s1:"Confirmed",s2:"Ready",s3:"Served",banReady:"Order ready",banServed:"Enjoy your meal",
+  callW:"Call waiter",callB:"Ask for the bill",reqW:"Waiter is on the way",reqB:"Bill requested",askT:"Table no.",
+  rateT:"We’d love your opinion",rateP:"It takes a few seconds and means a lot to us.",rateB:"Rate us on Google Maps",add:"Add",inc:"Add one",dec:"Remove one",langA:"العربية",close:"Close",order:"Order"},
+ ar:{table:"ترابيزة",h1:"المنيو",sub:"دوس + عشان تختار طلبك وابعته للويتر",one:"صنف",many:"أصناف",egp:"ج.م",
+  view:"عرض الطلب",your:"طلبك",note:"ملاحظات للمطبخ (اختياري)",notePh:"من غير بصل، صوص زيادة…",tno:"رقم الترابيزة",tph:"مثلاً 12",
+  send:"ابعت الطلب للويتر",sending:"جاري الإرسال…",sub2:"الإجمالي",tax:"الأسعار + 12% خدمة و14% ضريبة",taxFoot:"الأسعار + 12% خدمة و14% ضريبة",
+  empty:"طلبك فاضي",sentT:"الطلب اتبعت",wait:"مستنيين الويتر يأكد الطلب…",ok:"الويتر أكّد طلبك",
+  okMeta:"طلبك بيتجهز. تقدر تضيف أي حاجة تاني في أي وقت.",waitMeta:"سيب الصفحة مفتوحة، بتتحدث لوحدها.",more:"أضف أصناف تانية",
+  total:"الإجمالي",noteL:"ملاحظة",ban:"الطلب اتبعت: مستني التأكيد",banOk:"الطلب اتأكد",fail:"معرفناش نبعت الطلب. ممكن تنادي الويتر.",
+  needT:"اكتب رقم الترابيزة من فضلك",noMenu:"المنيو بيتحدّث دلوقتي. جرّب كمان شوية.",
+  prep:"طلبك بيتجهز",ready:"طلبك جاهز",served:"بالهنا والشفا",readyMeta:"الويتر جاي بيه لحد عندك.",servedMeta:"لو عايز أي حاجة تانية قولنا.",
+  s0:"اتبعت",s1:"اتأكد",s2:"جاهز",s3:"اتسلّم",banReady:"الطلب جاهز",banServed:"بالهنا والشفا",
+  callW:"نادي الويتر",callB:"اطلب الحساب",reqW:"الويتر جاي لحد عندك",reqB:"الحساب اتطلب",askT:"رقم الترابيزة",
+  rateT:"مستنيين رأيك",rateP:"بياخد ثواني وبيفرق معانا جدًا.",rateB:"قيّمنا على جوجل ماب",add:"أضف",inc:"زوّد واحد",dec:"شيل واحد",langA:"English",close:"إغلاق",order:"طلب"}
+};
+const tr=()=>T[lang],nm=d=>lang==="ar"?d.ar:d.en;
+
+/* ---------- cart helpers ---------- */
+const lines=()=>Object.keys(cart).map(id=>({...DISH[id],qty:cart[id]}));
+const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
+const total=()=>lines().reduce((a,l)=>a+l.price*l.qty,0);
+const saveCart=()=>store.set(CK(),JSON.stringify(cart));
+function setQty(id,q){q=Math.max(0,Math.min(20,q));if(q)cart[id]=q;else delete cart[id];saveCart();paint(id)}
+
+/* ---------- render ---------- */
+const nav=$("#nav");let secs=[],bs=[];
+function ctl(id){const t=tr(),q=cart[id]||0;
+ return q?`<button class="q" data-a="dec" data-id="${id}" aria-label="${t.dec}">−</button><span class="n" aria-live="polite">${q}</span><button class="q fill" data-a="inc" data-id="${id}" aria-label="${t.inc}">+</button>`
+  :`<button class="q" data-a="inc" data-id="${id}" aria-label="${t.add}">+</button>`}
+function render(){const t=tr(),i=lang==="ar"?1:0;
+ document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ $("#h1").textContent=t.h1;$("#sub").textContent=t.sub;$("#tax").textContent=t.taxFoot;
+ $("#tbl").textContent=table?`${t.table} ${table}`:t.table+" ?";
+ $("#lang").setAttribute("aria-label",t.langA);$("#lang").title=t.langA;
+ nav.innerHTML=MENU.map((m,k)=>{const h=140+k*4,l=16+(k%4)*3,c=m[2].length;
+  return`<button data-k="${k}" style="background:linear-gradient(150deg,hsl(${h} 32% ${l+6}%),hsl(${h} 38% ${l}%))"><span>${m[i][0]}</span><b>${esc(m[i])}</b><small>${c} ${c===1?t.one:t.many}</small></button>`}).join("");
+ $("#list").innerHTML=MENU.map((m,k)=>`<section><h2>${esc(m[i])}</h2>${m[2].map((x,j)=>{const id=k+"-"+j,d=DISH[id];
+  return`<div class="card${cart[id]?" has":""}" data-id="${id}"><div class="ph">K</div><div class="ci"><h3>${esc(nm(d))}</h3><p>${esc(lang==="ar"?d.dAr:d.dEn)}</p><div class="pr"><b>${fmt(d.price)} ${t.egp}</b><div class="ctl">${ctl(id)}</div></div></div></div>`}).join("")}</section>`).join("");
+ secs=[...document.querySelectorAll("section")];bs=[...nav.children];spy();
+ $("#send").textContent=sending?t.sending:t.send;$("#shT").textContent=t.your;$("#nlab").textContent=t.note;$("#note").placeholder=t.notePh;
+ $("#tlab").textContent=t.tno;$("#tin").placeholder=t.tph;$("#slab").textContent=t.sub2;$("#stax").textContent=t.tax;$("#closeCart").setAttribute("aria-label",t.close);
+ $("#dback").textContent=t.more;
+ if(!MENU.length){$("#list").innerHTML=`<p class="empty">${t.noMenu}</p>`;nav.innerHTML=""}
+ paintCart();paintBanner();paintSvc();if($("#done").classList.contains("on"))paintDone()}
+function paint(id){const c=document.querySelector(`.card[data-id="${id}"]`);
+ if(c){c.classList.toggle("has",!!cart[id]);c.querySelector(".ctl").innerHTML=ctl(id);
+  const b=c.querySelector(`.ctl [data-a="inc"]`);if(b&&document.activeElement===document.body)b.focus({preventScroll:true})}
+ paintCart();if($("#sheet").classList.contains("on"))paintItems()}
+function paintCart(){const t=tr(),n=count(),bar=$("#cartbar");bar.classList.toggle("on",n>0);
+ $("#ccnt").textContent=n;$("#cview").textContent=t.view;$("#ctot").textContent=`${fmt(total())} ${t.egp}`;
+ $("#stot").textContent=`${fmt(total())} ${t.egp}`;$("#send").disabled=!n||sending}
+function paintItems(){const t=tr(),L=lines();
+ $("#items").innerHTML=L.length?L.map(l=>`<div class="li"><div class="t"><b>${esc(nm(l))}</b><span>${fmt(l.price*l.qty)} ${t.egp}</span></div><div class="ctl"><button class="q" data-a="dec" data-id="${l.id}" aria-label="${t.dec}">−</button><span class="n">${l.qty}</span><button class="q fill" data-a="inc" data-id="${l.id}" aria-label="${t.inc}">+</button></div></div>`).join(""):`<p class="empty">${t.empty}</p>`;
+ paintCart();if(!L.length)closeSheet()}
+function spy(){const y=scrollY,app=$("#app");if(y>160)app.classList.add("min");else if(y<60)app.classList.remove("min");
+ let a=0;secs.forEach((s,k)=>{if(s.getBoundingClientRect().top<170)a=k});
+ bs.forEach((b,k)=>b.classList.toggle("on",k===a));
+ if(spy.a!==a){spy.a=a;bs[a]&&bs[a].scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})}}
+addEventListener("scroll",spy,{passive:true});
+nav.addEventListener("click",e=>{const b=e.target.closest("button");if(b)secs[+b.dataset.k].scrollIntoView()});
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;
+ const id=b.dataset.id;setQty(id,(cart[id]||0)+(b.dataset.a==="inc"?1:-1))});
+$("#lang").onclick=()=>{const sv=$("#lang svg");sv.animate([{transform:"rotate(0)"},{transform:"rotate(360deg)"}],{duration:700,easing:"cubic-bezier(.5,0,.2,1)"});
+ lang=lang==="ar"?"en":"ar";store.set("kanzel-lang",lang);render()};
+function openSheet(){paintItems();$("#tfld").hidden=!!table;$("#sheet").classList.add("on");document.body.classList.add("lock");$("#closeCart").focus()}
+function closeSheet(){$("#sheet").classList.remove("on");document.body.classList.toggle("lock",$("#done").classList.contains("on"))}
+$("#openCart").onclick=openSheet;$("#closeCart").onclick=closeSheet;$("#bd").onclick=closeSheet;
+addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+function toast(m){const el=$("#toast");el.textContent=m;el.classList.add("on");clearTimeout(tmToast);tmToast=setTimeout(()=>el.classList.remove("on"),2800)}
+
+$("#send").onclick=()=>{
+ if(sending||!count())return;const t=tr();
+ let tb=table;if(!tb){tb=$("#tin").value.trim().replace(/[^\w-]/g,"").slice(0,6);
+  if(!tb){$("#tfld").classList.add("err");$("#tin").focus();toast(t.needT);return}}
+ sending=true;$("#send").disabled=true;$("#send").textContent=t.sending;KZ.busy($("#send"),1);
+ const o={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),table:tb,
+  items:lines().map(l=>({id:l.id,en:l.en,ar:l.ar,price:l.price,qty:l.qty})),note:$("#note").value.trim(),total:total(),status:"new",ts:Date.now()};
+ setTimeout(()=>{ /* small delay now; becomes the network call once there is a backend */
+  const ok=Orders.send(o);sending=false;KZ.busy($("#send"),0);
+  if(!ok){$("#send").textContent=t.send;paintCart();KZ.toast(t.fail,1);return}
+  if(!table){table=tb;$("#tbl").textContent=`${t.table} ${table}`}
+  cart={};store.del(CK());activeId=o.id;store.set(LK(),o.id);$("#note").value="";
+  closeSheet();render();showDone()},450)};
+$("#tin").oninput=()=>$("#tfld").classList.remove("err");
+
+/* ---------- confirmation screen ---------- */
+const cur=()=>activeId?Orders.get(activeId):null;
+const ST=["new","confirmed","ready","served"],sIdx=o=>Math.max(0,ST.indexOf(o.status));
+function paintDone(){const o=cur(),t=tr();if(!o){$("#done").classList.remove("on");return}
+ const k=sIdx(o);
+ $("#dT").textContent=[t.sentT,t.ok,t.ready,t.served][k];$("#dst").textContent=t.wait;$("#ddot").classList.toggle("ok",k>0);
+ $("#dmeta").textContent=[t.waitMeta,t.okMeta,t.readyMeta,t.servedMeta][k];
+ $("#steps").innerHTML=[t.s0,t.s1,t.s2,t.s3].map((x,i)=>`<div class="${i<=k?"on":""}">${x}</div>`).join("");
+ $("#rcpt").innerHTML=o.items.map(x=>`<div class="r"><span>${x.qty} × ${esc(lang==="ar"?x.ar:x.en)}</span><i>${fmt(x.price*x.qty)} ${t.egp}</i></div>`).join("")+
+  (o.note?`<div class="nt">${t.noteL}: ${esc(o.note)}</div>`:"")+`<div class="r tt"><span>${t.total}</span><i>${fmt(o.total)} ${t.egp}</i></div>`;
+ $("#dst").parentElement.style.display=k===0?"":"none";
+ const rc=$("#rateC");rc.hidden=k<3;if(k>=3){$("#rateT").textContent=t.rateT;$("#rateP").textContent=t.rateP;$("#rateB").textContent=t.rateB;$("#rateB").href=KZ.settings().mapsUrl}}
+function showDone(){$("#done").classList.add("on");document.body.classList.add("lock");paintDone();scrollTo(0,0);startPoll()}
+function hideDone(){$("#done").classList.remove("on");document.body.classList.remove("lock");paintBanner()}
+$("#dback").onclick=hideDone;
+$("#banner").onclick=()=>{if(cur())showDone()};
+function paintBanner(){const o=cur(),b=$("#banner");
+ /* hide stale orders after 3 hours */
+ if(!o||Date.now()-o.ts>3*3600e3){b.hidden=true;return}
+ const k=sIdx(o),t=tr();b.hidden=false;$("#bdot").classList.toggle("ok",k>0);$("#btxt").textContent=[t.ban,t.banOk,t.banReady,t.banServed][k]}
+/* the waiter page will flip status to "confirmed"; we pick it up from storage events or a light poll */
+function startPoll(){clearInterval(poll);poll=setInterval(()=>{const o=cur();if(!o){clearInterval(poll);return}
+ if($("#done").classList.contains("on"))paintDone();paintBanner();if(o.status==="served")clearInterval(poll)},2000)}
+addEventListener("storage",e=>{if(e.key===Orders.KEY){paintBanner();if($("#done").classList.contains("on"))paintDone()}});
+
+render();
+if(cur()&&cur().status!=="served")startPoll();
+
+/* ---------- call waiter / bill ---------- */
+function callsFor(tb){return KZ.list("calls").filter(c=>String(c.table)===String(tb)&&!c.done)}
+function paintSvc(){const t=tr(),cs=table?callsFor(table):[],w=cs.some(c=>c.type==="waiter"),bl=cs.some(c=>c.type==="bill");
+ $("#svcT").hidden=!!table;$("#svcT").placeholder=t.askT;
+ $("#callW").textContent=w?t.reqW:t.callW;$("#callW").classList.toggle("on",w);
+ $("#callB").textContent=bl?t.reqB:t.callB;$("#callB").classList.toggle("on",bl)}
+function callStaff(type){const t=tr();let tb=table||$("#svcT").value.trim().replace(/[^\w-]/g,"").slice(0,6);
+ if(!tb){$("#svcT").hidden=false;$("#svcT").focus();toast(t.needT);return}
+ if(callsFor(tb).some(c=>c.type===type)){toast(type==="bill"?t.reqB:t.reqW);return}
+ if(!KZ.push("calls",{id:KZ.uid(),table:tb,type,ts:Date.now(),done:false})){KZ.toast(t.fail,1);return}
+ if(!table){table=tb;$("#tbl").textContent=`${t.table} ${table}`}
+ toast(type==="bill"?t.reqB:t.reqW);paintSvc()}
+$("#callW").onclick=()=>callStaff("waiter");$("#callB").onclick=()=>callStaff("bill");
+addEventListener("storage",e=>{if(e.key===KZ.KEYS.calls)paintSvc()});
+setInterval(()=>{paintSvc();paintBanner();if($("#done").classList.contains("on"))paintDone()},2500);
+paintSvc();
+</script>
+</body>
+</html>

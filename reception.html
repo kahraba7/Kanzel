@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10211a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kanzel">
+<title>Kanzel Reception</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="staff.css">
+</head>
+<body>
+<div class="wrap" id="app" hidden>
+ <div class="bar">
+  <a class="rnd" id="back" href="index.html" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+  <img src="logo.png" alt="Kanzel">
+  <div class="g">
+   <button class="rnd" id="lock" aria-label="Lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></svg></button>
+   <button class="rnd" id="lang" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2"/></svg></button>
+  </div>
+ </div>
+ <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
+ <div class="tabs"><a class="tab" href="waiter.html" data-go="waiter" id="tabW"></a><a class="tab on" href="reception.html" data-go="reception" id="tabR"></a></div>
+ <div class="tabs" id="kinds"></div>
+ <div class="tabs" id="chips"></div>
+ <div id="list" style="margin-top:16px"><div class="skl"></div><div class="skl"></div></div>
+ <p class="note" id="foot"></p>
+</div>
+<script src="menu.js"></script>
+<script src="kz.js"></script>
+<script>
+const $=s=>document.querySelector(s),esc=KZ.esc;
+let lang=KZ.lang(),kind="bookings",flt="new",seen=null;
+const T={en:{h1:"Reservations",sub:"Table bookings and event requests from the website",tabW:"Orders",tabR:"Reception",
+ bookings:"Table bookings",events:"Event requests",new:"New",confirmed:"Confirmed",cancelled:"Cancelled",
+ none:"Nothing here yet",guests:"guests",call:"Call",wa:"WhatsApp",confirm:"Confirm",cancel:"Cancel",reopen:"Move back to new",
+ date:"Date",time:"Time",needs:"Needs",notes:"Notes",received:"Received",lock:"Lock",back:"Back",
+ foot:"Requests are stored in this browser for now. They arrive from the website once the backend is connected. Event requests also reach you on WhatsApp, this list just keeps track of them.",
+ waMsg:(n,d,tm)=>"Hello "+n+", this is Kanzel. Your reservation on "+d+" at "+tm+" is confirmed. We look forward to seeing you."},
+ ar:{h1:"الحجوزات",sub:"حجوزات الترابيزات وطلبات المناسبات من الموقع",tabW:"الطلبات",tabR:"الريسبشن",
+ bookings:"حجز ترابيزة",events:"طلبات المناسبات",new:"جديد",confirmed:"متأكد",cancelled:"ملغي",
+ none:"مفيش حاجة لسه",guests:"أفراد",call:"اتصل",wa:"واتساب",confirm:"أكّد",cancel:"إلغاء",reopen:"رجّعه جديد",
+ date:"التاريخ",time:"الوقت",needs:"المطلوب",notes:"ملاحظات",received:"وصل",lock:"قفل",back:"رجوع",
+ foot:"الطلبات متخزنة في المتصفح ده دلوقتي. هتوصل من الموقع لما نربط الباك إند. طلبات المناسبات بتوصلك على واتساب كمان، والقائمة دي للمتابعة بس.",
+ waMsg:(n,d,tm)=>"أهلاً "+n+"، معاك كنزل. حجزك يوم "+d+" الساعة "+tm+" اتأكد. في انتظارك."}};
+const digits=p=>String(p||"").replace(/\D/g,"");
+function wa(p){let d=digits(p);if(d.startsWith("00"))d=d.slice(2);else if(d.startsWith("0"))d="2"+d;return d}
+function bookCard(b){const t=T[lang];
+ return`<div class="card${b.status==="new"?" hl":""}"><div class="top"><div class="tb">${esc(b.name)}</div><div class="tm">${t.received} ${KZ.clock(b.ts,lang)}<br>${KZ.ago(b.ts,lang)}</div></div>
+ <div class="items"><div class="r"><span>${t.date}</span><i>${esc(b.date)}</i></div><div class="r"><span>${t.time}</span><i>${esc(b.time)}</i></div><div class="r"><span>${b.guests} ${t.guests}</span><i dir="ltr">${esc(b.phone)}</i></div></div>
+ <div class="row"><a class="btn sm ghost" href="tel:${esc(digits(b.phone))}">${t.call}</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://wa.me/${wa(b.phone)}?text=${encodeURIComponent(t.waMsg(b.name,b.date,b.time))}">${t.wa}</a></div>${acts(b)}</div>`}
+function evCard(b){const t=T[lang],ar=lang==="ar",needs=(ar?b.needsAr:b.needsEn)||[];
+ return`<div class="card${b.status==="new"?" hl":""}"><div class="top"><div class="tb">${esc(b.name)}</div><div class="tm">${t.received} ${KZ.clock(b.ts,lang)}<br>${KZ.ago(b.ts,lang)}</div></div>
+ <div class="items"><div class="r"><span>${esc(ar?b.occAr:b.occEn)}</span><i>${b.guests} ${t.guests}</i></div>${b.date?`<div class="r"><span>${t.date}</span><i>${esc(b.date)}</i></div>`:""}${needs.length?`<div class="r"><span>${t.needs}</span><i style="white-space:normal;text-align:end">${esc(needs.join("، "))}</i></div>`:""}</div>
+ ${b.notes?`<div class="nt">${t.notes}: ${esc(b.notes)}</div>`:""}${acts(b)}</div>`}
+function acts(b){const t=T[lang];
+ if(b.status==="new")return`<div class="row"><button class="btn sm" data-id="${esc(b.id)}" data-s="confirmed">${t.confirm}</button><button class="btn sm bad" data-id="${esc(b.id)}" data-s="cancelled">${t.cancel}</button></div>`;
+ return`<div class="row"><span class="pill ${b.status==="confirmed"?"ok":"no"}"><i class="dot"></i>${t[b.status]}</span><button class="btn sm ghost" data-id="${esc(b.id)}" data-s="new">${t.reopen}</button></div>`}
+function render(){const t=T[lang],ar=lang==="ar";
+ document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
+ $("#h1").textContent=t.h1;$("#sub").textContent=t.sub;$("#tabW").textContent=t.tabW;$("#tabR").textContent=t.tabR;$("#foot").textContent=t.foot;
+ $("#lock").setAttribute("aria-label",t.lock);$("#back").setAttribute("aria-label",t.back);$("#lang").setAttribute("aria-label",ar?"English":"العربية");
+ const cnt=(n,s)=>KZ.list(n).filter(x=>x.status===s).length;
+ $("#kinds").innerHTML=["bookings","events"].map(k=>`<button class="tab${kind===k?" on":""}" data-kind="${k}">${t[k]}<b>${cnt(k,"new")||""}</b></button>`).join("");
+ $("#chips").innerHTML=["new","confirmed","cancelled"].map(s=>`<button class="tab${flt===s?" on":""}" data-flt="${s}">${t[s]}<b>${KZ.list(kind).filter(x=>x.status===s).length}</b></button>`).join("");
+ const L=KZ.list(kind).filter(x=>x.status===flt).sort((a,b)=>flt==="new"?a.ts-b.ts:(b.ts-a.ts));
+ $("#list").innerHTML=L.length?L.map(kind==="bookings"?bookCard:evCard).join(""):`<div class="empty">${t.none}</div>`;
+ const n=cnt("bookings","new")+cnt("events","new");document.title=(n?"("+n+") ":"")+"Kanzel Reception"}
+function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=660;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.4);o.stop(a.currentTime+.45)}catch(e){}}
+function tick(){const ids=new Set([...KZ.list("bookings"),...KZ.list("events")].filter(x=>x.status==="new").map(x=>x.id));
+ if(seen&&[...ids].some(i=>!seen.has(i)))beep();seen=ids;render()}
+document.addEventListener("click",e=>{
+ const k=e.target.closest("[data-kind]");if(k){kind=k.dataset.kind;render();return}
+ const f=e.target.closest("[data-flt]");if(f){flt=f.dataset.flt;render();return}
+ const b=e.target.closest("button[data-id]");if(b){KZ.update(kind,b.dataset.id,o=>{o.status=b.dataset.s;o.updatedAt=Date.now()});render()}});
+$("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);render()};
+$("#lock").onclick=()=>{KZ.logout("staff");location.reload()};
+addEventListener("storage",e=>{if(e.key===KZ.KEYS.bookings||e.key===KZ.KEYS.events)tick()});
+KZ.gate("staff").then(()=>{$("#app").hidden=false;tick();setInterval(tick,4000)});
+</script>
+</body>
+</html>

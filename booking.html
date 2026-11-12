@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10211a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kanzel">
+<title>Book a table · Kanzel Restaurant &amp; Lounge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root{--forest:#10211a;--moss:#2f5233;--gold:#d3c994;--cream:#f4efdd;
+ --serif:"Cormorant Garamond","Readex Pro",Georgia,serif;--sans:"Readex Pro",system-ui,sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--forest);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.ig:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.lang{background:rgba(16,33,26,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(211,201,148,.55);color:var(--gold);border-radius:50%;width:40px;height:40px;padding:0;display:grid;place-items:center;transition:background .25s,transform .25s}
+.lang svg{width:22px;height:22px;display:block}
+.lang:hover{background:rgba(211,201,148,.18)}.lang:active{transform:scale(.94)}
+.ig{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(211,201,148,.5)}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes chip{from{opacity:0;transform:translateX(calc(34px*var(--dx,1))) scale(.9)}to{opacity:1;transform:none}}
+@keyframes line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bump{50%{transform:scale(1.25)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes mout{to{opacity:0;transform:translateY(46px) scale(.96)}}
+.spin{animation:spin .8s cubic-bezier(.5,0,.2,1)}
+
+#bookView{display:block;background:var(--forest);min-height:100dvh;--dx:1}
+[dir=rtl] #bookView{--dx:-1}
+#bookView h1,#bookView h2,#bookView h3,#bookView p,#bookView ul,#bookView em{margin:0;padding:0}
+#bookView ul{list-style:none}
+#bookView .bwrap{max-width:600px;margin:0 auto;padding-bottom:40px}
+#bookView .bbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0}
+#bookView .bbar img{height:44px;width:auto}
+#bookView .lang{cursor:pointer;color:var(--gold);text-decoration:none}
+#bookView #bback svg{width:18px;height:18px}
+[dir=rtl] #bookView #bback svg{transform:scaleX(-1)}
+#bookView .bh{padding:18px 20px 6px}
+#bookView .bh h1{font:600 36px/1.05 var(--serif)}
+#bookView .bh h1::after{content:'';display:block;height:1.5px;width:56px;background:var(--gold);margin-top:10px;transform-origin:left}
+[dir=rtl] #bookView .bh h1::after{transform-origin:right}
+#bookView .bh p{font-size:13px;opacity:.65;margin-top:6px}
+#bookView .steps{display:flex;gap:6px;padding:14px 20px 4px}
+#bookView .steps i{flex:1;height:3px;border-radius:3px;background:rgba(211,201,148,.2);position:relative;overflow:hidden}
+#bookView .steps i::after{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+[dir=rtl] #bookView .steps i::after{transform-origin:right}
+#bookView .steps i.on::after{transform:scaleX(1)}
+#bookView .pane{display:none;padding:18px 20px 0}
+#bookView .pane.on{display:block;animation:paneIn .5s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes paneIn{from{opacity:0;transform:translateX(calc(26px*var(--dx,1)))}}
+#bookView .bi{font-size:14px;line-height:1.7;color:rgba(244,239,221,.85)}
+#bookView .need{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#bookView .need li{display:flex;align-items:center;gap:8px;padding-block:7px;padding-inline:8px 14px;border:1px solid rgba(211,201,148,.35);border-radius:99px;font-size:12.5px}
+#bookView .need b{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--forest);display:grid;place-items:center;font:500 11px var(--sans)}
+#bookView .bp{font:italic 600 28px var(--serif);color:var(--gold);margin:28px 0 12px}
+[dir=rtl] #bookView .bp{font-style:normal}
+#bookView .rl{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.04);border:1px solid rgba(211,201,148,.12);border-radius:24px 8px 24px 24px}
+#bookView .ri{width:44px;height:44px;border-radius:14px 5px 14px 14px;display:grid;place-items:center;background:linear-gradient(135deg,#3b6340,#2a4a2f);border:1px solid rgba(211,201,148,.25);color:var(--gold)}
+#bookView .ri svg{width:22px;height:22px}
+#bookView .rl h3{font:600 19px/1.2 var(--serif)}
+#bookView .rl p{font-size:13.5px;line-height:1.5;margin-top:4px;color:rgba(244,239,221,.85)}
+#bookView .rl small{display:block;font-size:12px;opacity:.6;margin-top:4px}
+#bookView .bq{margin-top:18px;font-size:12.5px;text-align:center;opacity:.85;line-height:1.8}
+#bookView .cta{position:sticky;bottom:14px;padding-top:22px;margin-top:8px;display:grid;gap:10px;justify-items:center;background:linear-gradient(180deg,transparent,var(--forest) 30%)}
+#bookView .btn{width:100%;padding:16px 20px;border-radius:99px;border:0;background:var(--gold);color:var(--forest);font:500 16px var(--sans);cursor:pointer;transition:transform .2s,box-shadow .3s}
+#bookView .btn:hover{box-shadow:0 8px 30px rgba(211,201,148,.25)}
+#bookView .btn:active{transform:scale(.97)}
+#bookView .lnk{background:none;border:0;color:var(--gold);font:300 13px var(--sans);padding:6px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(211,201,148,.5)}
+#bookView .fld{margin-bottom:16px}
+#bookView label,#bookView .lb{display:block;font-size:12.5px;color:rgba(244,239,221,.7);margin-bottom:7px}
+#bookView input,#bookView select{display:block;width:100%;height:52px;min-height:52px;padding:0 16px;border-radius:18px 6px 18px 18px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);color:var(--cream);font:400 16px var(--sans);outline:0;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;appearance:none}
+#bookView select{background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23d3c994%27 stroke-width=%271.6%27 stroke-linecap=%27round%27%3E%3Cpath d=%27M6 9l6 6 6-6%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-size:18px;background-position:right 16px center;padding-inline-end:44px}
+[dir=rtl] #bookView select{background-position:left 16px center}
+#bookView option{background:#10211a;color:#f4efdd}
+#bookView input:focus,#bookView select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(211,201,148,.15)}
+[dir=rtl] #bookView #fPhone{text-align:right}
+#bookView .fld.bad input,#bookView .fld.bad select{border-color:#e8a79a}
+#bookView .err{display:block;font-style:normal;font-size:12px;color:#e8a79a;margin-top:6px}
+#bookView .err:empty{display:none}
+#bookView .stp{display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);border-radius:18px 6px 18px 18px}
+#bookView .stp button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(211,201,148,.45);background:none;color:var(--gold);font:300 24px/1 var(--sans);cursor:pointer;transition:background .2s,transform .2s}
+#bookView .stp button:active{transform:scale(.9);background:rgba(211,201,148,.18)}
+#bookView .stp output{font:600 28px var(--serif);min-width:60px;text-align:center}
+#bookView .stp output.bump{animation:bump .25s}
+@keyframes bump{50%{transform:scale(1.25)}}
+#bookView .bnote{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s}
+#bookView .bnote.on{grid-template-rows:1fr}
+#bookView .bnote>div{overflow:hidden}
+#bookView .bnote p{padding:12px 14px;margin-bottom:10px;border:1px solid rgba(211,201,148,.4);border-radius:16px 6px 16px 16px;background:rgba(211,201,148,.08);font-size:13px;line-height:1.55;color:var(--gold)}
+#bookView .ok{width:84px;height:84px;margin:24px auto 18px;display:block}
+#bookView .ok circle{stroke-dasharray:252;stroke-dashoffset:252;animation:draw .9s .1s cubic-bezier(.4,0,.2,1) forwards}
+#bookView .ok path{stroke-dasharray:50;stroke-dashoffset:50;animation:draw .5s .8s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+#bookView .dn{font:600 32px/1.1 var(--serif);text-align:center}
+#bookView .dp{text-align:center;font-size:14px;line-height:1.7;opacity:.85;margin:10px 0 22px}
+#bookView .sum{border:1px solid rgba(211,201,148,.25);border-radius:24px 8px 24px 24px;background:rgba(255,255,255,.04);padding:6px 16px}
+#bookView .sum div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid rgba(211,201,148,.15);font-size:14px}
+#bookView .sum div:first-child{border-top:0}
+#bookView .sum span{opacity:.6}
+#bookView .sum b{font-weight:400;text-align:end}
+#bookView.out{animation:mout .33s ease forwards}
+#bookView .bh,#bookView .pane{transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s}
+body.lswap #bookView .bh,body.lswap #bookView .pane{opacity:0;transform:translateY(10px)}
+#bookView.anim .bbar{animation:fade .5s .25s ease both}
+#bookView.anim .bbar>*{animation:pop .65s .35s cubic-bezier(.3,1.4,.5,1) both}
+#bookView.anim .bbar>:nth-child(2){animation-delay:.43s}
+#bookView.anim .bbar>:nth-child(3){animation-delay:.51s}
+#bookView.anim .bh h1{animation:up .6s .4s cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .bh p{animation:up .6s .48s cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .bh h1::after{animation:line .9s .75s cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .steps{animation:fade .5s .5s ease both}
+#bookView.anim .need li{animation:chip .5s calc(.65s + var(--i,0)*.06s) cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .rl{animation:up .65s calc(.9s + var(--i,0)*.09s) cubic-bezier(.2,.7,.2,1) both}
+@media(prefers-reduced-motion:reduce){#bookView *,#bookView,.spin{animation:none!important}}
+</style>
+</head>
+<body>
+<div id='bookView'><div class='bwrap'>
+ <div class='bbar'>
+  <a class='lang' id='bback' href='index.html' aria-label='Back'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M15 5l-7 7 7 7'/></svg></a>
+  <img id='bimg' src='logo.png' alt='Kanzel Restaurant &amp; Lounge'>
+  <button class='lang' id='blang' aria-label='Language'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='12' r='9.5'/><ellipse cx='12' cy='12' rx='4.2' ry='9.5'/><path d='M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2'/></svg></button>
+ </div>
+ <div class='bh'><h1 id='bh1'></h1><p id='bsub'></p></div>
+ <div class='steps' aria-hidden='true'><i class='on'></i><i></i><i></i></div>
+ <section class='pane on' id='p1'>
+  <p class='bi' id='bintro'></p><ul class='need' id='bneed'></ul>
+  <h2 class='bp' id='bpol'></h2><div id='brules'></div>
+  <p class='bq' id='bq'></p>
+  <div class='cta'><button class='btn' id='bagree'></button></div>
+ </section>
+ <section class='pane' id='p2'>
+  <div class='fld'><label for='fDate' data-bt='fDate'></label><input id='fDate' type='date'><em class='err' id='eDate'></em></div>
+  <div class='fld'><label for='fName' data-bt='fName'></label><input id='fName' type='text' autocomplete='name' maxlength='60'><em class='err' id='eName'></em></div>
+  <div class='fld'><span class='lb' data-bt='fGuests'></span><div class='stp'><button type='button' id='gm' aria-label='-'>&minus;</button><output id='gv'>2</output><button type='button' id='gp' aria-label='+'>+</button></div></div>
+  <div class='fld'><label for='fPhone' data-bt='fPhone'></label><input id='fPhone' type='tel' inputmode='tel' autocomplete='tel' dir='ltr' maxlength='20'><em class='err' id='ePhone'></em></div>
+  <div class='fld'><label for='fTime' data-bt='fTime'></label><select id='fTime'></select><em class='err' id='eTime'></em></div>
+  <div class='bnote' id='bnote'><div></div></div>
+  <div class='cta'><button class='btn' id='bsubmit'></button><button class='lnk' id='bbackc'></button></div>
+ </section>
+ <section class='pane' id='p3'>
+  <svg class='ok' viewBox='0 0 84 84' fill='none' stroke='#d3c994' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='42' cy='42' r='40'/><path d='M26 43l11 11 21-23'/></svg>
+  <h2 class='dn' id='bdt'></h2><p class='dp' id='bdp'></p><div class='sum' id='bsum'></div>
+  <div class='cta'><button class='btn' id='bdone'></button></div>
+ </section>
+</div></div>
+<script src="kz.js"></script>
+<script>
+let lang=(()=>{try{const q=new URLSearchParams(location.search).get('lang');if(q==='ar'||q==='en')return q;return localStorage.getItem('kanzel-lang')==='ar'?'ar':'en'}catch(e){return 'en'}})();
+const $=s=>document.querySelector(s);
+function toggleLang(e){const b=e&&e.currentTarget,sv=b&&b.querySelector('svg');
+ if(sv){sv.classList.remove('spin');void sv.getBoundingClientRect();sv.classList.add('spin')}
+ if(toggleLang.t)return;
+ document.body.classList.add('lswap');
+ toggleLang.t=setTimeout(()=>{lang=lang==='ar'?'en':'ar';try{localStorage.setItem('kanzel-lang',lang)}catch(e){}
+  renderBooking();requestAnimationFrame(()=>document.body.classList.remove('lswap'));toggleLang.t=0},220)}
+const BT={
+ en:{title:'Regular table',sub:'Dinner or a night out with friends',
+  intro:'Dear guest, to proceed with your reservation, kindly provide us with the following information:',
+  need:['Date','Reservation name','Total number of guests','Phone number','Arrival time'],
+  pol:'Reservation policy & timing',
+  rules:[['Restaurant hours','10:00 AM to 3:00 AM','Breakfast · Lunch · Dinner · Late dinner'],
+   ['Minimum order','A food & beverage order is required per person.',''],
+   ['Weekends (Thursday · Friday · Saturday)','Average check of at least 1,000 EGP per person from 6:00 PM.',''],
+   ['Groups of 10 or more','Minimum 1,000 EGP per person, on weekdays and weekends.',''],
+   ['Birthdays','Cake service: 500 EGP.','Decorations and birthday song are not allowed.']],
+  q:'If you have any questions, please do not hesitate to contact us',agree:'I agree, continue',back:'Back',
+  fDate:'Date',fName:'Reservation name',fGuests:'Total number of guests',fPhone:'Phone number',fTime:'Arrival time',pick:'Select a time',
+  submit:'Request reservation',backc:'Back to conditions',eReq:'Required',ePhone:'Enter a valid phone number',
+  nWeek:'Weekend date: average check of at least 1,000 EGP per person from 6:00 PM.',nGroup:'Groups of 10 or more: minimum 1,000 EGP per person.',
+  doneT:'Request received',doneP:(n,p)=>'Thank you, '+n+'. We will contact you on '+p+' to confirm your reservation.',home:'Back to home'},
+ ar:{title:'ترابيزة عادية',sub:'عشاء أو قعدة مع الأصحاب',
+  intro:'عزيزي الضيف، عشان نكمّل حجزك محتاجين منك البيانات دي:',
+  need:['التاريخ','اسم الحجز','إجمالي عدد الأفراد','رقم الموبايل','وقت الوصول'],
+  pol:'سياسة الحجز والمواعيد',
+  rules:[['مواعيد المطعم','من 10:00 صباحًا لحد 3:00 صباحًا','فطار · غدا · عشا · عشا متأخر'],
+   ['الحد الأدنى للطلب','لازم طلب أكل ومشروبات لكل فرد.',''],
+   ['الويك إند (الخميس · الجمعة · السبت)','متوسط الفاتورة لا يقل عن 1000 ج.م للفرد من الساعة 6:00 مساءً.',''],
+   ['المجموعات من 10 أفراد فأكتر','الحد الأدنى 1000 ج.م للفرد في أيام الأسبوع والويك إند.',''],
+   ['أعياد الميلاد','خدمة التورتة: 500 ج.م.','التزيين وأغنية عيد الميلاد غير مسموح بيهم.']],
+  q:'لو عندك أي استفسار، متترددش تتواصل معانا',agree:'موافق، كمّل',back:'رجوع',
+  fDate:'التاريخ',fName:'اسم الحجز',fGuests:'إجمالي عدد الأفراد',fPhone:'رقم الموبايل',fTime:'وقت الوصول',pick:'اختار الوقت',
+  submit:'ابعت طلب الحجز',backc:'رجوع للشروط',eReq:'مطلوب',ePhone:'اكتب رقم موبايل صحيح',
+  nWeek:'اليوم ده ويك إند: متوسط الفاتورة لا يقل عن 1000 ج.م للفرد من الساعة 6:00 مساءً.',nGroup:'المجموعات من 10 أفراد فأكتر: الحد الأدنى 1000 ج.م للفرد.',
+  doneT:'وصلنا طلبك',doneP:(n,p)=>'شكرًا يا '+n+'. هنكلمك على '+p+' عشان نأكد الحجز.',home:'رجوع للرئيسية'}};
+const ICO=['<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>','<path d="M6 3v6a2 2 0 004 0V3M8 3v18M17 21V3c-2.2 1.2-3.5 3.8-3.5 7v3H17"/>','<path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/>','<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5.2a3.2 3.2 0 010 5.6M18 14.3c1.8.8 3 2.6 3 4.7"/>','<path d="M4 20h16v-6H4zM4 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2M12 8V5.5"/>'];
+const bkS={step:1,g:2,data:null},esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const slots=[];for(let m=600;m<=1590;m+=30){const h=Math.floor(m/60)%24,mi=m%60;slots.push([String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0'),h,mi])}
+function tl(h,mi){const ar=lang==='ar';return (h%12||12)+':'+String(mi).padStart(2,'0')+' '+(h>=12?(ar?'م':'PM'):(ar?'ص':'AM'))}
+function setStep(n,q){bkS.step=n;['p1','p2','p3'].forEach((id,i)=>$('#'+id).classList.toggle('on',i===n-1));
+ document.querySelectorAll('#bookView .steps i').forEach((e,i)=>e.classList.toggle('on',i<n));if(!q)scrollTo(0,0)}
+function bkNote(){const t=BT[lang],n=[],d=$('#fDate').value;
+ if(d){const w=new Date(d+'T00:00:00').getDay();if(w===4||w===5||w===6)n.push(t.nWeek)}
+ if(bkS.g>=10)n.push(t.nGroup);
+ $('#bnote').firstElementChild.innerHTML=n.map(x=>'<p>'+x+'</p>').join('');$('#bnote').classList.toggle('on',n.length>0)}
+function fillDone(){const d=bkS.data;if(!d)return;const t=BT[lang],ar=lang==='ar',tm=d.time.split(':');
+ $('#bdt').textContent=t.doneT;$('#bdp').textContent=t.doneP(d.name,d.phone);
+ const ds=new Date(d.date+'T00:00:00').toLocaleDateString(ar?'ar-EG':'en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ $('#bsum').innerHTML=[[t.fDate,ds],[t.fName,esc(d.name)],[t.fGuests,d.guests],[t.fPhone,'<bdi dir="ltr">'+esc(d.phone)+'</bdi>'],[t.fTime,tl(+tm[0],+tm[1])]].map(r=>'<div><span>'+r[0]+'</span><b>'+r[1]+'</b></div>').join('')}
+function renderBooking(){const t=BT[lang],ar=lang==='ar';
+ document.documentElement.lang=lang;document.documentElement.dir=ar?'rtl':'ltr';
+ $('#bh1').textContent=t.title;$('#bsub').textContent=t.sub;$('#bback').setAttribute('aria-label',t.back);$('#blang').setAttribute('aria-label',ar?'English':'العربية');
+ $('#bintro').textContent=t.intro;$('#bpol').textContent=t.pol;
+ $('#bneed').innerHTML=t.need.map((n,i)=>'<li style="--i:'+i+'"><b>'+(i+1)+'</b>'+n+'</li>').join('');
+ $('#brules').innerHTML=t.rules.map((r,i)=>'<div class="rl" style="--i:'+i+'"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'+ICO[i]+'</svg></span><div><h3>'+r[0]+'</h3><p>'+r[1]+'</p>'+(r[2]?'<small>'+r[2]+'</small>':'')+'</div></div>').join('');
+ $('#bq').innerHTML=t.q+'<br><a class="ig" dir="ltr" href="https://www.instagram.com/kanzel.lounge" target="_blank" rel="noopener">@kanzel.lounge</a>';
+ $('#bagree').textContent=t.agree;$('#bsubmit').textContent=t.submit;$('#bbackc').textContent=t.backc;$('#bdone').textContent=t.home;
+ document.querySelectorAll('#bookView [data-bt]').forEach(e=>e.textContent=t[e.dataset.bt]);
+ const s=$('#fTime'),cur=s.value;s.innerHTML='<option value="">'+t.pick+'</option>'+slots.map(x=>'<option value="'+x[0]+'">'+tl(x[1],x[2])+'</option>').join('');s.value=cur;
+ $('#gv').textContent=bkS.g;bkNote();fillDone();setStep(bkS.step,true)}
+const d0=new Date();$('#fDate').min=d0.getFullYear()+'-'+String(d0.getMonth()+1).padStart(2,'0')+'-'+String(d0.getDate()).padStart(2,'0');
+$('#fDate').addEventListener('change',bkNote);
+function gv(n){bkS.g=Math.max(1,Math.min(50,bkS.g+n));const o=$('#gv');o.textContent=bkS.g;o.classList.remove('bump');void o.offsetWidth;o.classList.add('bump');bkNote()}
+$('#gm').onclick=()=>gv(-1);$('#gp').onclick=()=>gv(1);
+document.querySelectorAll('#bookView input,#bookView select').forEach(e=>e.addEventListener('input',()=>{const f=e.closest('.fld');if(f)f.classList.remove('bad')}));
+$('#bagree').onclick=()=>setStep(2);$('#bbackc').onclick=()=>setStep(1);
+/* TODO backend: send the booking here (POST) and return its result */
+async function sendBooking(d){KZ.push('bookings',{id:KZ.uid(),ts:Date.now(),status:'new',name:d.name,phone:d.phone,date:d.date,time:d.time,guests:d.guests})||(()=>{throw new Error('store')})();return d}
+async function bkSubmit(){const t=BT[lang],v={date:$('#fDate').value,name:$('#fName').value.trim(),guests:bkS.g,phone:$('#fPhone').value.trim(),time:$('#fTime').value},dg=v.phone.replace(/\D/g,'');
+ const bad={Date:!v.date,Name:v.name.length<2,Phone:dg.length<10||dg.length>15,Time:!v.time};let first=null;
+ for(const k in bad){const el=$('#f'+k);el.closest('.fld').classList.toggle('bad',bad[k]);$('#e'+k).textContent=bad[k]?(k==='Phone'?t.ePhone:t.eReq):'';if(bad[k]&&!first)first=el}
+ if(first){first.focus();return}
+ const btn=$('#bsubmit');KZ.busy(btn,1);
+ try{await new Promise(r=>setTimeout(r,450));await sendBooking(v)}catch(e){KZ.busy(btn,0);KZ.toast(lang==='ar'?'معرفناش نبعت الحجز. جرّب تاني أو كلمنا.':'We couldn’t send your reservation. Please try again or call us.',1);return}
+ KZ.busy(btn,0);bkS.data=v;fillDone();setStep(3)}
+$('#bsubmit').onclick=bkSubmit;
+function bkReset(){['fDate','fName','fPhone','fTime'].forEach(id=>$('#'+id).value='');bkS.g=2;$('#gv').textContent=2;bkS.data=null;bkNote();setStep(1,true)}
+function leaveBooking(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href='index.html';return}
+ $('#bookView').classList.add('out');setTimeout(()=>{location.href='index.html'},330)}
+$('#bback').onclick=e=>{e.preventDefault();leaveBooking()};
+$('#bdone').onclick=()=>{bkReset();leaveBooking()};
+
+$('#blang').onclick=toggleLang;
+renderBooking();setStep(1,true);
+const bv=$('#bookView');bv.classList.add('anim');setTimeout(()=>bv.classList.remove('anim'),2400);
+</script>
+</body>
+</html>

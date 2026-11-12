@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10211a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kanzel">
+<title>Kanzel Restaurant &amp; Lounge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#10211a;--moss:#2f5233;--gold:#d3c994;--cream:#f4efdd;
+ --serif:"Cormorant Garamond","Readex Pro",Georgia,serif;--sans:"Readex Pro",system-ui,sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--forest);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden}
+#homeView button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.ig:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.scene{position:relative;min-height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;overflow:hidden;isolation:isolate}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3}
+.bgl{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;opacity:0;transition:opacity .6s}
+.veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(16,33,26,.7),rgba(16,33,26,.2) 30%,rgba(16,33,26,.55) 60%,rgba(16,33,26,.95))}
+.top{display:flex;justify-content:flex-end;padding:16px 20px 0}
+.lang{background:rgba(16,33,26,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(211,201,148,.55);color:var(--gold);border-radius:50%;width:40px;height:40px;padding:0;display:grid;place-items:center;transition:background .25s,transform .25s}
+.lang svg{width:22px;height:22px;display:block}
+.lang:hover{background:rgba(211,201,148,.18)}.lang:active{transform:scale(.94)}
+.hero{text-align:center;padding:0 24px}
+.hero img{width:min(40vw,200px);height:auto;display:block;margin:0 auto}
+.tag{font:italic 500 clamp(19px,5vw,24px)/1.35 var(--serif);margin:8px 0 0;text-shadow:0 2px 18px rgba(0,0,0,.5)}
+.sp{flex:1;min-height:3vh}
+.rows{width:100%;max-width:520px;margin:0 auto;padding:0 26px 14px}
+.w{display:block;font:500 clamp(42px,12vw,56px)/1.15 var(--serif)}
+.s{display:block;font-size:13px;color:rgba(244,239,221,.8)}
+.row{display:grid;grid-template-columns:1fr auto;align-items:center;width:100%;padding:14px 0 16px;border:0;border-top:1px solid rgba(211,201,148,.55);background:none;text-align:start}
+.row .ic{grid-row:1/3;grid-column:2}
+.go{display:block;width:11px;height:11px;border:solid var(--gold);border-width:1.5px 1.5px 0 0;transform:rotate(45deg)}
+[dir=rtl] .go{transform:rotate(-135deg)}
+.pl{position:relative;display:block;width:16px;height:16px}
+.pl::before,.pl::after{content:"";position:absolute;background:var(--gold);inset:7px 0 auto;height:1.5px;transition:transform .3s}
+.pl::after{transform:rotate(90deg)}.open .pl::after{transform:none}
+.sub{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s}.sub>div{overflow:hidden}.open+.sub{grid-template-rows:1fr}
+.o{display:flex;align-items:center;gap:14px;width:100%;padding:10px 0;border:0;border-top:1px solid rgba(211,201,148,.25);background:none;text-align:start}
+.o b{display:block;font:500 16px var(--sans)}
+.o .s{font-size:12.5px}
+.th{flex:none;width:44px;height:58px;border-radius:99px 99px 6px 6px;background-size:cover;background-position:center}
+.foot{display:grid;gap:8px;justify-items:center;padding:6px 14px 16px;font-size:12.5px}.fl{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.pill{display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border-radius:99px;border:1px solid rgba(211,201,148,.45);background:rgba(16,33,26,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--gold);text-decoration:none;font-size:12.5px;line-height:1;transition:background .2s,transform .2s}.pill:hover{background:rgba(211,201,148,.18)}.pill:active{transform:scale(.96)}.pill:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.pill svg{width:16px;height:16px;flex:none}
+.ig{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(211,201,148,.5)}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);opacity:0;pointer-events:none;background:var(--cream);color:var(--forest);padding:12px 20px;border-radius:12px;font-size:14px;max-width:88vw;text-align:center;transition:.3s;z-index:9}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(min-width:820px){.hero img{width:240px}.rows{padding-bottom:22px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+
+#menuView{display:none;--top:0px}
+#menuView *,#menuView *::before,#menuView *::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+#menuView{background:var(--forest);min-height:100dvh}
+#menuView button,#menuView a{font:inherit;color:inherit;cursor:pointer;text-decoration:none}
+#menuView button{background:none;border:0}
+#menuView .wrap{max-width:600px;margin:0 auto}
+#menuView .bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0}
+#menuView .rnd{width:40px;height:40px;border-radius:50%;border:1px solid rgba(211,201,148,.55);color:var(--gold);display:grid;place-items:center;background:rgba(16,33,26,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:500 13px var(--sans);transition:background .25s,transform .25s}
+#menuView .rnd:hover{background:rgba(211,201,148,.18)}#menuView .rnd:active{transform:scale(.94)}
+#menuView #mlang svg{width:22px;height:22px;display:block}
+#menuView .rnd svg{width:18px;height:18px}
+#menuView [dir=rtl] .back svg,[dir=rtl] #menuView .back svg{transform:scaleX(-1)}
+#menuView .bar img{height:44px;width:auto}
+#menuView .mh{padding:18px 20px 12px}
+#menuView .mh h1{font:600 36px/1.05 var(--serif)}
+#menuView .mh p{font-size:13px;opacity:.65;margin-top:6px}
+#menuView nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:10px;overflow-x:auto;padding:10px 16px;background:#10211af5;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);scrollbar-width:none}
+#menuView nav button{flex:none;width:116px;height:116px;border-radius:24px 6px 24px 24px;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;text-align:start;position:relative;overflow:hidden;border:1px solid #d3c99430;transition:height .3s,border-radius .3s,padding .3s}
+#menuView nav button span{position:absolute;top:-12px;inset-inline-end:6px;font:600 84px/1 var(--serif);color:#d3c9941f}
+#menuView nav button b{font:600 18px/1.1 var(--serif);white-space:nowrap}
+#menuView nav button small{font-size:11px;opacity:.65;margin-top:3px}
+#menuView nav button.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+#menuView.min nav button{width:auto;height:42px;border-radius:99px;padding:0 18px;justify-content:center}
+#menuView.min nav button span,#menuView.min nav button small{display:none}
+#menuView.min nav button b{font:500 13px var(--sans)}
+#menuView section{padding:26px 16px 0;scroll-margin-top:160px}
+#menuView h2{font:italic 600 30px var(--serif);color:var(--gold);margin-bottom:12px}
+[dir=rtl] #menuView h2,[dir=rtl] #menuView nav button b{font-style:normal}
+#menuView .card{display:grid;grid-template-columns:104px 1fr;gap:14px;padding:10px;margin-bottom:10px;background:#ffffff0a;border-radius:26px 8px 26px 26px}
+#menuView .ph{height:104px;border-radius:20px 6px 20px 20px;display:grid;place-items:center;font:600 34px var(--serif);color:#d3c99499;background:linear-gradient(135deg,#3b6340,#2a4a2f);border:1px solid #d3c99440;background-size:cover;background-position:center}
+#menuView .card h3{font:600 20px/1.2 var(--serif)}
+#menuView .card p{font-size:12px;opacity:.6;margin:4px 0 8px}
+#menuView .card b{font:500 15px var(--sans);color:var(--gold)}
+#menuView .tax{font-size:11px;opacity:.6;text-align:center;padding:28px 20px calc(60px + env(safe-area-inset-bottom,0px))}
+body.is-menu #homeView{display:none}
+body.is-menu #menuView{display:block}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--forest);z-index:10}
+html{scroll-behavior:auto}
+:root{color-scheme:dark}
+#homeView{transition:transform .8s cubic-bezier(.7,0,.2,1),opacity .8s}
+body.leaving #homeView{transform:scale(.93);opacity:.45}
+#menuView.reveal{display:block;position:fixed;inset:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);z-index:20;overflow:hidden;clip-path:circle(0 at var(--x) var(--y));animation:rev .8s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes rev{to{clip-path:circle(150vmax at var(--x) var(--y))}}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+#menuView.anim .bar{animation:fade .5s .25s ease both}
+#menuView.anim .bar>*{animation:pop .65s .35s cubic-bezier(.3,1.4,.5,1) both}
+#menuView.anim .bar>:nth-child(2){animation-delay:.43s}
+#menuView.anim .bar>:nth-child(3){animation-delay:.51s}
+#menuView.anim .mh{animation:up .6s .4s cubic-bezier(.2,.7,.2,1) both}
+#menuView.anim nav{animation:fade .5s .5s ease both}
+#menuView.anim nav button{animation:chip .55s calc(.55s + var(--c,0)*.05s) cubic-bezier(.2,.7,.2,1) both}
+#menuView .mh h1::after{content:"";display:block;height:1.5px;width:56px;background:var(--gold);margin-top:10px;transform-origin:left}
+[dir=rtl] #menuView .mh h1::after{transform-origin:right}
+#menuView.anim .mh h1::after{animation:line .9s .75s cubic-bezier(.2,.7,.2,1) both}
+#menuView.anim #mlist section:first-child h2{animation:up .6s .6s cubic-bezier(.2,.7,.2,1) both}
+#menuView.anim .card{animation:up .65s calc(.7s + var(--i,0)*.08s) cubic-bezier(.2,.7,.2,1) both}
+@keyframes mout{to{opacity:0;transform:translateY(46px) scale(.96)}}
+#menuView.out{animation:mout .33s ease forwards}
+@keyframes hin{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+#homeView.homein{animation:hin .6s cubic-bezier(.2,.7,.2,1) both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes chip{from{opacity:0;transform:translateX(calc(34px*var(--dx,1))) scale(.9)}to{opacity:1;transform:none}}
+@keyframes line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+[dir=rtl] #menuView{--dx:-1}
+.spin{animation:spin .8s cubic-bezier(.5,0,.2,1)}
+#homeView .hero,#homeView .rows,#menuView .mh,#menuView #mlist,#menuView nav{transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s}
+body.lswap #homeView .hero,body.lswap #homeView .rows,body.lswap #menuView .mh,body.lswap #menuView #mlist,body.lswap #menuView nav{opacity:0;transform:translateY(10px)}
+body.leaving #homeView .hero{transform:translateY(-28px);opacity:0}
+body.leaving #homeView .rows{transform:translateY(28px);opacity:0}
+#ring{position:fixed;width:0;height:0;border-radius:50%;border:1.5px solid var(--gold);transform:translate(-50%,-50%);z-index:30;pointer-events:none;animation:ringgo .8s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes ringgo{0%{width:0;height:0;opacity:1}75%{opacity:1}100%{width:300vmax;height:300vmax;opacity:0}}
+@media(prefers-reduced-motion:reduce){#menuView *,#homeView,.spin,#ring{animation:none!important}}
+.emptyM{padding:48px 24px;text-align:center;color:var(--cream)}
+</style>
+</head>
+<body>
+<div id="homeView"><main class="scene">
+  <video class="bg" src="bg.mp4" poster="poster.jpg" autoplay muted loop playsinline></video>
+  <i class="bgl" style="background-image:url(bg-1.jpg)"></i>
+  <i class="bgl" style="background-image:url(bg-2.jpg)"></i>
+  <i class="bgl" style="background-image:url(bg-3.jpg)"></i>
+  <i class="veil"></i>
+  <div class="top"><button class="lang" id="lang" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2"/></svg></button></div>
+  <header class="hero">
+    <img src="logo.png" alt="Kanzel Restaurant & Lounge">
+    <p class="tag" data-t="tag"></p>
+  </header>
+  <div class="sp"></div>
+  <nav class="rows" aria-label="Main">
+    <button class="row" id="mn" data-go="menu"><b class="w" data-t="menu"></b><span class="s" data-t="menuS"></span><span class="ic"><i class="go"></i></span></button>
+    <button class="row" id="bk" aria-expanded="false" aria-controls="sb"><b class="w" data-t="book"></b><span class="s" data-t="bookS"></span><span class="ic"><i class="pl"></i></span></button>
+    <div class="sub" id="sb"><div>
+      <button class="o" data-go="booking-regular" data-l="1"><i class="th" style="background-image:url(bg-2.jpg)"></i><span><b data-t="regT"></b><span class="s" data-t="regS"></span></span></button>
+      <button class="o" data-go="booking-event" data-l="2"><i class="th" style="background-image:url(bg-3.jpg)"></i><span><b data-t="evT"></b><span class="s" data-t="evS"></span></span></button>
+    </div></div>
+  </nav>
+  <footer class="foot"><div class="fl"><a class="pill" href="https://wa.me/201040311118" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg><span dir="ltr">001040311118</span></a><a class="pill" href="https://wa.me/201040311119" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg><span dir="ltr">001040311119</span></a></div><div class="fl"><a class="pill" href="https://maps.app.goo.gl/UGToXwwGqcBob4sA6" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21z'/><circle cx='12' cy='9.5' r='2.6'/></svg><span data-t="loc"></span></a><a class="pill" href="https://www.instagram.com/kanzel.lounge" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='3.5' width='17' height='17' rx='5'/><circle cx='12' cy='12' r='4'/><circle cx='17.2' cy='6.8' r='.6' fill='currentColor'/></svg><span dir="ltr">@kanzel.lounge</span></a><a class="pill" href="https://maps.app.goo.gl/UGToXwwGqcBob4sA6" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2 6.3 20.3l1.2-6.4L2.8 9.5l6.4-.8z'/></svg><span data-t="rate"></span></a></div><div class="fl"><a class="pill" href="table.html?t=1" id="guestBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='3.5' width='7' height='7' rx='1'/><rect x='13.5' y='3.5' width='7' height='7' rx='1'/><rect x='3.5' y='13.5' width='7' height='7' rx='1'/><path d='M14 14h2.5v2.5H14zM19 14v.01M14 19.5h.01M17 19.5h3.5V17'/></svg><span data-t="guest"></span></a><a class="pill" href="waiter.html" id="waiterBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M6 3v6a2 2 0 004 0V3M8 3v18M17 21V3c-2.2 1.2-3.5 3.8-3.5 7v3H17'/></svg><span data-t="waiter"></span></a><a class="pill" href="reception.html" id="recBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='5' width='17' height='15' rx='2'/><path d='M8 3v4M16 3v4M3.5 10h17'/></svg><span data-t="reception"></span></a><a class="pill" href="admin.html" id="adminBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 7h10M18 7h2M4 17h2M10 17h10'/><circle cx='16' cy='7' r='2'/><circle cx='8' cy='17' r='2'/></svg><span data-t="admin"></span></a></div></footer>
+</main>
+<div class="toast" id="toast" role="status"></div></div>
+<div id="menuView"><div class="wrap" id="app">
+  <div class="bar">
+    <a class="rnd back" id="mback" href="#" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <img src="logo.png" alt="Kanzel Restaurant &amp; Lounge">
+    <button class="rnd lang" id="mlang" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2"/></svg></button>
+  </div>
+  <div class="mh"><h1 id="mh1"></h1><p id="msub"></p></div>
+  <nav id="mnav" aria-label="Categories"></nav>
+  <div id="mlist"></div>
+  <p class="tax" id="mtax"></p>
+</div></div>
+<script src="menu.js"></script>
+<script src="kz.js"></script>
+<script>
+let lang=(()=>{try{return localStorage.getItem("kanzel-lang")==="ar"?"ar":"en"}catch(e){return "en"}})(),skipR=false,busy=false;
+const view=()=>document.body.classList.contains("is-menu");
+function route(){const m=location.hash==="#menu";document.body.classList.toggle("is-menu",m);
+ const v=document.querySelector("video.bg");if(v){if(m)v.pause();else{const p=v.play();if(p&&p.catch)p.catch(()=>{})}}
+ if(m){if(skipR)skipR=false;else renderMenu()}else{applyHome();document.body.classList.remove("leaving");$("#menuView").classList.remove("out");const h=$("#homeView");h.classList.add("homein");setTimeout(()=>h.classList.remove("homein"),700)}scrollTo(0,0)}
+function toggleLang(e){const b=e&&e.currentTarget,sv=b&&b.querySelector("svg");
+ if(sv){sv.classList.remove("spin");void sv.getBoundingClientRect();sv.classList.add("spin")}
+ if(toggleLang.t)return;
+ document.body.classList.add("lswap");
+ toggleLang.t=setTimeout(()=>{lang=lang==="ar"?"en":"ar";try{localStorage.setItem("kanzel-lang",lang)}catch(e){}view()?renderMenu():applyHome();
+  requestAnimationFrame(()=>document.body.classList.remove("lswap"));toggleLang.t=0},220)}
+addEventListener("hashchange",route);
+/* ---------- HOME ---------- */
+const HT={
+ ar:{tag:"المكان اللي بتبدأ فيه الليلة",menu:"المنيو",menuS:"من الفطار للجريل",book:"احجز",bookS:"ترابيزة أو مناسبة",
+  regT:"ترابيزة عادية",regS:"عشاء أو قعدة مع الأصحاب",evT:"مناسبة",evS:"عيد ميلاد، خطوبة، أو تجمّع خاص",loc:"الموقع",rate:"قيّمنا على جوجل",soon:"الصفحة دي هنبنيها في الخطوة الجاية",guest:"صفحة الضيف (تجريبي)",waiter:"صفحة الويتر",reception:"الريسبشن",admin:"لوحة المالك",btn:"EN"},
+ en:{tag:"Where the night begins",menu:"Menu",menuS:"From breakfast to the grill",book:"Book",bookS:"A table or an occasion",
+  regT:"Regular table",regS:"Dinner or a night out with friends",evT:"Occasion",evS:"Birthdays, engagements, private gatherings",loc:"Location",rate:"Rate us on Google",soon:"We’ll build this page next",guest:"Guest page (test)",waiter:"Waiter page",reception:"Reception",admin:"Owner dashboard",btn:"عربي"}
+};
+const $=s=>document.querySelector(s),layers=[...document.querySelectorAll(".bgl")],
+ toast=$("#toast"),mn=$("#mn"),bk=$("#bk");let tm;
+function applyHome(){const d=HT[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ document.querySelectorAll("#homeView [data-t]").forEach(e=>e.textContent=d[e.dataset.t]);$("#lang").setAttribute("aria-label",d.btn==="EN"?"English":"العربية");$("#lang").title=d.btn==="EN"?"English":"العربية"}
+$("#lang").onclick=toggleLang;
+["#guestBtn","#waiterBtn","#recBtn","#adminBtn"].forEach(q=>$(q).addEventListener("click",()=>{try{localStorage.setItem("kanzel-lang",lang)}catch(e){}}));
+const show=i=>layers.forEach((e,j)=>e.style.opacity=j===i-1?1:0),rest=()=>show(bk.classList.contains("open")?2:0);
+function soon(){toast.textContent=HT[lang].soon;toast.classList.add("on");clearTimeout(tm);tm=setTimeout(()=>toast.classList.remove("on"),2200)}
+["pointerenter","focus"].forEach(v=>mn.addEventListener(v,()=>show(1)));
+["pointerleave","blur"].forEach(v=>mn.addEventListener(v,rest));
+mn.onclick=e=>{
+ if(busy)return;
+ if(matchMedia("(prefers-reduced-motion:reduce)").matches){location.hash="menu";return}
+ busy=true;
+ const r=mn.getBoundingClientRect(),mv=$("#menuView"),b=document.body;
+ const x=e.clientX||r.left+r.width/2,y=e.clientY||r.top+r.height/2;
+ mv.style.setProperty("--x",x+"px");mv.style.setProperty("--y",y+"px");
+ renderMenu();mv.classList.add("reveal","anim");b.classList.add("leaving");
+ const ring=document.createElement("i");ring.id="ring";ring.style.left=x+"px";ring.style.top=y+"px";b.appendChild(ring);setTimeout(()=>ring.remove(),900);
+ setTimeout(()=>{b.classList.add("is-menu");mv.classList.remove("reveal");b.classList.remove("leaving");
+  const v=document.querySelector("video.bg");if(v)v.pause();
+  skipR=true;location.hash="menu";scrollTo(0,0);busy=false},820);
+ setTimeout(()=>mv.classList.remove("anim"),2300)};
+bk.onclick=()=>{const o=bk.classList.toggle("open");bk.setAttribute("aria-expanded",o);show(o?2:0)};
+document.querySelectorAll(".o").forEach(b=>{
+ b.addEventListener("pointerenter",()=>show(+b.dataset.l+1));
+ b.addEventListener("focus",()=>show(+b.dataset.l+1));
+ b.onclick=()=>{try{localStorage.setItem("kanzel-lang",lang)}catch(e){}location.href=b.dataset.go==="booking-regular"?"booking.html":"events.html"}});
+document.querySelector(".sub").addEventListener("pointerleave",rest);
+document.querySelector("video.bg").muted=true;
+/* ---------- MENU ---------- */
+const MT={en:{h1:"Menu",sub:"Prices in EGP",tax:"Plus 12% service and 14% tax",one:"dish",many:"dishes",egp:"EGP",btn:"عربي",back:"Back"},
+ ar:{h1:"المنيو",sub:"الأسعار بالجنيه المصري",tax:"الأسعار + 12% خدمة و14% ضريبة",one:"صنف",many:"أصناف",egp:"ج.م",btn:"EN",back:"رجوع"}};
+const app=$("#app"),nav=$("#mnav");let secs=[],bs=[];
+function renderMenu(){const t=MT[lang],i=lang==="ar"?1:0;
+ document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ $("#mh1").textContent=t.h1;$("#msub").textContent=t.sub;$("#mtax").textContent=t.tax;$("#mlang").setAttribute("aria-label",t.btn==="EN"?"English":"العربية");$("#mback").setAttribute("aria-label",t.back);
+ nav.innerHTML=MENU.map((m,k)=>{const h=140+k*4,l=16+(k%4)*3,c=m[2].length;
+  return`<button style="--c:${Math.min(k,8)};background:linear-gradient(150deg,hsl(${h} 32% ${l+6}%),hsl(${h} 38% ${l}%))"><span>${m[i][0]}</span><b>${m[i]}</b><small>${c} ${c===1?t.one:t.many}</small></button>`}).join("");
+ $("#mlist").innerHTML=!MENU.length?`<p class="emptyM">${lang==="ar"?"المنيو بيتحدّث دلوقتي. جرّب كمان شوية.":"The menu is being updated. Please check back soon."}</p>`:MENU.map((m,k)=>`<section><h2>${m[i]}</h2>${m[2].map((x,j)=>`<div class="card" style="--i:${Math.min(j+k*2,7)}"><div class="ph"${x[5]?` style="background-image:url('${x[5]}')"`:""}>${x[5]?"":"K"}</div><div><h3>${x[i]}</h3><p>${x[i+3]}</p><b>${x[2].toLocaleString("en")} ${t.egp}</b></div></div>`).join("")}</section>`).join("");
+ secs=[...document.querySelectorAll("#menuView section")];bs=[...nav.children];
+ bs.forEach((b,k)=>b.onclick=()=>secs[k].scrollIntoView());spy()}
+function spy(){if(!view())return;const y=scrollY;if(y>160)app.classList.add("min");else if(y<60)app.classList.remove("min");
+ let a=0;secs.forEach((s,k)=>{if(s.getBoundingClientRect().top<170)a=k});
+ bs.forEach((b,k)=>b.classList.toggle("on",k===a));
+ if(spy.a!==a){spy.a=a;bs[a]&&bs[a].scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})}}
+addEventListener("scroll",spy,{passive:true});
+$("#mlang").onclick=toggleLang;
+$("#mback").onclick=e=>{e.preventDefault();
+ if(matchMedia("(prefers-reduced-motion:reduce)").matches){location.hash="";return}
+ const mv=$("#menuView");mv.classList.add("out");setTimeout(()=>{location.hash=""},330)};
+route();
+</script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10211a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kanzel">
+<title>Book an event · Kanzel Restaurant &amp; Lounge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root{--forest:#10211a;--moss:#2f5233;--gold:#d3c994;--cream:#f4efdd;
+ --serif:"Cormorant Garamond","Readex Pro",Georgia,serif;--sans:"Readex Pro",system-ui,sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--forest);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.ig:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.lang{background:rgba(16,33,26,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(211,201,148,.55);color:var(--gold);border-radius:50%;width:40px;height:40px;padding:0;display:grid;place-items:center;transition:background .25s,transform .25s}
+.lang svg{width:22px;height:22px;display:block}
+.lang:hover{background:rgba(211,201,148,.18)}.lang:active{transform:scale(.94)}
+.ig{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(211,201,148,.5)}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes chip{from{opacity:0;transform:translateX(calc(34px*var(--dx,1))) scale(.9)}to{opacity:1;transform:none}}
+@keyframes line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bump{50%{transform:scale(1.25)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes mout{to{opacity:0;transform:translateY(46px) scale(.96)}}
+.spin{animation:spin .8s cubic-bezier(.5,0,.2,1)}
+
+#bookView{display:block;background:var(--forest);min-height:100dvh;--dx:1}
+[dir=rtl] #bookView{--dx:-1}
+#bookView h1,#bookView h2,#bookView h3,#bookView p,#bookView ul,#bookView em{margin:0;padding:0}
+#bookView ul{list-style:none}
+#bookView .bwrap{max-width:600px;margin:0 auto;padding-bottom:40px}
+#bookView .bbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0}
+#bookView .bbar img{height:44px;width:auto}
+#bookView .lang{cursor:pointer;color:var(--gold);text-decoration:none}
+#bookView #bback svg{width:18px;height:18px}
+[dir=rtl] #bookView #bback svg{transform:scaleX(-1)}
+#bookView .bh{padding:18px 20px 6px}
+#bookView .bh h1{font:600 36px/1.05 var(--serif)}
+#bookView .bh h1::after{content:'';display:block;height:1.5px;width:56px;background:var(--gold);margin-top:10px;transform-origin:left}
+[dir=rtl] #bookView .bh h1::after{transform-origin:right}
+#bookView .bh p{font-size:13px;opacity:.65;margin-top:6px}
+#bookView .steps{display:flex;gap:6px;padding:14px 20px 4px}
+#bookView .steps i{flex:1;height:3px;border-radius:3px;background:rgba(211,201,148,.2);position:relative;overflow:hidden}
+#bookView .steps i::after{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+[dir=rtl] #bookView .steps i::after{transform-origin:right}
+#bookView .steps i.on::after{transform:scaleX(1)}
+#bookView .pane{display:none;padding:18px 20px 0}
+#bookView .pane.on{display:block;animation:paneIn .5s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes paneIn{from{opacity:0;transform:translateX(calc(26px*var(--dx,1)))}}
+#bookView .bi{font-size:14px;line-height:1.7;color:rgba(244,239,221,.85)}
+#bookView .need{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#bookView .need li{display:flex;align-items:center;gap:8px;padding-block:7px;padding-inline:8px 14px;border:1px solid rgba(211,201,148,.35);border-radius:99px;font-size:12.5px}
+#bookView .need b{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--forest);display:grid;place-items:center;font:500 11px var(--sans)}
+#bookView .bp{font:italic 600 28px var(--serif);color:var(--gold);margin:28px 0 12px}
+[dir=rtl] #bookView .bp{font-style:normal}
+#bookView .rl{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.04);border:1px solid rgba(211,201,148,.12);border-radius:24px 8px 24px 24px}
+#bookView .ri{width:44px;height:44px;border-radius:14px 5px 14px 14px;display:grid;place-items:center;background:linear-gradient(135deg,#3b6340,#2a4a2f);border:1px solid rgba(211,201,148,.25);color:var(--gold)}
+#bookView .ri svg{width:22px;height:22px}
+#bookView .rl h3{font:600 19px/1.2 var(--serif)}
+#bookView .rl p{font-size:13.5px;line-height:1.5;margin-top:4px;color:rgba(244,239,221,.85)}
+#bookView .rl small{display:block;font-size:12px;opacity:.6;margin-top:4px}
+#bookView .bq{margin-top:18px;font-size:12.5px;text-align:center;opacity:.85;line-height:1.8}
+#bookView .cta{position:sticky;bottom:14px;padding-top:22px;margin-top:8px;display:grid;gap:10px;justify-items:center;background:linear-gradient(180deg,transparent,var(--forest) 30%)}
+#bookView .btn{width:100%;padding:16px 20px;border-radius:99px;border:0;background:var(--gold);color:var(--forest);font:500 16px var(--sans);cursor:pointer;transition:transform .2s,box-shadow .3s}
+#bookView .btn:hover{box-shadow:0 8px 30px rgba(211,201,148,.25)}
+#bookView .btn:active{transform:scale(.97)}
+#bookView .lnk{background:none;border:0;color:var(--gold);font:300 13px var(--sans);padding:6px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(211,201,148,.5)}
+#bookView .fld{margin-bottom:16px}
+#bookView label,#bookView .lb{display:block;font-size:12.5px;color:rgba(244,239,221,.7);margin-bottom:7px}
+#bookView input,#bookView select{display:block;width:100%;height:52px;min-height:52px;padding:0 16px;border-radius:18px 6px 18px 18px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);color:var(--cream);font:400 16px var(--sans);outline:0;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;appearance:none}
+#bookView select{background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23d3c994%27 stroke-width=%271.6%27 stroke-linecap=%27round%27%3E%3Cpath d=%27M6 9l6 6 6-6%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-size:18px;background-position:right 16px center;padding-inline-end:44px}
+[dir=rtl] #bookView select{background-position:left 16px center}
+#bookView option{background:#10211a;color:#f4efdd}
+#bookView input:focus,#bookView select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(211,201,148,.15)}
+[dir=rtl] #bookView #fPhone{text-align:right}
+#bookView .fld.bad input,#bookView .fld.bad select{border-color:#e8a79a}
+#bookView .err{display:block;font-style:normal;font-size:12px;color:#e8a79a;margin-top:6px}
+#bookView .err:empty{display:none}
+#bookView .stp{display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 8px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);border-radius:18px 6px 18px 18px}
+#bookView .stp button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(211,201,148,.45);background:none;color:var(--gold);font:300 24px/1 var(--sans);cursor:pointer;transition:background .2s,transform .2s}
+#bookView .stp button:active{transform:scale(.9);background:rgba(211,201,148,.18)}
+#bookView .stp output{font:600 28px var(--serif);min-width:60px;text-align:center}
+#bookView .stp output.bump{animation:bump .25s}
+@keyframes bump{50%{transform:scale(1.25)}}
+#bookView .bnote{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s}
+#bookView .bnote.on{grid-template-rows:1fr}
+#bookView .bnote>div{overflow:hidden}
+#bookView .bnote p{padding:12px 14px;margin-bottom:10px;border:1px solid rgba(211,201,148,.4);border-radius:16px 6px 16px 16px;background:rgba(211,201,148,.08);font-size:13px;line-height:1.55;color:var(--gold)}
+#bookView .ok{width:84px;height:84px;margin:24px auto 18px;display:block}
+#bookView .ok circle{stroke-dasharray:252;stroke-dashoffset:252;animation:draw .9s .1s cubic-bezier(.4,0,.2,1) forwards}
+#bookView .ok path{stroke-dasharray:50;stroke-dashoffset:50;animation:draw .5s .8s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+#bookView .dn{font:600 32px/1.1 var(--serif);text-align:center}
+#bookView .dp{text-align:center;font-size:14px;line-height:1.7;opacity:.85;margin:10px 0 22px}
+#bookView .sum{border:1px solid rgba(211,201,148,.25);border-radius:24px 8px 24px 24px;background:rgba(255,255,255,.04);padding:6px 16px}
+#bookView .sum div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid rgba(211,201,148,.15);font-size:14px}
+#bookView .sum div:first-child{border-top:0}
+#bookView .sum span{opacity:.6}
+#bookView .sum b{font-weight:400;text-align:end}
+#bookView.out{animation:mout .33s ease forwards}
+#bookView .bh,#bookView .pane{transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s}
+body.lswap #bookView .bh,body.lswap #bookView .pane{opacity:0;transform:translateY(10px)}
+#bookView.anim .bbar{animation:fade .5s .25s ease both}
+#bookView.anim .bbar>*{animation:pop .65s .35s cubic-bezier(.3,1.4,.5,1) both}
+#bookView.anim .bbar>:nth-child(2){animation-delay:.43s}
+#bookView.anim .bbar>:nth-child(3){animation-delay:.51s}
+#bookView.anim .bh h1{animation:up .6s .4s cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .bh p{animation:up .6s .48s cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .bh h1::after{animation:line .9s .75s cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .steps{animation:fade .5s .5s ease both}
+#bookView.anim .need li{animation:chip .5s calc(.65s + var(--i,0)*.06s) cubic-bezier(.2,.7,.2,1) both}
+#bookView.anim .rl{animation:up .65s calc(.9s + var(--i,0)*.09s) cubic-bezier(.2,.7,.2,1) both}
+@media(prefers-reduced-motion:reduce){#bookView *,#bookView,.spin{animation:none!important}}
+
+#bookView textarea{display:block;width:100%;min-height:104px;padding:14px 16px;border-radius:18px 6px 18px 18px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);color:var(--cream);font:400 16px/1.6 var(--sans);outline:0;resize:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;appearance:none}
+#bookView textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(211,201,148,.15)}
+#bookView textarea::placeholder,#bookView input::placeholder{color:rgba(244,239,221,.35)}
+#bookView input[type=date]{color-scheme:dark}
+#bookView .opt{opacity:.5;font-size:11.5px;margin-inline-start:6px}
+#bookView .chips{display:flex;flex-wrap:wrap;gap:8px}
+#bookView .chips button{padding:10px 16px;border-radius:99px;border:1px solid rgba(211,201,148,.35);background:none;font-size:13.5px;line-height:1;transition:background .2s,color .2s,transform .15s}
+#bookView .chips button:active{transform:scale(.95)}
+#bookView .chips button[aria-pressed=true]{background:var(--gold);color:var(--forest);border-color:var(--gold);font-weight:500}
+#bookView .wa{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#bookView .wa button{height:48px;border-radius:14px 5px 14px 14px;border:1px solid rgba(211,201,148,.35);background:rgba(255,255,255,.05);font:400 15px var(--sans);letter-spacing:.3px;transition:background .2s,border-color .2s}
+#bookView .wa button[aria-pressed=true]{background:rgba(211,201,148,.16);border-color:var(--gold);color:var(--gold)}
+#bookView .btn svg{width:20px;height:20px;vertical-align:-4px;margin-inline-end:8px}
+#bookView .btn.ghost{background:none;border:1px solid rgba(211,201,148,.5);color:var(--gold)}
+#bookView .sum b{max-width:62%}
+</style>
+</head>
+<body>
+<div id='bookView'><div class='bwrap'>
+ <div class='bbar'>
+  <a class='lang' id='bback' href='index.html' aria-label='Back'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M15 5l-7 7 7 7'/></svg></a>
+  <img id='bimg' src='logo.png' alt='Kanzel Restaurant &amp; Lounge'>
+  <button class='lang' id='blang' aria-label='Language'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='12' r='9.5'/><ellipse cx='12' cy='12' rx='4.2' ry='9.5'/><path d='M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2'/></svg></button>
+ </div>
+ <div class='bh'><h1 id='bh1'></h1><p id='bsub'></p></div>
+ <section class='pane on' id='p1'>
+  <p class='bi' id='bintro' style='margin-bottom:20px'></p>
+  <div class='fld'><label for='fName' data-bt='fName'></label><input id='fName' type='text' autocomplete='name' maxlength='60'><em class='err' id='eName'></em></div>
+  <div class='fld'><label for='fOcc' data-bt='fOcc'></label><select id='fOcc'></select><em class='err' id='eOcc'></em></div>
+  <div class='fld'><label for='fGuests' data-bt='fGuests'></label><input id='fGuests' type='number' inputmode='numeric' min='1' max='5000' dir='ltr'><em class='err' id='eGuests'></em></div>
+  <div class='fld'><label for='fDate'><span data-bt='fDate'></span><span class='opt' data-bt='opt'></span></label><input id='fDate' type='date'></div>
+  <div class='fld'><span class='lb'><span data-bt='fNeeds'></span><span class='opt' data-bt='opt'></span></span><div class='chips' id='fNeeds'></div></div>
+  <div class='fld'><label for='fNotes'><span data-bt='fNotes'></span><span class='opt' data-bt='opt'></span></label><textarea id='fNotes' maxlength='500'></textarea></div>
+  <div class='fld'><span class='lb' data-bt='fWa'></span><div class='wa' id='fWa'></div></div>
+  <div class='cta'><button class='btn' id='bsubmit'></button></div>
+ </section>
+ <section class='pane' id='p2'>
+  <svg class='ok' viewBox='0 0 84 84' fill='none' stroke='#d3c994' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='42' cy='42' r='40'/><path d='M26 43l11 11 21-23'/></svg>
+  <h2 class='dn' id='bdt'></h2><p class='dp' id='bdp'></p><div class='sum' id='bsum'></div>
+  <div class='cta'><button class='btn' id='bagain'></button><button class='lnk' id='bedit'></button><button class='lnk' id='bdone'></button></div>
+ </section>
+</div></div>
+<script src="kz.js"></script>
+<script>
+let lang=(()=>{try{const q=new URLSearchParams(location.search).get('lang');if(q==='ar'||q==='en')return q;return localStorage.getItem('kanzel-lang')==='en'?'en':'ar'}catch(e){return 'ar'}})();
+const $=s=>document.querySelector(s);
+const WA=['201040311118','201040311119'];
+const WA_ICON="<svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg>";
+const BT={
+ ar:{title:'حجز مناسبة',sub:'فرح، خطوبة، أو أي مناسبة خاصة',
+  intro:'اكتب بيانات مناسبتك وابعتها لنا على واتساب، وهنرد عليك بالسعر.',
+  fName:'الاسم',fOcc:'نوع المناسبة',fGuests:'العدد التقريبي للمدعوين',fDate:'تاريخ المناسبة',fNeeds:'محتاج إيه؟',fNotes:'ملاحظات أو تفاصيل تانية',fWa:'ابعت على',opt:'(اختياري)',
+  pick:'اختار المناسبة',phName:'اسمك',phGuests:'مثلًا 150',phNotes:'أي حاجة تحب نعرفها عن المناسبة',
+  submit:'ابعت على واتساب',eReq:'مطلوب',eGuests:'اكتب عدد صحيح',
+  doneT:'اتجهزت رسالتك',doneP:'لو واتساب ماتفتحش لوحده، دوس على الزرار تحت.',again:'افتح واتساب',edit:'تعديل البيانات',home:'رجوع للرئيسية',
+  sName:'الاسم',sOcc:'المناسبة',sGuests:'العدد التقريبي',sDate:'التاريخ',sNeeds:'المطلوب',sNotes:'ملاحظات'},
+ en:{title:'Book an event',sub:'Wedding, engagement, or any private occasion',
+  intro:'Fill in your event details and send them to us on WhatsApp. We will reply with the price.',
+  fName:'Name',fOcc:'Type of event',fGuests:'Approximate number of guests',fDate:'Event date',fNeeds:'What do you need?',fNotes:'Notes or other details',fWa:'Send to',opt:'(optional)',
+  pick:'Select the event',phName:'Your name',phGuests:'e.g. 150',phNotes:'Anything else we should know about your event',
+  submit:'Send on WhatsApp',eReq:'Required',eGuests:'Enter a valid number',
+  doneT:'Your message is ready',doneP:'If WhatsApp did not open on its own, tap the button below.',again:'Open WhatsApp',edit:'Edit details',home:'Back to home',
+  sName:'Name',sOcc:'Event',sGuests:'Approx. guests',sDate:'Date',sNeeds:'Needs',sNotes:'Notes'}};
+/* [key, Arabic label (used in the WhatsApp message), English label] */
+const OCC=[['wedding','فرح','Wedding'],['engagement','خطوبة','Engagement'],['katb','كتب كتاب','Katb el-kitab'],['birthday','عيد ميلاد','Birthday'],['sebou','سبوع','Sebou'],['graduation','حفلة تخرج','Graduation party'],['corporate','فعالية شركة','Corporate event'],['other','مناسبة تانية','Other event']];
+const NEEDS=[['food','أكل وبوفيه','Food & buffet'],['drinks','مشروبات','Drinks'],['cake','تورتة','Cake'],['decor','ديكور وزينة','Decor'],['dj','DJ وصوت','DJ & sound'],['photo','تصوير','Photography']];
+const st={needs:new Set(),wa:0,data:null};
+const idx=i=>lang==='ar'?1:2;
+function renderPage(){const t=BT[lang],ar=lang==='ar';
+ document.documentElement.lang=lang;document.documentElement.dir=ar?'rtl':'ltr';
+ $('#bh1').textContent=t.title;$('#bsub').textContent=t.sub;$('#bintro').textContent=t.intro;
+ $('#bback').setAttribute('aria-label',ar?'رجوع':'Back');$('#blang').setAttribute('aria-label',ar?'English':'العربية');
+ document.querySelectorAll('#bookView [data-bt]').forEach(e=>e.textContent=t[e.dataset.bt]);
+ $('#fName').placeholder=t.phName;$('#fGuests').placeholder=t.phGuests;$('#fNotes').placeholder=t.phNotes;
+ const so=$('#fOcc'),cur=so.value;so.innerHTML='<option value="">'+t.pick+'</option>'+OCC.map(o=>'<option value="'+o[0]+'">'+o[idx()]+'</option>').join('');so.value=cur;
+ $('#fNeeds').innerHTML=NEEDS.map(n=>'<button type="button" data-k="'+n[0]+'" aria-pressed="'+st.needs.has(n[0])+'">'+n[idx()]+'</button>').join('');
+ $('#fWa').innerHTML=WA.map((n,i)=>'<button type="button" dir="ltr" data-i="'+i+'" aria-pressed="'+(st.wa===i)+'">0'+n.slice(1).replace(/^2/,'')+'</button>').join('');
+ $('#bsubmit').innerHTML=WA_ICON+t.submit;
+ $('#bagain').innerHTML=WA_ICON+t.again;$('#bedit').textContent=t.edit;$('#bdone').textContent=t.home;
+ $('#bdt').textContent=t.doneT;$('#bdp').textContent=t.doneP;
+ fillSummary()}
+$('#fNeeds').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k,on=!st.needs.has(k);on?st.needs.add(k):st.needs.delete(k);b.setAttribute('aria-pressed',on)});
+$('#fWa').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st.wa=+b.dataset.i;document.querySelectorAll('#fWa button').forEach((x,i)=>x.setAttribute('aria-pressed',i===st.wa))});
+document.querySelectorAll('#bookView input,#bookView select').forEach(e=>e.addEventListener('input',()=>{const f=e.closest('.fld');if(f)f.classList.remove('bad')}));
+const d0=new Date();$('#fDate').min=d0.getFullYear()+'-'+String(d0.getMonth()+1).padStart(2,'0')+'-'+String(d0.getDate()).padStart(2,'0');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function lab(list,k,i){const r=list.find(x=>x[0]===k);return r?r[i]:''}
+function fillSummary(){const d=st.data;if(!d)return;const t=BT[lang],ar=lang==='ar',i=idx();
+ const ds=d.date?new Date(d.date+'T00:00:00').toLocaleDateString(ar?'ar-EG':'en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';
+ const rows=[[t.sName,esc(d.name)],[t.sOcc,lab(OCC,d.occ,i)],[t.sGuests,'<bdi dir="ltr">'+d.guests+'</bdi>']];
+ if(ds)rows.push([t.sDate,ds]);
+ if(d.needs.length)rows.push([t.sNeeds,d.needs.map(k=>lab(NEEDS,k,i)).join(ar?'، ':', ')]);
+ if(d.notes)rows.push([t.sNotes,esc(d.notes)]);
+ $('#bsum').innerHTML=rows.map(r=>'<div><span>'+r[0]+'</span><b>'+r[1]+'</b></div>').join('')}
+/* The message is always written in Arabic, since that is what the team reads. */
+function buildMessage(d){
+ const L=['أهلاً كنزل 👋','عايز أحجز المكان كله لمناسبة وأعرف السعر.','',
+  'الاسم: '+d.name,'نوع المناسبة: '+lab(OCC,d.occ,1),'العدد التقريبي: '+d.guests];
+ if(d.date){const p=d.date.split('-');L.push('التاريخ: '+p[2]+'/'+p[1]+'/'+p[0])}
+ if(d.needs.length)L.push('المطلوب: '+d.needs.map(k=>lab(NEEDS,k,1)).join('، '));
+ if(d.notes)L.push('ملاحظات: '+d.notes);
+ return L.join('\n')}
+function waUrl(d){return 'https://wa.me/'+WA[st.wa]+'?text='+encodeURIComponent(buildMessage(d))}
+function openWa(){if(!st.data)return;const a=document.createElement('a');a.href=waUrl(st.data);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
+function setPane(n){$('#p1').classList.toggle('on',n===1);$('#p2').classList.toggle('on',n===2);scrollTo(0,0)}
+function submit(){const t=BT[lang],g=parseInt($('#fGuests').value,10);
+ const v={name:$('#fName').value.trim(),occ:$('#fOcc').value,guests:g,date:$('#fDate').value,needs:NEEDS.map(n=>n[0]).filter(k=>st.needs.has(k)),notes:$('#fNotes').value.trim()};
+ const bad={Name:v.name.length<2,Occ:!v.occ,Guests:!(g>=1&&g<=5000)};let first=null;
+ for(const k in bad){const el=$('#f'+k);el.closest('.fld').classList.toggle('bad',bad[k]);$('#e'+k).textContent=bad[k]?(k==='Guests'&&$('#fGuests').value?t.eGuests:t.eReq):'';if(bad[k]&&!first)first=el}
+ if(first){first.focus();return}
+ st.data=v;if(st.rid)KZ.saveList('events',KZ.list('events').filter(x=>x.id!==st.rid));st.rid=KZ.uid();KZ.push('events',{id:st.rid,ts:Date.now(),status:'new',name:v.name,occEn:lab(OCC,v.occ,2),occAr:lab(OCC,v.occ,1),guests:v.guests,date:v.date,needsAr:v.needs.map(k=>lab(NEEDS,k,1)),needsEn:v.needs.map(k=>lab(NEEDS,k,2)),notes:v.notes});fillSummary();setPane(2);openWa()}
+$('#bsubmit').onclick=submit;$('#bagain').onclick=openWa;$('#bedit').onclick=()=>setPane(1);
+function leave(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href='index.html';return}
+ $('#bookView').classList.add('out');setTimeout(()=>{location.href='index.html'},330)}
+$('#bback').onclick=e=>{e.preventDefault();leave()};$('#bdone').onclick=leave;
+function toggleLang(e){const b=e&&e.currentTarget,sv=b&&b.querySelector('svg');
+ if(sv){sv.classList.remove('spin');void sv.getBoundingClientRect();sv.classList.add('spin')}
+ if(toggleLang.t)return;document.body.classList.add('lswap');
+ toggleLang.t=setTimeout(()=>{lang=lang==='ar'?'en':'ar';try{localStorage.setItem('kanzel-lang',lang)}catch(e){}
+  renderPage();requestAnimationFrame(()=>document.body.classList.remove('lswap'));toggleLang.t=0},220)}
+$('#blang').onclick=toggleLang;
+renderPage();
+const bv=$('#bookView');bv.classList.add('anim');setTimeout(()=>bv.classList.remove('anim'),2400);
+</script>
+</body>
+</html>

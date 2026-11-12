@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10211a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kanzel">
+<title>Kanzel Waiter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="staff.css">
+</head>
+<body>
+<div class="wrap" id="app" hidden>
+ <div class="bar">
+  <a class="rnd" id="back" href="index.html" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+  <img src="logo.png" alt="Kanzel">
+  <div class="g">
+   <button class="rnd" id="lock" aria-label="Lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></svg></button>
+   <button class="rnd" id="lang" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2"/></svg></button>
+  </div>
+ </div>
+ <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
+ <div class="tabs"><a class="tab on" href="waiter.html" data-go="waiter" id="tabW"></a><a class="tab" href="reception.html" data-go="reception" id="tabR"></a></div>
+ <div class="stats"><div class="stat"><b id="n1">0</b><span id="l1"></span></div><div class="stat"><b id="n2">0</b><span id="l2"></span></div><div class="stat"><b id="n3">0</b><span id="l3"></span></div><div class="stat"><b id="n4">0</b><span id="l4"></span></div></div>
+ <div id="callS" hidden><div class="hd"><h2 id="hCall"></h2></div><div id="callL"></div></div>
+ <div class="hd"><h2 id="hN"></h2></div><div id="newL"><div class="skl"></div><div class="skl"></div></div>
+ <div class="hd"><h2 id="hP"></h2></div><div id="prepL"></div>
+ <div class="hd"><h2 id="hR"></h2></div><div id="readyL"></div>
+ <p class="note" id="foot"></p>
+</div>
+<script src="menu.js"></script>
+<script src="kz.js"></script>
+<script>
+const $=s=>document.querySelector(s),esc=KZ.esc,fmt=KZ.fmt;
+let lang=KZ.lang(),seenO=null,seenC=null;
+const T={en:{h1:"Orders",sub:"Confirm, prepare and deliver each order. The guest sees every step.",tabW:"Orders",tabR:"Reception",
+ l1:"New",l2:"Preparing",l3:"Ready",l4:"Calls",hCall:"Table requests",hN:"New orders",hP:"Preparing",hR:"Ready to serve",
+ none:"Nothing here",table:"Table",egp:"EGP",note:"Note",total:"Total",
+ a0:"Confirm order",a1:"Mark ready",a2:"Delivered to table",wC:"Calling the waiter",wB:"Asking for the bill",done:"Done",
+ foot:"Orders are stored in this browser for now. They sync with guest phones once the backend is connected.",lock:"Lock",back:"Back"},
+ ar:{h1:"الطلبات",sub:"أكّد وجهّز وسلّم كل طلب. الضيف بيشوف كل خطوة.",tabW:"الطلبات",tabR:"الريسبشن",
+ l1:"جديد",l2:"بيتجهز",l3:"جاهز",l4:"نداءات",hCall:"طلبات الترابيزات",hN:"طلبات جديدة",hP:"بيتجهز",hR:"جاهز للتسليم",
+ none:"مفيش حاجة هنا",table:"ترابيزة",egp:"ج.م",note:"ملاحظة",total:"الإجمالي",
+ a0:"أكّد الطلب",a1:"الطلب جاهز",a2:"اتسلّم للترابيزة",wC:"بينادي الويتر",wB:"بيطلب الحساب",done:"تم",
+ foot:"الطلبات متخزنة في المتصفح ده دلوقتي. هتتزامن مع موبايلات الضيوف لما نربط الباك إند.",lock:"قفل",back:"رجوع"}};
+const NEXT=["confirmed","ready","served"],STAMP=["confirmedAt","readyAt","servedAt"],IDX={new:0,confirmed:1,ready:2};
+function card(o){const t=T[lang],ar=lang==="ar",k=IDX[o.status];
+ return`<div class="card${o.status==="new"?" hl":""}"><div class="top"><div class="tb"><small>${t.table}</small>${esc(o.table)}</div><div class="tm">${KZ.clock(o.ts,lang)}<br>${KZ.ago(o.ts,lang)}</div></div>
+ <div class="items">${o.items.map(x=>`<div class="r"><span>${x.qty} × ${esc(ar?x.ar:x.en)}</span><i>${fmt(x.price*x.qty)} ${t.egp}</i></div>`).join("")}</div>
+ ${o.note?`<div class="nt">${t.note}: ${esc(o.note)}</div>`:""}
+ <div class="tt"><span>${t.total}</span><i>${fmt(o.total)} ${t.egp}</i></div>
+ <button class="btn" data-id="${esc(o.id)}" data-k="${k}">${t["a"+k]}</button></div>`}
+function callCard(c){const t=T[lang];
+ return`<div class="card hl"><div class="top"><div class="tb"><small>${t.table}</small>${esc(c.table)}</div><div class="tm">${KZ.clock(c.ts,lang)}<br>${KZ.ago(c.ts,lang)}</div></div>
+ <div class="tt"><span>${c.type==="bill"?t.wB:t.wC}</span></div><button class="btn" data-call="${esc(c.id)}">${t.done}</button></div>`}
+function render(){const t=T[lang],ar=lang==="ar";
+ document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
+ const all=KZ.list("orders").filter(o=>o&&o.items&&Date.now()-o.ts<12*3600e3),by=s=>all.filter(o=>o.status===s).sort((a,b)=>a.ts-b.ts);
+ const nw=by("new"),pr=by("confirmed"),rd=by("ready"),calls=KZ.list("calls").filter(c=>!c.done).sort((a,b)=>a.ts-b.ts);
+ const ids=new Set(nw.map(o=>o.id)),cids=new Set(calls.map(c=>c.id));
+ if((seenO&&nw.some(o=>!seenO.has(o.id)))||(seenC&&calls.some(c=>!seenC.has(c.id))))beep();seenO=ids;seenC=cids;
+ $("#h1").textContent=t.h1;$("#sub").textContent=t.sub;$("#tabW").textContent=t.tabW;$("#tabR").textContent=t.tabR;
+ [1,2,3,4].forEach(i=>$("#l"+i).textContent=t["l"+i]);$("#n1").textContent=nw.length;$("#n2").textContent=pr.length;$("#n3").textContent=rd.length;$("#n4").textContent=calls.length;
+ $("#hCall").textContent=t.hCall;$("#hN").textContent=t.hN;$("#hP").textContent=t.hP;$("#hR").textContent=t.hR;$("#foot").textContent=t.foot;
+ $("#lock").setAttribute("aria-label",t.lock);$("#back").setAttribute("aria-label",t.back);$("#lang").setAttribute("aria-label",ar?"English":"العربية");
+ $("#callS").hidden=!calls.length;$("#callL").innerHTML=calls.map(callCard).join("");
+ const L=(a)=>a.length?a.map(card).join(""):`<div class="empty">${t.none}</div>`;
+ $("#newL").innerHTML=L(nw);$("#prepL").innerHTML=L(pr);$("#readyL").innerHTML=L(rd);
+ document.title=(nw.length+calls.length?"("+(nw.length+calls.length)+") ":"")+"Kanzel Waiter"}
+function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.4);o.stop(a.currentTime+.45)}catch(e){}}
+document.addEventListener("click",e=>{
+ const b=e.target.closest("button[data-id]");
+ if(b){const k=+b.dataset.k;KZ.update("orders",b.dataset.id,o=>{o.status=NEXT[k];o[STAMP[k]]=Date.now()});render();return}
+ const c=e.target.closest("button[data-call]");
+ if(c){KZ.update("calls",c.dataset.call,o=>{o.done=true;o.doneAt=Date.now()});render()}});
+$("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);render()};
+$("#lock").onclick=()=>{KZ.logout("staff");location.reload()};
+addEventListener("storage",e=>{if(e.key===KZ.KEYS.orders||e.key===KZ.KEYS.calls)render()});
+KZ.gate("staff").then(()=>{$("#app").hidden=false;render();setInterval(render,3000)});
+</script>
+</body>
+</html>

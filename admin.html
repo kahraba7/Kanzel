@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10211a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kanzel">
+<title>Kanzel Owner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="staff.css">
+</head>
+<body>
+<div class="wrap" id="app" hidden>
+ <div class="bar">
+  <a class="rnd" id="back" href="index.html" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+  <img src="logo.png" alt="Kanzel">
+  <div class="g">
+   <button class="rnd" id="lock" aria-label="Lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></svg></button>
+   <button class="rnd" id="lang" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2"/></svg></button>
+  </div>
+ </div>
+ <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
+ <div class="tabs" id="tabs"></div>
+ <div id="view"><div class="skl"></div><div class="skl"></div></div>
+</div>
+<script src="menu.js"></script>
+<script src="kz.js"></script>
+<script>
+const $=s=>document.querySelector(s),esc=KZ.esc,fmt=KZ.fmt;
+let lang=KZ.lang(),tab="reports",range="7",raw=null,open=new Set([0]),tmT=0,tmS=0;
+const T={en:{h1:"Owner dashboard",sub:"Reports, menu and settings. Only the owner should open this page.",
+ reports:"Reports",menu:"Menu",settings:"Settings",r1:"Today",r7:"7 days",r30:"30 days",rall:"All",
+ orders:"Orders",revenue:"Sales",avg:"Avg. order",bookings:"Bookings",events:"Event requests",calls:"Table calls",
+ top:"Top dishes",hours:"Busiest hours",tables:"Top tables",speed:"Service speed",toConfirm:"Order to confirmation",toServe:"Order to delivery",
+ minU:"min",egp:"EGP",none:"No data yet for this period",taxNote:"Sales are before 12% service and 14% tax.",
+ cat:"Category",catEn:"Name (English)",catAr:"Name (Arabic)",dishEn:"Dish name (English)",dishAr:"Dish name (Arabic)",price:"Price",
+ dEn:"Description (English)",dAr:"Description (Arabic)",avail:"Available to guests",photo:"Add photo",rmPhoto:"Remove photo",
+ add:"Add dish",addCat:"Add category",del:"Delete",delSure:"Tap again to delete",up:"Up",down:"Down",dishes:"dishes",newDish:"New dish",newCat:"New category",
+ saved:"Saved",full:"Couldn’t save: storage is full. Use a smaller photo.",invalid:"Not saved yet: every dish and category needs an English and an Arabic name.",imgErr:"Couldn’t read this image. Try a JPG or PNG.",mapsBad:"The link must start with https://",resetMenu:"Reset menu to default",resetSure:"Tap again to reset",
+ maps:"Google Maps review link",mapsH:"Opens when a guest taps the rating button. Paste your place link from Google Maps (Share, Copy link).",
+ sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",
+ data:"Data",export:"Export all data",clearData:"Clear orders, bookings and calls",clearSure:"Tap again to clear",cleared:"Cleared",
+ note:"The PIN protects the page on this device only. Real protection arrives with the backend.",lock:"Lock",back:"Back",langA:"العربية"},
+ ar:{h1:"لوحة المالك",sub:"التقارير والمنيو والإعدادات. الصفحة دي للمالك بس.",
+ reports:"التقارير",menu:"المنيو",settings:"الإعدادات",r1:"النهارده",r7:"7 أيام",r30:"30 يوم",rall:"الكل",
+ orders:"الطلبات",revenue:"المبيعات",avg:"متوسط الطلب",bookings:"الحجوزات",events:"طلبات المناسبات",calls:"نداءات الترابيزات",
+ top:"أكتر الأطباق طلبًا",hours:"أوقات الزحمة",tables:"أكتر الترابيزات",speed:"سرعة الخدمة",toConfirm:"من الطلب للتأكيد",toServe:"من الطلب للتسليم",
+ minU:"دقيقة",egp:"ج.م",none:"مفيش بيانات للفترة دي",taxNote:"المبيعات قبل 12% خدمة و14% ضريبة.",
+ cat:"القسم",catEn:"الاسم (إنجليزي)",catAr:"الاسم (عربي)",dishEn:"اسم الطبق (إنجليزي)",dishAr:"اسم الطبق (عربي)",price:"السعر",
+ dEn:"الوصف (إنجليزي)",dAr:"الوصف (عربي)",avail:"متاح للضيوف",photo:"أضف صورة",rmPhoto:"شيل الصورة",
+ add:"أضف طبق",addCat:"أضف قسم",del:"حذف",delSure:"دوس تاني للحذف",up:"فوق",down:"تحت",dishes:"أطباق",newDish:"طبق جديد",newCat:"قسم جديد",
+ saved:"اتحفظ",full:"معرفناش نحفظ: المساحة خلصت. استخدم صورة أصغر.",invalid:"لسه متحفظش: كل طبق وقسم محتاج اسم عربي واسم إنجليزي.",imgErr:"معرفناش نقرأ الصورة دي. جرّب JPG أو PNG.",mapsBad:"اللينك لازم يبدأ بـ https://",resetMenu:"رجّع المنيو للأصل",resetSure:"دوس تاني للرجوع",
+ maps:"لينك تقييم جوجل ماب",mapsH:"بيفتح لما الضيف يدوس على زر التقييم. الصق لينك مكانك من جوجل ماب (مشاركة ثم نسخ الرابط).",
+ sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",
+ data:"البيانات",export:"صدّر كل البيانات",clearData:"امسح الطلبات والحجوزات والنداءات",clearSure:"دوس تاني للمسح",cleared:"اتمسح",
+ note:"الرقم السري بيحمي الصفحة على الجهاز ده بس. الحماية الحقيقية هتيجي مع الباك إند.",lock:"قفل",back:"رجوع",langA:"English"}};
+const t=()=>T[lang];
+function toast(m,err){KZ.toast(m,err)}
+/* two-tap confirm instead of confirm() */
+function arm(b,label,fn){if(b.dataset.armed){clearTimeout(+b.dataset.armed);fn();return}
+ const old=b.textContent;b.textContent=label;b.dataset.armed=setTimeout(()=>{b.textContent=old;delete b.dataset.armed},4000)}
+
+/* ---------- reports ---------- */
+function from(){const d=new Date();d.setHours(0,0,0,0);if(range==="1")return d.getTime();if(range==="7")return d.getTime()-6*864e5;if(range==="30")return d.getTime()-29*864e5;return 0}
+function bars(rows){const m=Math.max(1,...rows.map(r=>r[1]));return rows.map(r=>`<div class="bar-r"><span>${esc(r[0])}</span><div class="t"><i style="width:${Math.round(r[1]/m*100)}%"></i></div><b>${r[2]}</b></div>`).join("")}
+function reports(){const x=t(),ar=lang==="ar",f=from(),inR=o=>o.ts>=f;
+ const O=KZ.list("orders").filter(o=>o&&o.items&&inR(o)),B=KZ.list("bookings").filter(inR),E=KZ.list("events").filter(inR),C=KZ.list("calls").filter(inR);
+ const rev=O.reduce((a,o)=>a+(o.total||0),0),avg=O.length?Math.round(rev/O.length):0;
+ const dish={},tb={},hr=Array(24).fill(0);const conf=[],serve=[];
+ O.forEach(o=>{o.items.forEach(i=>{const k=i.en,d=dish[k]||(dish[k]={en:i.en,ar:i.ar,q:0,v:0});d.q+=i.qty;d.v+=i.qty*i.price});
+  const g=tb[o.table]||(tb[o.table]={n:0,v:0});g.n++;g.v+=o.total||0;hr[new Date(o.ts).getHours()]++;
+  if(o.confirmedAt)conf.push((o.confirmedAt-o.ts)/6e4);if(o.servedAt)serve.push((o.servedAt-o.ts)/6e4)});
+ const mean=a=>a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length):null;
+ const topD=Object.values(dish).sort((a,b)=>b.q-a.q).slice(0,6).map(d=>[ar?d.ar:d.en,d.q,d.q]);
+ const topT=Object.entries(tb).sort((a,b)=>b[1].v-a[1].v).slice(0,5).map(([k,v])=>[x.orders.slice(0,0)+(ar?"ترابيزة ":"Table ")+k,v.v,fmt(v.v)+" "+x.egp]);
+ const mh=Math.max(1,...hr);
+ return`<div class="tabs">${[["1",x.r1],["7",x.r7],["30",x.r30],["all",x.rall]].map(r=>`<button class="tab${range===r[0]?" on":""}" data-range="${r[0]}">${r[1]}</button>`).join("")}</div>
+ <div class="stats s3"><div class="stat"><b>${O.length}</b><span>${x.orders}</span></div><div class="stat"><b>${fmt(rev)}</b><span>${x.revenue} (${x.egp})</span></div><div class="stat"><b>${fmt(avg)}</b><span>${x.avg}</span></div></div>
+ <div class="stats s3"><div class="stat"><b>${B.length}</b><span>${x.bookings}</span></div><div class="stat"><b>${E.length}</b><span>${x.events}</span></div><div class="stat"><b>${C.length}</b><span>${x.calls}</span></div></div>
+ <div class="hd"><h2>${x.top}</h2></div><div class="bars">${topD.length?bars(topD):`<p class="note" style="margin:0">${x.none}</p>`}</div>
+ <div class="hd"><h2>${x.hours}</h2></div><div class="bars">${O.length?`<div class="hrs">${hr.map((n,h)=>`<div title="${h}:00 · ${n}"><i style="height:${Math.round(n/mh*80)}%"></i><span>${h%3===0?h:"&nbsp;"}</span></div>`).join("")}</div>`:`<p class="note" style="margin:0">${x.none}</p>`}</div>
+ <div class="hd"><h2>${x.tables}</h2></div><div class="bars">${topT.length?bars(topT):`<p class="note" style="margin:0">${x.none}</p>`}</div>
+ <div class="hd"><h2>${x.speed}</h2></div><div class="stats s2"><div class="stat"><b>${mean(conf)==null?"–":mean(conf)}</b><span>${x.toConfirm} (${x.minU})</span></div><div class="stat"><b>${mean(serve)==null?"–":mean(serve)}</b><span>${x.toServe} (${x.minU})</span></div></div>
+ <p class="note">${x.taxNote}</p>`}
+
+/* ---------- menu editor ---------- */
+function pad(d){while(d.length<7)d.push(d.length===5?"":d.length===6?0:"");return d}
+function menuView(){const x=t(),ar=lang==="ar";
+ return raw.map((c,ci)=>`<details class="cat" data-ci="${ci}"${open.has(ci)?" open":""}><summary><span>${esc(ar?c[1]:c[0])}</span><small>${c[2].length} ${x.dishes}</small></summary><div class="cb">
+ <div class="g2"><label class="fld"><span>${x.catEn}</span><input data-ci="${ci}" data-f="c0" value="${esc(c[0])}"></label><label class="fld"><span>${x.catAr}</span><input data-ci="${ci}" data-f="c1" value="${esc(c[1])}" dir="rtl"></label></div>
+ ${c[2].map((d,di)=>{pad(d);return`<div class="dish${d[6]?" off":""}">
+  <div class="dh"><div class="ph" style="${d[5]?`background-image:url('${esc(d[5])}')`:""}">${d[5]?"":"K"}</div><label class="sw" style="margin:0;flex:1"><span>${x.avail}</span><input type="checkbox" data-ci="${ci}" data-di="${di}" data-f="d6" ${d[6]?"":"checked"}></label></div>
+  <div class="g2"><label class="fld"><span>${x.dishEn}</span><input data-ci="${ci}" data-di="${di}" data-f="d0" value="${esc(d[0])}"></label><label class="fld"><span>${x.dishAr}</span><input data-ci="${ci}" data-di="${di}" data-f="d1" value="${esc(d[1])}" dir="rtl"></label></div>
+  <label class="fld"><span>${x.price} (${x.egp})</span><input type="number" inputmode="numeric" min="0" step="5" data-ci="${ci}" data-di="${di}" data-f="d2" value="${esc(d[2])}"></label>
+  <label class="fld"><span>${x.dEn}</span><input data-ci="${ci}" data-di="${di}" data-f="d3" value="${esc(d[3])}"></label>
+  <label class="fld"><span>${x.dAr}</span><input data-ci="${ci}" data-di="${di}" data-f="d4" value="${esc(d[4])}" dir="rtl"></label>
+  <div class="tools"><label class="btn sm ghost" style="cursor:pointer">${x.photo}<input type="file" accept="image/*" hidden data-ci="${ci}" data-di="${di}" data-photo></label>${d[5]?`<button class="btn sm ghost" data-a="rmphoto" data-ci="${ci}" data-di="${di}">${x.rmPhoto}</button>`:""}
+  <button class="btn sm ghost" data-a="dup" data-ci="${ci}" data-di="${di}" ${di===0?"disabled":""}>${x.up}</button><button class="btn sm ghost" data-a="ddn" data-ci="${ci}" data-di="${di}" ${di===c[2].length-1?"disabled":""}>${x.down}</button>
+  <button class="btn sm bad" data-a="ddel" data-ci="${ci}" data-di="${di}">${x.del}</button></div></div>`}).join("")}
+ <div class="tools"><button class="btn sm" data-a="dadd" data-ci="${ci}">${x.add}</button><button class="btn sm ghost" data-a="cup" data-ci="${ci}" ${ci===0?"disabled":""}>${x.up}</button><button class="btn sm ghost" data-a="cdn" data-ci="${ci}" ${ci===raw.length-1?"disabled":""}>${x.down}</button><button class="btn sm bad" data-a="cdel" data-ci="${ci}">${x.del} ${x.cat}</button></div></div></details>`).join("")+
+ `<div class="row" style="margin:6px 16px 0"><button class="btn" data-a="cadd">${x.addCat}</button></div>`}
+function badMenu(){return raw.some(c=>!String(c[0]).trim()||!String(c[1]).trim()||c[2].some(d=>!String(d[0]).trim()||!String(d[1]).trim()))}
+function saveMenu(){clearTimeout(tmS);tmS=setTimeout(()=>{if(badMenu()){toast(t().invalid,1);return}const ok=KZ.saveMenu(raw);toast(ok?t().saved:t().full,!ok)},500)}
+function move(a,i,j){if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]]}
+function shrink(file,cb){const r=new FileReader();r.onerror=()=>cb(null);r.onload=()=>{const im=new Image();im.onerror=()=>cb(null);im.onload=()=>{const m=640,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.78))};im.src=r.result};r.readAsDataURL(file)}
+
+/* ---------- settings ---------- */
+function settingsView(){const x=t(),s=KZ.settings();
+ return`<div class="sec"><label class="fld"><span>${x.maps}</span><input id="sMaps" type="url" dir="ltr" value="${esc(s.mapsUrl)}"></label><p class="note" style="margin:8px 0 0">${x.mapsH}</p>
+ <div class="g2"><label class="fld"><span>${x.sPin}</span><input id="sStaff" inputmode="numeric" maxlength="4" placeholder="${x.pinH}" value="${esc(s.staffPin)}" dir="ltr"></label><label class="fld"><span>${x.aPin}</span><input id="sAdmin" inputmode="numeric" maxlength="4" placeholder="${x.pinH}" value="${esc(s.adminPin)}" dir="ltr"></label></div>
+ <button class="btn" data-a="savesettings">${x.save}</button></div>
+ <div class="hd"><h2>${x.data}</h2></div><div class="sec"><div class="row"><button class="btn sm ghost" data-a="export">${x.export}</button><button class="btn sm bad" data-a="reset">${x.resetMenu}</button><button class="btn sm bad" data-a="clear">${x.clearData}</button></div></div>
+ <p class="note">${x.note}</p>`}
+
+function render(){const x=t(),ar=lang==="ar";
+ document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
+ $("#h1").textContent=x.h1;$("#sub").textContent=x.sub;$("#lock").setAttribute("aria-label",x.lock);$("#back").setAttribute("aria-label",x.back);$("#lang").setAttribute("aria-label",x.langA);
+ $("#tabs").innerHTML=["reports","menu","settings"].map(k=>`<button class="tab${tab===k?" on":""}" data-tab="${k}">${x[k]}</button>`).join("");
+ $("#view").innerHTML=tab==="reports"?reports():tab==="menu"?menuView():settingsView()}
+
+document.addEventListener("click",e=>{
+ const tb=e.target.closest("[data-tab]");if(tb){tab=tb.dataset.tab;if(tab==="menu")raw=KZ.menuRaw();render();return}
+ const rg=e.target.closest("[data-range]");if(rg){range=rg.dataset.range;render();return}
+ const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,ci=+b.dataset.ci,di=+b.dataset.di,x=t();
+ const keep=()=>{open.add(ci);saveMenu();render()};
+ if(a==="dadd"){raw[ci][2].push([x.newDish,x.newDish,0,"","","",0]);keep()}
+ else if(a==="ddel")arm(b,x.delSure,()=>{raw[ci][2].splice(di,1);keep()});
+ else if(a==="dup"){move(raw[ci][2],di,di-1);keep()}else if(a==="ddn"){move(raw[ci][2],di,di+1);keep()}
+ else if(a==="rmphoto"){raw[ci][2][di][5]="";keep()}
+ else if(a==="cadd"){raw.push([x.newCat,x.newCat,[]]);open=new Set([raw.length-1]);saveMenu();render()}
+ else if(a==="cdel")arm(b,x.delSure,()=>{raw.splice(ci,1);open=new Set();saveMenu();render()});
+ else if(a==="cup"){move(raw,ci,ci-1);open=new Set([ci-1]);saveMenu();render()}else if(a==="cdn"){move(raw,ci,ci+1);open=new Set([ci+1]);saveMenu();render()}
+ else if(a==="savesettings"){const s=KZ.settings(),sp=$("#sStaff").value.trim(),ap=$("#sAdmin").value.trim();
+  if(!/^\d{4}$/.test(sp)||!/^\d{4}$/.test(ap)){toast(x.pinBad,1);return}
+  const mu=$("#sMaps").value.trim();if(mu&&!/^https?:\/\//i.test(mu)){toast(x.mapsBad,1);return}
+  s.mapsUrl=$("#sMaps").value.trim()||s.mapsUrl;s.staffPin=sp;s.adminPin=ap;KZ.saveSettings(s);toast(x.saved)}
+ else if(a==="reset")arm(b,x.resetSure,()=>{KZ.resetMenu();raw=null;toast(x.saved)});
+ else if(a==="clear")arm(b,x.clearSure,()=>{["orders","bookings","events","calls"].forEach(n=>KZ.saveList(n,[]));toast(x.cleared)});
+ else if(a==="export"){const o={exportedAt:new Date().toISOString(),menu:KZ.menuRaw(),settings:KZ.settings()};["orders","bookings","events","calls"].forEach(n=>o[n]=KZ.list(n));
+  const u=URL.createObjectURL(new Blob([JSON.stringify(o,null,1)],{type:"application/json"})),l=document.createElement("a");l.href=u;l.download="kanzel-data.json";document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}});
+/* typing in the menu editor: update data without re-rendering so the keyboard stays open */
+document.addEventListener("input",e=>{const el=e.target,f=el.dataset&&el.dataset.f;if(!f||!raw)return;
+ const ci=+el.dataset.ci,di=+el.dataset.di,k=f.slice(1);
+ if(["c0","c1","d0","d1"].includes(f))el.classList.toggle("bad",!el.value.trim());
+ if(f[0]==="c")raw[ci][+k]=el.value;
+ else if(f==="d6"){raw[ci][2][di][6]=el.checked?0:1;el.closest(".dish").classList.toggle("off",!el.checked)}
+ else if(f==="d2")raw[ci][2][di][2]=Math.max(0,Number(el.value)||0);
+ else raw[ci][2][di][+k]=el.value;
+ saveMenu()});
+document.addEventListener("change",e=>{const el=e.target;if(!el.matches("[data-photo]")||!el.files[0])return;
+ const ci=+el.dataset.ci,di=+el.dataset.di;shrink(el.files[0],url=>{if(!url){toast(t().imgErr,1);return}raw[ci][2][di][5]=url;open.add(ci);saveMenu();render()})});
+$("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);render()};
+$("#lock").onclick=()=>{KZ.logout("admin");location.reload()};
+KZ.gate("admin").then(()=>{$("#app").hidden=false;render()});
+</script>
+</body>
+</html>
