@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#10211a">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -20,7 +21,7 @@
 <body>
 <div class="wrap" id="app" hidden>
  <div class="bar">
-  <a class="rnd" id="back" href="index.html" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+  <a class="rnd" id="back" href="/" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
   <img src="logo.png" alt="Kanzel">
   <div class="g">
    <button class="rnd" id="lock" aria-label="Lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></svg></button>
@@ -28,7 +29,7 @@
   </div>
  </div>
  <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
- <div class="tabs"><a class="tab on" href="waiter.html" data-go="waiter" id="tabW"></a><a class="tab" href="reception.html" data-go="reception" id="tabR"></a></div>
+ <div class="tabs"><a class="tab on" href="/waiter" data-go="waiter" id="tabW"></a><a class="tab" href="/reception" data-go="reception" id="tabR"></a></div>
  <div class="stats"><div class="stat"><b id="n1">0</b><span id="l1"></span></div><div class="stat"><b id="n2">0</b><span id="l2"></span></div><div class="stat"><b id="n3">0</b><span id="l3"></span></div><div class="stat"><b id="n4">0</b><span id="l4"></span></div></div>
  <div id="callS" hidden><div class="hd"><h2 id="hCall"></h2></div><div id="callL"></div></div>
  <div class="hd"><h2 id="hN"></h2></div><div id="newL"><div class="skl"></div><div class="skl"></div></div>
@@ -56,7 +57,7 @@ function card(o){const t=T[lang],ar=lang==="ar",k=IDX[o.status];
  return`<div class="card${o.status==="new"?" hl":""}"><div class="top"><div class="tb"><small>${t.table}</small>${esc(o.table)}</div><div class="tm">${KZ.clock(o.ts,lang)}<br>${KZ.ago(o.ts,lang)}</div></div>
  <div class="items">${o.items.map(x=>`<div class="r"><span>${x.qty} × ${esc(ar?x.ar:x.en)}</span><i>${fmt(x.price*x.qty)} ${t.egp}</i></div>`).join("")}</div>
  ${o.note?`<div class="nt">${t.note}: ${esc(o.note)}</div>`:""}
- <div class="tt"><span>${t.total}</span><i>${fmt(o.total)} ${t.egp}</i></div>
+ <div class="tt"><span>${t.total}</span><i>${fmt(o.grand||o.total)} ${t.egp}</i></div>${o.grand?`<div class="nt">${fmt(o.total)} + ${t.egp==="EGP"?"service":"خدمة"} ${fmt(o.service)} + ${t.egp==="EGP"?"tax":"ضريبة"} ${fmt(o.tax)}</div>`:""}
  <button class="btn" data-id="${esc(o.id)}" data-k="${k}">${t["a"+k]}</button></div>`}
 function callCard(c){const t=T[lang];
  return`<div class="card hl"><div class="top"><div class="tb"><small>${t.table}</small>${esc(c.table)}</div><div class="tm">${KZ.clock(c.ts,lang)}<br>${KZ.ago(c.ts,lang)}</div></div>

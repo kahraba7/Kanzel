@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#10211a">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -20,7 +21,7 @@
 <body>
 <div class="wrap" id="app" hidden>
  <div class="bar">
-  <a class="rnd" id="back" href="index.html" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+  <a class="rnd" id="back" href="/" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
   <img src="logo.png" alt="Kanzel">
   <div class="g">
    <button class="rnd" id="lock" aria-label="Lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></svg></button>
@@ -35,6 +36,7 @@
 <script src="kz.js"></script>
 <script>
 const $=s=>document.querySelector(s),esc=KZ.esc,fmt=KZ.fmt;
+let imp={open:false,txt:"",mode:"replace"};
 let lang=KZ.lang(),tab="reports",range="7",raw=null,open=new Set([0]),tmT=0,tmS=0;
 const T={en:{h1:"Owner dashboard",sub:"Reports, menu and settings. Only the owner should open this page.",
  reports:"Reports",menu:"Menu",settings:"Settings",r1:"Today",r7:"7 days",r30:"30 days",rall:"All",
@@ -44,7 +46,9 @@ const T={en:{h1:"Owner dashboard",sub:"Reports, menu and settings. Only the owne
  cat:"Category",catEn:"Name (English)",catAr:"Name (Arabic)",dishEn:"Dish name (English)",dishAr:"Dish name (Arabic)",price:"Price",
  dEn:"Description (English)",dAr:"Description (Arabic)",avail:"Available to guests",photo:"Add photo",rmPhoto:"Remove photo",
  add:"Add dish",addCat:"Add category",del:"Delete",delSure:"Tap again to delete",up:"Up",down:"Down",dishes:"dishes",newDish:"New dish",newCat:"New category",
- saved:"Saved",full:"Couldn’t save: storage is full. Use a smaller photo.",invalid:"Not saved yet: every dish and category needs an English and an Arabic name.",imgErr:"Couldn’t read this image. Try a JPG or PNG.",mapsBad:"The link must start with https://",resetMenu:"Reset menu to default",resetSure:"Tap again to reset",
+ imp:"Import / export menu",impH:"Paste your menu from Excel or Google Sheets, or paste JSON, or choose a file. First row = column names:",impCols:"category_en, category_ar, name_en, name_ar, price, desc_en, desc_ar",
+ impMode:"Import mode",impRep:"Replace the whole menu",impAdd:"Add to the current menu",impGo:"Import now",impExp:"Show current menu as CSV",impDl:"Download CSV",impFile:"Choose a file",
+ impNone:"Nothing to import yet.",impBad:"Couldn’t read this text. Check the column names.",impDone:"Menu imported",impClose:"Close", saved:"Saved",full:"Couldn’t save: storage is full. Use a smaller photo.",invalid:"Not saved yet: every dish and category needs an English and an Arabic name.",imgErr:"Couldn’t read this image. Try a JPG or PNG.",mapsBad:"The link must start with https://",resetMenu:"Reset menu to default",resetSure:"Tap again to reset",
  maps:"Google Maps review link",mapsH:"Opens when a guest taps the rating button. Paste your place link from Google Maps (Share, Copy link).",
  sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",
  data:"Data",export:"Export all data",clearData:"Clear orders, bookings and calls",clearSure:"Tap again to clear",cleared:"Cleared",
@@ -57,7 +61,9 @@ const T={en:{h1:"Owner dashboard",sub:"Reports, menu and settings. Only the owne
  cat:"القسم",catEn:"الاسم (إنجليزي)",catAr:"الاسم (عربي)",dishEn:"اسم الطبق (إنجليزي)",dishAr:"اسم الطبق (عربي)",price:"السعر",
  dEn:"الوصف (إنجليزي)",dAr:"الوصف (عربي)",avail:"متاح للضيوف",photo:"أضف صورة",rmPhoto:"شيل الصورة",
  add:"أضف طبق",addCat:"أضف قسم",del:"حذف",delSure:"دوس تاني للحذف",up:"فوق",down:"تحت",dishes:"أطباق",newDish:"طبق جديد",newCat:"قسم جديد",
- saved:"اتحفظ",full:"معرفناش نحفظ: المساحة خلصت. استخدم صورة أصغر.",invalid:"لسه متحفظش: كل طبق وقسم محتاج اسم عربي واسم إنجليزي.",imgErr:"معرفناش نقرأ الصورة دي. جرّب JPG أو PNG.",mapsBad:"اللينك لازم يبدأ بـ https://",resetMenu:"رجّع المنيو للأصل",resetSure:"دوس تاني للرجوع",
+ imp:"استيراد وتصدير المنيو",impH:"الصق المنيو من Excel أو Google Sheets، أو الصق JSON، أو اختار ملف. أول صف = أسماء الأعمدة:",impCols:"category_en, category_ar, name_en, name_ar, price, desc_en, desc_ar",
+ impMode:"طريقة الاستيراد",impRep:"استبدل المنيو كله",impAdd:"أضف على المنيو الحالي",impGo:"استورد دلوقتي",impExp:"اعرض المنيو الحالي كـ CSV",impDl:"حمّل CSV",impFile:"اختار ملف",
+ impNone:"مفيش حاجة للاستيراد لسه.",impBad:"معرفناش نقرأ النص ده. راجع أسماء الأعمدة.",impDone:"المنيو اتستورد",impClose:"قفل", saved:"اتحفظ",full:"معرفناش نحفظ: المساحة خلصت. استخدم صورة أصغر.",invalid:"لسه متحفظش: كل طبق وقسم محتاج اسم عربي واسم إنجليزي.",imgErr:"معرفناش نقرأ الصورة دي. جرّب JPG أو PNG.",mapsBad:"اللينك لازم يبدأ بـ https://",resetMenu:"رجّع المنيو للأصل",resetSure:"دوس تاني للرجوع",
  maps:"لينك تقييم جوجل ماب",mapsH:"بيفتح لما الضيف يدوس على زر التقييم. الصق لينك مكانك من جوجل ماب (مشاركة ثم نسخ الرابط).",
  sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",
  data:"البيانات",export:"صدّر كل البيانات",clearData:"امسح الطلبات والحجوزات والنداءات",clearSure:"دوس تاني للمسح",cleared:"اتمسح",
@@ -93,8 +99,14 @@ function reports(){const x=t(),ar=lang==="ar",f=from(),inR=o=>o.ts>=f;
 
 /* ---------- menu editor ---------- */
 function pad(d){while(d.length<7)d.push(d.length===5?"":d.length===6?0:"");return d}
+function impPanel(){const x=t();
+ return`<div class="row" style="margin:0 16px 12px"><button class="btn sm ghost" data-a="imp">${x.imp}</button></div>`+(imp.open?`<div class="sec" style="margin-bottom:12px"><p class="note" style="margin:12px 0 0">${x.impH}</p><p class="note" dir="ltr" style="margin:4px 0 0;color:var(--gold)">${x.impCols}</p>
+ <label class="fld"><span>${x.impMode}</span><select id="impMode"><option value="replace"${imp.mode==="replace"?" selected":""}>${x.impRep}</option><option value="add"${imp.mode==="add"?" selected":""}>${x.impAdd}</option></select></label>
+ <label class="fld"><textarea id="impTxt" rows="7" dir="ltr" spellcheck="false" style="font-size:13px">${esc(imp.txt)}</textarea></label>
+ <div class="tools"><label class="btn sm ghost" style="cursor:pointer">${x.impFile}<input type="file" id="impFile" accept=".csv,.tsv,.txt,.json,text/*,application/json" hidden></label><button class="btn sm ghost" data-a="impexp">${x.impExp}</button><button class="btn sm ghost" data-a="impdl">${x.impDl}</button></div>
+ <p class="note" id="impSum" style="margin:12px 0 0"></p><div class="row"><button class="btn sm" id="impGo" data-a="impgo" disabled>${x.impGo}</button><button class="btn sm ghost" data-a="imp">${x.impClose}</button></div></div>`:"")}
 function menuView(){const x=t(),ar=lang==="ar";
- return raw.map((c,ci)=>`<details class="cat" data-ci="${ci}"${open.has(ci)?" open":""}><summary><span>${esc(ar?c[1]:c[0])}</span><small>${c[2].length} ${x.dishes}</small></summary><div class="cb">
+ return impPanel()+raw.map((c,ci)=>`<details class="cat" data-ci="${ci}"${open.has(ci)?" open":""}><summary><span>${esc(ar?c[1]:c[0])}</span><small>${c[2].length} ${x.dishes}</small></summary><div class="cb">
  <div class="g2"><label class="fld"><span>${x.catEn}</span><input data-ci="${ci}" data-f="c0" value="${esc(c[0])}"></label><label class="fld"><span>${x.catAr}</span><input data-ci="${ci}" data-f="c1" value="${esc(c[1])}" dir="rtl"></label></div>
  ${c[2].map((d,di)=>{pad(d);return`<div class="dish${d[6]?" off":""}">
   <div class="dh"><div class="ph" style="${d[5]?`background-image:url('${esc(d[5])}')`:""}">${d[5]?"":"K"}</div><label class="sw" style="margin:0;flex:1"><span>${x.avail}</span><input type="checkbox" data-ci="${ci}" data-di="${di}" data-f="d6" ${d[6]?"":"checked"}></label></div>
@@ -111,6 +123,54 @@ function badMenu(){return raw.some(c=>!String(c[0]).trim()||!String(c[1]).trim()
 function saveMenu(){clearTimeout(tmS);tmS=setTimeout(()=>{if(badMenu()){toast(t().invalid,1);return}const ok=KZ.saveMenu(raw);toast(ok?t().saved:t().full,!ok)},500)}
 function move(a,i,j){if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]]}
 function shrink(file,cb){const r=new FileReader();r.onerror=()=>cb(null);r.onload=()=>{const im=new Image();im.onerror=()=>cb(null);im.onload=()=>{const m=640,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.78))};im.src=r.result};r.readAsDataURL(file)}
+
+
+/* ---------- menu import / export (CSV, TSV, JSON) ---------- */
+const AL={cen:["category","categoryen","cat","section","group","قسم","الفئة"],car:["categoryar","catar","sectionar","قسمعربي","الفئةعربي"],
+ nen:["name","nameen","item","itemname","itemen","dish","dishen","title","اسم","الاسم"],nar:["namear","arabic","itemar","dishar","titlear","الاسمعربي","اسمعربي"],
+ pr:["price","cost","egp","سعر","السعر"],den:["description","desc","descen","descriptionen","details","وصف","الوصف"],dar:["descar","descriptionar","descarabic","وصفعربي","الوصفعربي"]};
+const nk=h=>String(h||"").toLowerCase().replace(/[^a-z\u0600-\u06FF]/g,"");
+function fieldOf(h){const k=nk(h);for(const f in AL)if(AL[f].includes(k))return f;return null}
+function parseTable(txt){const first=txt.split(/\r?\n/)[0]||"",dl=[["\t",(first.match(/\t/g)||[]).length],[";",(first.match(/;/g)||[]).length],[",",(first.match(/,/g)||[]).length]].sort((a,b)=>b[1]-a[1])[0][0];
+ const rows=[];let row=[],cur="",q=false;
+ for(let i=0;i<txt.length;i++){const c=txt[i];
+  if(q){if(c==='"'){if(txt[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+  else if(c==='"')q=true;else if(c===dl){row.push(cur);cur=""}
+  else if(c==="\n"||c==="\r"){if(c==="\r"&&txt[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(v=>v.trim()))rows.push(row);row=[]}
+  else cur+=c}
+ row.push(cur);if(row.some(v=>v.trim()))rows.push(row);return rows}
+const num=v=>{const n=parseFloat(String(v==null?"":v).replace(/[^\d.]/g,""));return isNaN(n)?null:n};
+function build(items){/* items: {cen,car,nen,nar,pr,den,dar} */
+ const cats=[],idx={},w={skip:0,noAr:0};
+ items.forEach(o=>{const n=String(o.nen||o.nar||"").trim(),p=num(o.pr);if(!n||p==null){w.skip++;return}
+  const ce=String(o.cen||o.car||"Menu").trim()||"Menu",ca=String(o.car||o.cen||"المنيو").trim(),key=ce.toLowerCase();
+  if(!(key in idx)){idx[key]=cats.length;cats.push([ce,ca,[]])}
+  if(!String(o.nar||"").trim())w.noAr++;
+  cats[idx[key]][2].push([String(o.nen||o.nar).trim(),String(o.nar||o.nen).trim(),p,String(o.den||"").trim(),String(o.dar||o.den||"").trim(),"",0])});
+ return{cats,w,dishes:cats.reduce((a,c)=>a+c[2].length,0)}}
+function parseMenuText(txt){txt=txt.replace(/^\uFEFF/,"").trim();if(!txt)return null;
+ if(/^[\[{]/.test(txt)){let j;try{j=JSON.parse(txt)}catch(e){return null}if(!Array.isArray(j))j=j.menu||j.items||[];
+  if(j.length&&Array.isArray(j[0])&&Array.isArray(j[0][2])){const items=[];j.forEach(c=>c[2].forEach(d=>items.push({cen:c[0],car:c[1],nen:d[0],nar:d[1],pr:d[2],den:d[3],dar:d[4]})));return build(items)}
+  return build(j.map(o=>{const r={};Object.keys(o).forEach(k=>{const f=fieldOf(k);if(f)r[f]=o[k]});return r}))}
+ const rows=parseTable(txt);if(rows.length<2)return null;const map=rows[0].map(fieldOf);if(!map.includes("pr")||!(map.includes("nen")||map.includes("nar")))return null;
+ return build(rows.slice(1).map(r=>{const o={};map.forEach((f,i)=>{if(f&&o[f]==null)o[f]=r[i]});return o}))}
+function impStatus(){const x=t(),ar=lang==="ar",el=$("#impSum"),go=$("#impGo");if(!el)return;
+ const r=imp.txt.trim()?parseMenuText(imp.txt):null;
+ if(!imp.txt.trim()){el.textContent=x.impNone;go.disabled=true;return}
+ if(!r||!r.dishes){el.textContent=x.impBad;go.disabled=true;return}
+ el.textContent=(ar?`جاهز: ${r.cats.length} قسم و ${r.dishes} طبق.`:`Ready: ${r.cats.length} categories, ${r.dishes} dishes.`)+(r.w.skip?(ar?` اتخطّينا ${r.w.skip} صف ناقص (اسم أو سعر).`:` Skipped ${r.w.skip} rows with no name or price.`):"")+(r.w.noAr?(ar?` ${r.w.noAr} طبق من غير اسم عربي (هيتكرر الإنجليزي).`:` ${r.w.noAr} dishes have no Arabic name (English will be reused).`):"");
+ go.disabled=false}
+function toCsv(){const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"',L=["category_en,category_ar,name_en,name_ar,price,desc_en,desc_ar"];
+ (raw||KZ.menuRaw()).forEach(c=>c[2].forEach(d=>L.push([c[0],c[1],d[0],d[1],d[2],d[3],d[4]].map(q).join(","))));return L.join("\n")}
+function applyImport(){const r=parseMenuText(imp.txt);if(!r||!r.dishes){toast(t().impBad,1);return}
+ if(imp.mode==="replace")raw=r.cats;
+ else{r.cats.forEach(c=>{const e=raw.find(x=>x[0].trim().toLowerCase()===c[0].trim().toLowerCase());if(!e){raw.push(c);return}
+   c[2].forEach(d=>{const m=e[2].find(x=>x[0].trim().toLowerCase()===d[0].trim().toLowerCase());if(m){m[1]=d[1];m[2]=d[2];if(d[3])m[3]=d[3];if(d[4])m[4]=d[4]}else e[2].push(d)})})}
+ open=new Set();const ok=KZ.saveMenu(raw);imp.open=false;imp.txt="";toast(ok?t().impDone:t().full,!ok);render()}
+document.addEventListener("input",e=>{if(e.target.id==="impTxt"){imp.txt=e.target.value;impStatus()}});
+document.addEventListener("change",e=>{const el=e.target;
+ if(el.id==="impMode"){imp.mode=el.value}
+ else if(el.id==="impFile"&&el.files[0]){const fr=new FileReader();fr.onload=()=>{imp.txt=String(fr.result);const ta=$("#impTxt");if(ta)ta.value=imp.txt;impStatus()};fr.onerror=()=>toast(t().impBad,1);fr.readAsText(el.files[0],"utf-8")}});
 
 /* ---------- settings ---------- */
 function settingsView(){const x=t(),s=KZ.settings();
@@ -131,6 +191,10 @@ document.addEventListener("click",e=>{
  const rg=e.target.closest("[data-range]");if(rg){range=rg.dataset.range;render();return}
  const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,ci=+b.dataset.ci,di=+b.dataset.di,x=t();
  const keep=()=>{open.add(ci);saveMenu();render()};
+ if(a==="imp"){imp.open=!imp.open;render();if(imp.open)impStatus();return}
+ if(a==="impgo"){applyImport();return}
+ if(a==="impexp"){imp.txt=toCsv();const ta=$("#impTxt");if(ta)ta.value=imp.txt;impStatus();return}
+ if(a==="impdl"){const u=URL.createObjectURL(new Blob(["\uFEFF"+toCsv()],{type:"text/csv;charset=utf-8"})),l=document.createElement("a");l.href=u;l.download="kanzel-menu.csv";document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);return}
  if(a==="dadd"){raw[ci][2].push([x.newDish,x.newDish,0,"","","",0]);keep()}
  else if(a==="ddel")arm(b,x.delSure,()=>{raw[ci][2].splice(di,1);keep()});
  else if(a==="dup"){move(raw[ci][2],di,di-1);keep()}else if(a==="ddn"){move(raw[ci][2],di,di+1);keep()}

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#10211a">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -16,11 +17,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="staff.css">
+<style>
+.tq{display:flex;gap:14px;align-items:flex-start}.tq canvas{width:104px;height:auto;border-radius:10px;flex:none;background:#10211a}
+.tq .in{flex:1;min-width:0}.tq .u{margin-top:8px;font-size:11.5px;color:rgba(244,239,221,.65);word-break:break-all;direction:ltr;text-align:start}
+#printArea{display:none}
+@media print{@page{size:A4;margin:0}html,body{background:#fff!important}body>*:not(#printArea){display:none!important}
+ #printArea{display:grid!important;grid-template-columns:1fr 1fr;gap:8mm;padding:8mm}#printArea img{width:100%;display:block;break-inside:avoid}}
+</style>
 </head>
 <body>
 <div class="wrap" id="app" hidden>
  <div class="bar">
-  <a class="rnd" id="back" href="index.html" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+  <a class="rnd" id="back" href="/" data-go="index"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
   <img src="logo.png" alt="Kanzel">
   <div class="g">
    <button class="rnd" id="lock" aria-label="Lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></svg></button>
@@ -28,24 +36,28 @@
   </div>
  </div>
  <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
- <div class="tabs"><a class="tab" href="waiter.html" data-go="waiter" id="tabW"></a><a class="tab on" href="reception.html" data-go="reception" id="tabR"></a></div>
+ <div class="tabs"><a class="tab" href="/waiter" data-go="waiter" id="tabW"></a><a class="tab on" href="/reception" data-go="reception" id="tabR"></a></div>
  <div class="tabs" id="kinds"></div>
  <div class="tabs" id="chips"></div>
  <div id="list" style="margin-top:16px"><div class="skl"></div><div class="skl"></div></div>
  <p class="note" id="foot"></p>
 </div>
+<div id="printArea" aria-hidden="true"></div>
 <script src="menu.js"></script>
+<script src="qr.js"></script>
 <script src="kz.js"></script>
 <script>
 const $=s=>document.querySelector(s),esc=KZ.esc;
 let lang=KZ.lang(),kind="bookings",flt="new",seen=null;
-const T={en:{h1:"Reservations",sub:"Table bookings and event requests from the website",tabW:"Orders",tabR:"Reception",
+const T={en:{ tables:"Tables & QR",tH:"Table QR codes",tSub:"Print one code per table. A guest scans it and orders from their phone.",siteUrl:"Website address",addT:"Add table",printAll:"Print all",dl:"Download",del:"Delete",delSure:"Tap again",tLabel:"Table number or name",dup:"Already used",urlBad:"The address must start with https://",saved:"Saved",
+ qrNote:"Each code opens the guest page for that table. If you change the website address, print the codes again.",h1:"Reservations",sub:"Table bookings and event requests from the website",tabW:"Orders",tabR:"Reception",
  bookings:"Table bookings",events:"Event requests",new:"New",confirmed:"Confirmed",cancelled:"Cancelled",
  none:"Nothing here yet",guests:"guests",call:"Call",wa:"WhatsApp",confirm:"Confirm",cancel:"Cancel",reopen:"Move back to new",
  date:"Date",time:"Time",needs:"Needs",notes:"Notes",received:"Received",lock:"Lock",back:"Back",
  foot:"Requests are stored in this browser for now. They arrive from the website once the backend is connected. Event requests also reach you on WhatsApp, this list just keeps track of them.",
  waMsg:(n,d,tm)=>"Hello "+n+", this is Kanzel. Your reservation on "+d+" at "+tm+" is confirmed. We look forward to seeing you."},
- ar:{h1:"الحجوزات",sub:"حجوزات الترابيزات وطلبات المناسبات من الموقع",tabW:"الطلبات",tabR:"الريسبشن",
+ ar:{ tables:"الترابيزات والـ QR",tH:"أكواد الترابيزات",tSub:"اطبع كود لكل ترابيزة. الضيف بيمسحه ويطلب من موبايله.",siteUrl:"عنوان الموقع",addT:"أضف ترابيزة",printAll:"اطبع الكل",dl:"حمّل",del:"حذف",delSure:"دوس تاني",tLabel:"رقم أو اسم الترابيزة",dup:"مستخدم قبل كده",urlBad:"العنوان لازم يبدأ بـ https://",saved:"اتحفظ",
+ qrNote:"كل كود بيفتح صفحة الضيف للترابيزة دي. لو غيّرت عنوان الموقع اطبع الأكواد تاني.",h1:"الحجوزات",sub:"حجوزات الترابيزات وطلبات المناسبات من الموقع",tabW:"الطلبات",tabR:"الريسبشن",
  bookings:"حجز ترابيزة",events:"طلبات المناسبات",new:"جديد",confirmed:"متأكد",cancelled:"ملغي",
  none:"مفيش حاجة لسه",guests:"أفراد",call:"اتصل",wa:"واتساب",confirm:"أكّد",cancel:"إلغاء",reopen:"رجّعه جديد",
  date:"التاريخ",time:"الوقت",needs:"المطلوب",notes:"ملاحظات",received:"وصل",lock:"قفل",back:"رجوع",
@@ -69,21 +81,73 @@ function render(){const t=T[lang],ar=lang==="ar";
  $("#h1").textContent=t.h1;$("#sub").textContent=t.sub;$("#tabW").textContent=t.tabW;$("#tabR").textContent=t.tabR;$("#foot").textContent=t.foot;
  $("#lock").setAttribute("aria-label",t.lock);$("#back").setAttribute("aria-label",t.back);$("#lang").setAttribute("aria-label",ar?"English":"العربية");
  const cnt=(n,s)=>KZ.list(n).filter(x=>x.status===s).length;
- $("#kinds").innerHTML=["bookings","events"].map(k=>`<button class="tab${kind===k?" on":""}" data-kind="${k}">${t[k]}<b>${cnt(k,"new")||""}</b></button>`).join("");
+ $("#kinds").innerHTML=["bookings","events","tables"].map(k=>`<button class="tab${kind===k?" on":""}" data-kind="${k}">${t[k]}<b>${k==="tables"?"":cnt(k,"new")||""}</b></button>`).join("");
+ $("#chips").hidden=kind==="tables";
  $("#chips").innerHTML=["new","confirmed","cancelled"].map(s=>`<button class="tab${flt===s?" on":""}" data-flt="${s}">${t[s]}<b>${KZ.list(kind).filter(x=>x.status===s).length}</b></button>`).join("");
+ if(kind==="tables"){if($("#list").dataset.m!=="tables")renderTables()}else{$("#list").dataset.m="";
  const L=KZ.list(kind).filter(x=>x.status===flt).sort((a,b)=>flt==="new"?a.ts-b.ts:(b.ts-a.ts));
- $("#list").innerHTML=L.length?L.map(kind==="bookings"?bookCard:evCard).join(""):`<div class="empty">${t.none}</div>`;
+ $("#list").innerHTML=L.length?L.map(kind==="bookings"?bookCard:evCard).join(""):`<div class="empty">${t.none}</div>`}
  const n=cnt("bookings","new")+cnt("events","new");document.title=(n?"("+n+") ":"")+"Kanzel Reception"}
 function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=660;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.4);o.stop(a.currentTime+.45)}catch(e){}}
 function tick(){const ids=new Set([...KZ.list("bookings"),...KZ.list("events")].filter(x=>x.status==="new").map(x=>x.id));
  if(seen&&[...ids].some(i=>!seen.has(i)))beep();seen=ids;render()}
 document.addEventListener("click",e=>{
- const k=e.target.closest("[data-kind]");if(k){kind=k.dataset.kind;render();return}
+ const k=e.target.closest("[data-kind]");if(k){kind=k.dataset.kind;$("#list").dataset.m="";render();return}
  const f=e.target.closest("[data-flt]");if(f){flt=f.dataset.flt;render();return}
  const b=e.target.closest("button[data-id]");if(b){KZ.update(kind,b.dataset.id,o=>{o.status=b.dataset.s;o.updatedAt=Date.now()});render()}});
-$("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);render()};
+$("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);$("#list").dataset.m="";render()};
 $("#lock").onclick=()=>{KZ.logout("staff");location.reload()};
 addEventListener("storage",e=>{if(e.key===KZ.KEYS.bookings||e.key===KZ.KEYS.events)tick()});
+
+/* ---------- table QR codes ---------- */
+const DEFT=()=>Array.from({length:12},(_,i)=>({id:"t"+(i+1),label:String(i+1)}));
+let TB=KZ.read("kanzel-tables",null);if(!Array.isArray(TB)||!TB.length)TB=DEFT();
+const saveTB=()=>KZ.write("kanzel-tables",TB);
+const baseUrl=()=>String(KZ.settings().siteUrl||"https://kanzel-eg.vercel.app").replace(/\/+$/,"");
+const tUrl=l=>baseUrl()+"/table?t="+encodeURIComponent(l);
+let logoImg=null;const logoReady=new Promise(r=>{const i=new Image();i.onload=()=>{logoImg=i;r()};i.onerror=r;i.src="logo.png"});
+function qrOf(text){const L=window.QRCodeLib;for(let v=2;v<=20;v++){try{const q=new L.QRCode(v,L.ECC.M);q.addData(text);q.make();return q}catch(e){}}return null}
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+function drawCard(label,url,sc){const W=1000,H=1400,c=document.createElement("canvas");c.width=Math.round(W*sc);c.height=Math.round(H*sc);const x=c.getContext("2d");x.scale(sc,sc);
+ x.fillStyle="#10211a";x.fillRect(0,0,W,H);x.strokeStyle="rgba(211,201,148,.6)";x.lineWidth=4;x.strokeRect(36,36,W-72,H-72);
+ if(logoImg){const lw=420,lh=logoImg.height*lw/logoImg.width;x.drawImage(logoImg,(W-lw)/2,84,lw,lh)}
+ const P=660,px=(W-P)/2,py=354;x.fillStyle="#f4efdd";rr(x,px,py,P,P,36);x.fill();
+ const q=qrOf(url);if(q){const n=q.getModuleCount(),A=P-140,m=A/n,ox=px+70,oy=py+70;x.fillStyle="#10211a";
+  for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k)){const l=Math.round(ox+k*m),t=Math.round(oy+r*m);x.fillRect(l,t,Math.round(ox+(k+1)*m)-l,Math.round(oy+(r+1)*m)-t)}}
+ x.textAlign="center";x.fillStyle="#d3c994";x.font='500 32px "Readex Pro",system-ui,sans-serif';try{x.letterSpacing="8px"}catch(e){}x.fillText("TABLE · ترابيزة",W/2,1084);try{x.letterSpacing="0px"}catch(e){}
+ let fs=150;const f=n=>'600 '+n+'px "Cormorant Garamond",Georgia,serif';x.font=f(fs);while(x.measureText(label).width>780&&fs>40){fs-=6;x.font=f(fs)}
+ x.fillStyle="#f4efdd";x.fillText(label,W/2,1084+Math.round(fs*.9)+14);
+ x.fillStyle="rgba(244,239,221,.75)";x.font='300 30px "Readex Pro",system-ui,sans-serif';x.fillText("Scan to order · امسح واطلب",W/2,H-86);return c}
+const isDup=(l,id)=>TB.some(t=>t.id!==id&&t.label.trim().toLowerCase()===l.trim().toLowerCase());
+function tCard(tb){const t=T[lang],bad=!tb.label.trim()||isDup(tb.label,tb.id);
+ return`<div class="card" data-tid="${esc(tb.id)}"><div class="tq"><canvas data-prev="${esc(tb.id)}" width="220" height="308" role="img" aria-label="QR ${esc(tb.label)}"></canvas>
+ <div class="in"><label class="fld" style="margin-top:0"><span>${t.tLabel}</span><input data-tl="${esc(tb.id)}" maxlength="14" value="${esc(tb.label)}"${bad?' class="bad"':""}></label>
+ <div class="u" data-u="${esc(tb.id)}">${esc(tUrl(tb.label))}</div>
+ <div class="row" style="margin-top:12px"><button class="btn sm" data-dl="${esc(tb.id)}">${t.dl}</button><button class="btn sm bad" data-rm="${esc(tb.id)}">${t.del}</button></div></div></div></div>`}
+function renderTables(){const t=T[lang],l=$("#list");l.dataset.m="tables";
+ l.innerHTML=`<div class="sec" style="margin-bottom:12px"><div class="hd" style="padding:14px 0 4px"><h2>${t.tH}</h2></div><p class="note" style="margin:0 0 6px">${t.tSub}</p>
+ <label class="fld"><span>${t.siteUrl}</span><input id="siteUrl" type="url" dir="ltr" value="${esc(baseUrl())}"></label>
+ <div class="row"><button class="btn sm" data-a="addt">${t.addT}</button><button class="btn sm ghost" data-a="printall">${t.printAll}</button></div></div>`+TB.map(tCard).join("")+`<p class="note">${t.qrNote}</p>`;
+ paintPrev()}
+function paintPrev(){Promise.race([Promise.all([logoReady,document.fonts?document.fonts.ready:0]),new Promise(r=>setTimeout(r,1500))]).then(()=>{
+ document.querySelectorAll("canvas[data-prev]").forEach(cv=>{const tb=TB.find(x=>x.id===cv.dataset.prev);if(!tb)return;const n=drawCard(tb.label||"?",tUrl(tb.label||"?"),.22);cv.getContext("2d").drawImage(n,0,0,cv.width,cv.height)})})}
+function dlCard(tb){const c=drawCard(tb.label,tUrl(tb.label),1);c.toBlob(b=>{if(!b)return;const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="kanzel-table-"+tb.label.replace(/[^\w\u0600-\u06FF-]+/g,"_")+".png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000)},"image/png")}
+function printAll(){const pa=$("#printArea");pa.innerHTML="";TB.filter(t=>t.label.trim()).forEach(tb=>{const im=new Image();im.src=drawCard(tb.label,tUrl(tb.label),.6).toDataURL("image/png");im.alt="";pa.appendChild(im)});setTimeout(()=>window.print(),250)}
+let tmT2=0,armT=null;
+document.addEventListener("click",e=>{
+ const dl=e.target.closest("[data-dl]");if(dl){const tb=TB.find(x=>x.id===dl.dataset.dl);if(tb&&tb.label.trim())dlCard(tb);return}
+ const rm=e.target.closest("[data-rm]");if(rm){if(rm.dataset.armed){TB=TB.filter(x=>x.id!==rm.dataset.rm);if(!TB.length)TB=DEFT();saveTB();renderTables();return}
+  const old=rm.textContent;rm.textContent=T[lang].delSure;rm.dataset.armed="1";setTimeout(()=>{if(rm.isConnected){rm.textContent=old;delete rm.dataset.armed}},3500);return}
+ const a=e.target.closest("[data-a]");if(!a)return;
+ if(a.dataset.a==="addt"){const nums=TB.map(x=>parseInt(x.label,10)).filter(n=>!isNaN(n)),nx=nums.length?Math.max(...nums)+1:TB.length+1;TB.push({id:KZ.uid(),label:String(nx)});saveTB();renderTables();window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}
+ else if(a.dataset.a==="printall")printAll()});
+document.addEventListener("input",e=>{const el=e.target;
+ if(el.dataset&&el.dataset.tl){const tb=TB.find(x=>x.id===el.dataset.tl);if(!tb)return;tb.label=el.value;const bad=!el.value.trim()||isDup(el.value,tb.id);el.classList.toggle("bad",bad);
+  const u=document.querySelector('[data-u="'+tb.id+'"]');if(u)u.textContent=tUrl(tb.label);
+  if(!bad){saveTB();clearTimeout(tmT2);tmT2=setTimeout(()=>{const cv=document.querySelector('canvas[data-prev="'+tb.id+'"]');if(cv){const n=drawCard(tb.label,tUrl(tb.label),.22);const c2=cv.getContext("2d");c2.clearRect(0,0,cv.width,cv.height);c2.drawImage(n,0,0,cv.width,cv.height)}},250)}else KZ.toast(T[lang].dup,1)}});
+document.addEventListener("change",e=>{if(e.target.id!=="siteUrl")return;const v=e.target.value.trim().replace(/\/+$/,"");
+ if(!/^https:\/\/[^\s/]+/i.test(v)){KZ.toast(T[lang].urlBad,1);e.target.value=baseUrl();return}
+ const st=KZ.settings();st.siteUrl=v;KZ.saveSettings(st);KZ.toast(T[lang].saved);renderTables()});
 KZ.gate("staff").then(()=>{$("#app").hidden=false;tick();setInterval(tick,4000)});
 </script>
 </body>

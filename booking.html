@@ -12,6 +12,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Kanzel">
 <title>Book a table · Kanzel Restaurant &amp; Lounge</title>
+<meta name="description" content="Book your table at Kanzel in under a minute. احجز ترابيزتك في كنزل.">
+<link rel="canonical" href="https://kanzel-eg.vercel.app/booking">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kanzel Restaurant &amp; Lounge">
+<meta property="og:title" content="Reserve a table · Kanzel Restaurant &amp; Lounge">
+<meta property="og:description" content="Book your table at Kanzel in under a minute. احجز ترابيزتك في كنزل.">
+<meta property="og:url" content="https://kanzel-eg.vercel.app/booking">
+<meta property="og:image" content="https://kanzel-eg.vercel.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kanzel-eg.vercel.app/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -132,7 +144,7 @@ body.lswap #bookView .bh,body.lswap #bookView .pane{opacity:0;transform:translat
 <body>
 <div id='bookView'><div class='bwrap'>
  <div class='bbar'>
-  <a class='lang' id='bback' href='index.html' aria-label='Back'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M15 5l-7 7 7 7'/></svg></a>
+  <a class='lang' id='bback' href='/' aria-label='Back'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M15 5l-7 7 7 7'/></svg></a>
   <img id='bimg' src='logo.png' alt='Kanzel Restaurant &amp; Lounge'>
   <button class='lang' id='blang' aria-label='Language'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='12' r='9.5'/><ellipse cx='12' cy='12' rx='4.2' ry='9.5'/><path d='M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2'/></svg></button>
  </div>
@@ -240,8 +252,8 @@ async function bkSubmit(){const t=BT[lang],v={date:$('#fDate').value,name:$('#fN
  KZ.busy(btn,0);bkS.data=v;fillDone();setStep(3)}
 $('#bsubmit').onclick=bkSubmit;
 function bkReset(){['fDate','fName','fPhone','fTime'].forEach(id=>$('#'+id).value='');bkS.g=2;$('#gv').textContent=2;bkS.data=null;bkNote();setStep(1,true)}
-function leaveBooking(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href='index.html';return}
- $('#bookView').classList.add('out');setTimeout(()=>{location.href='index.html'},330)}
+function leaveBooking(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href='/';return}
+ $('#bookView').classList.add('out');setTimeout(()=>{location.href='/'},330)}
 $('#bback').onclick=e=>{e.preventDefault();leaveBooking()};
 $('#bdone').onclick=()=>{bkReset();leaveBooking()};
 

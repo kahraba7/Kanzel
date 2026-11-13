@@ -18,7 +18,7 @@ KZ.ago=(ts,l)=>{const m=Math.floor((Date.now()-ts)/6e4),a=l==="ar";if(m<1)return
 const reduce=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
 function fade(fn){if(reduce()){fn();return}document.body.classList.add("kz-out");setTimeout(fn,230)}
 KZ.fade=fade;
-KZ.go=p=>fade(()=>{if(KZ.embed)parent.location.hash=(p==="index"?"":p);else location.href=p+".html"});
+KZ.go=p=>fade(()=>{if(KZ.embed)parent.location.hash=(p==="index"?"":p);else location.href=(p==="index"?"/":"/"+p)});
 addEventListener("pageshow",e=>{if(e.persisted)document.body.classList.remove("kz-out")});
 (function(){const c=document.createElement("style");c.textContent=
 "html{overflow-x:hidden}@keyframes kzin{from{opacity:0}to{opacity:1}}body{animation:kzin .35s ease both}body.kz-out{opacity:0;transition:opacity .22s ease}"+
@@ -36,7 +36,7 @@ const L2=(en,ar)=>KZ.lang()==="ar"?ar:en;
 /* internal page links fade out before navigating */
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[href]");
  if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||a.target==="_blank"||a.hasAttribute("download"))return;
- const h=a.getAttribute("href");if(!/^[\w-]+\.html(\?.*)?$/.test(h))return;e.preventDefault();fade(()=>{location.href=h})});
+ const h=a.getAttribute("href");if(!/^\/[\w-]*(\?.*)?$/.test(h))return;e.preventDefault();fade(()=>{location.href=h})});
 /* offline + storage + unexpected errors */
 document.addEventListener("DOMContentLoaded",()=>{
  const b=document.createElement("div");b.className="kz-off";b.setAttribute("role","status");document.body.appendChild(b);
@@ -49,7 +49,7 @@ addEventListener("error",e=>{if(e.target===window)oops()});addEventListener("unh
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[data-go]");if(!a)return;e.preventDefault();KZ.go(a.dataset.go)});
 
 /* ---------- settings ---------- */
-const DEF={staffPin:"7777",adminPin:"1234",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Kanzel+Restaurant+%26+Lounge"};
+const DEF={staffPin:"7777",adminPin:"1234",siteUrl:"https://kanzel-eg.vercel.app",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Kanzel+Restaurant+%26+Lounge"};
 KZ.settings=()=>Object.assign({},DEF,KZ.read("kanzel-settings",{}));
 KZ.saveSettings=o=>KZ.write("kanzel-settings",o);
 
@@ -85,7 +85,7 @@ KZ.gate=role=>new Promise(res=>{
  const T={title:role==="admin"?(ar?"دخول المالك":"Owner access"):(ar?"دخول الموظفين":"Staff access"),hint:ar?"اكتب الرقم السري":"Enter your PIN",bad:ar?"الرقم غلط":"Wrong PIN",lock:ar?"استنى شوية وجرّب تاني":"Too many tries, wait a moment",home:ar?"الرئيسية":"Home",del:ar?"مسح":"Del"};
  const o=document.createElement("div");o.className="kzg";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.dir=ar?"rtl":"ltr";
  o.innerHTML="<h1>"+T.title+"</h1><div class='dots'><i></i><i></i><i></i><i></i></div><p aria-live='polite'>"+T.hint+"</p><div class='pad'>"+
-  [1,2,3,4,5,6,7,8,9].map(n=>"<button data-k='"+n+"'>"+n+"</button>").join("")+"<span></span><button data-k='0'>0</button><button class='x' data-k='del'>"+T.del+"</button></div><a id='kzhome' href='"+(KZ.embed?"#":"index.html")+"'>"+T.home+"</a>";
+  [1,2,3,4,5,6,7,8,9].map(n=>"<button data-k='"+n+"'>"+n+"</button>").join("")+"<span></span><button data-k='0'>0</button><button class='x' data-k='del'>"+T.del+"</button></div><a id='kzhome' href='"+(KZ.embed?"#":"/")+"'>"+T.home+"</a>";
  document.body.appendChild(o);
  let v="",fails=0,until=0;const dots=[...o.querySelectorAll(".dots i")],msg=o.querySelector("p"),dw=o.querySelector(".dots");
  const paint=()=>dots.forEach((d,i)=>d.classList.toggle("on",i<v.length));

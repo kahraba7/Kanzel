@@ -12,6 +12,25 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Kanzel">
 <title>Kanzel Restaurant &amp; Lounge</title>
+<meta name="description" content="Where the night begins. Menu, table reservations and events at Kanzel Restaurant &amp; Lounge. المكان اللي بتبدأ فيه الليلة">
+<link rel="canonical" href="https://kanzel-eg.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kanzel Restaurant &amp; Lounge">
+<meta property="og:title" content="Kanzel Restaurant &amp; Lounge">
+<meta property="og:description" content="Where the night begins. Menu, table reservations and events. المكان اللي بتبدأ فيه الليلة">
+<meta property="og:url" content="https://kanzel-eg.vercel.app/">
+<meta property="og:image" content="https://kanzel-eg.vercel.app/og-image.jpg">
+<meta property="og:image:secure_url" content="https://kanzel-eg.vercel.app/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kanzel Restaurant &amp; Lounge">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ar_EG">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kanzel Restaurant &amp; Lounge">
+<meta name="twitter:description" content="Where the night begins. Menu, table reservations and events. المكان اللي بتبدأ فيه الليلة">
+<meta name="twitter:image" content="https://kanzel-eg.vercel.app/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -21,7 +40,7 @@
  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;min-height:100%;background:var(--forest);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden}
+body{margin:0;min-height:100%;background:var(--forest);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden;overflow-x:clip}
 #homeView button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,.ig:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .scene{position:relative;min-height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;overflow:hidden;isolation:isolate}
@@ -56,6 +75,16 @@ button:focus-visible,.ig:focus-visible{outline:2px solid var(--gold);outline-off
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);opacity:0;pointer-events:none;background:var(--cream);color:var(--forest);padding:12px 20px;border-radius:12px;font-size:14px;max-width:88vw;text-align:center;transition:.3s;z-index:9}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 @media(min-width:820px){.hero img{width:240px}.rows{padding-bottom:22px}}
+
+.wsheet{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center}.wsheet[hidden]{display:none}
+.wbd{position:absolute;inset:0;background:rgba(0,0,0,.6);animation:wf .25s both}
+.wpn{position:relative;width:100%;max-width:520px;padding:22px 20px calc(20px + env(safe-area-inset-bottom,0px));background:#162b21;border-top:1px solid rgba(211,201,148,.5);border-radius:28px 28px 0 0;display:grid;gap:10px;animation:wu .35s cubic-bezier(.2,.7,.2,1) both}
+.wpn h3{font:600 26px var(--serif);color:var(--cream)}.wpn p{font-size:14px;opacity:.9;margin-bottom:4px}
+.wnum{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border-radius:99px;border:1px solid var(--gold);color:var(--gold);font:500 18px var(--sans);letter-spacing:.5px;text-decoration:none}
+.wnum svg{width:22px;height:22px}.wnum:active{background:rgba(211,201,148,.16)}
+.wx{padding:12px;color:var(--cream);opacity:.7;font:400 14px var(--sans);background:none;border:0}
+@keyframes wf{from{opacity:0}}@keyframes wu{from{transform:translateY(100%)}}
+@media(prefers-reduced-motion:reduce){.wbd,.wpn{animation:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 
 #menuView{display:none;--top:0px}
@@ -73,25 +102,37 @@ button:focus-visible,.ig:focus-visible{outline:2px solid var(--gold);outline-off
 #menuView .bar img{height:44px;width:auto}
 #menuView .mh{padding:18px 20px 12px}
 #menuView .mh h1{font:600 36px/1.05 var(--serif)}
-#menuView .mh p{font-size:13px;opacity:.65;margin-top:6px}
+#menuView .mh p{font-size:14px;opacity:.88;margin-top:6px}
 #menuView nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:10px;overflow-x:auto;padding:10px 16px;background:#10211af5;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);scrollbar-width:none}
 #menuView nav button{flex:none;width:116px;height:116px;border-radius:24px 6px 24px 24px;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;text-align:start;position:relative;overflow:hidden;border:1px solid #d3c99430;transition:height .3s,border-radius .3s,padding .3s}
 #menuView nav button span{position:absolute;top:-12px;inset-inline-end:6px;font:600 84px/1 var(--serif);color:#d3c9941f}
 #menuView nav button b{font:600 18px/1.1 var(--serif);white-space:nowrap}
-#menuView nav button small{font-size:11px;opacity:.65;margin-top:3px}
+#menuView nav button small{font-size:12px;opacity:.9;margin-top:3px}
 #menuView nav button.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
 #menuView.min nav button{width:auto;height:42px;border-radius:99px;padding:0 18px;justify-content:center}
 #menuView.min nav button span,#menuView.min nav button small{display:none}
 #menuView.min nav button b{font:500 13px var(--sans)}
-#menuView section{padding:26px 16px 0;scroll-margin-top:160px}
-#menuView h2{font:italic 600 30px var(--serif);color:var(--gold);margin-bottom:12px}
-[dir=rtl] #menuView h2,[dir=rtl] #menuView nav button b{font-style:normal}
+#menuView section{padding:8px 16px 0;scroll-margin-top:84px}
+#menuView h2{margin:0;font:inherit}
+#menuView .acch{display:flex;align-items:center;gap:12px;width:100%;padding:16px 4px;text-align:start;border-bottom:1px solid rgba(211,201,148,.3)}
+#menuView .acch .nm{flex:1;font:italic 600 28px/1.15 var(--serif);color:var(--gold)}
+#menuView .acch small{font-size:13px;opacity:.88}
+#menuView .acch .chev{flex:none;width:10px;height:10px;margin-inline:4px;border:solid var(--gold);border-width:0 1.5px 1.5px 0;transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s}
+#menuView section.open .chev{transform:rotate(-135deg) translate(-2px,-2px)}
+#menuView .items{padding-top:12px}
+#menuView section:not(.open) .items{display:none}
+#menuView section.open .items{animation:fade .35s both}
+#menuView .totop{position:fixed;inset-inline-end:16px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:6;width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);background:#10211af2;color:var(--gold);display:grid;place-items:center;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s,transform .25s;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+#menuView .totop.on{opacity:1;transform:none;pointer-events:auto}
+#menuView .totop svg{width:20px;height:20px}
+[dir=rtl] #menuView .acch .nm,[dir=rtl] #menuView nav button b{font-style:normal}
 #menuView .card{display:grid;grid-template-columns:104px 1fr;gap:14px;padding:10px;margin-bottom:10px;background:#ffffff0a;border-radius:26px 8px 26px 26px}
 #menuView .ph{height:104px;border-radius:20px 6px 20px 20px;display:grid;place-items:center;font:600 34px var(--serif);color:#d3c99499;background:linear-gradient(135deg,#3b6340,#2a4a2f);border:1px solid #d3c99440;background-size:cover;background-position:center}
 #menuView .card h3{font:600 20px/1.2 var(--serif)}
-#menuView .card p{font-size:12px;opacity:.6;margin:4px 0 8px}
-#menuView .card b{font:500 15px var(--sans);color:var(--gold)}
-#menuView .tax{font-size:11px;opacity:.6;text-align:center;padding:28px 20px calc(60px + env(safe-area-inset-bottom,0px))}
+#menuView .card p{font:400 13.5px/1.55 var(--sans);color:#e6e0cb;opacity:1;margin:5px 0 10px}
+#menuView .card .pr{display:inline-block;margin-top:2px;padding:5px 14px;border-radius:99px;background:rgba(211,201,148,.24);border:1.5px solid #d3c994;font:700 20px/1.2 var(--sans);color:#fff3b8;white-space:nowrap}
+#menuView .card .pr small{font:500 13px var(--sans);opacity:.95;margin-inline-start:3px}
+#menuView .tax{font-size:13px;opacity:.85;text-align:center;padding:28px 20px calc(60px + env(safe-area-inset-bottom,0px))}
 body.is-menu #homeView{display:none}
 body.is-menu #menuView{display:block}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--forest);z-index:10}
@@ -156,8 +197,12 @@ body.leaving #homeView .rows{transform:translateY(28px);opacity:0}
       <button class="o" data-go="booking-event" data-l="2"><i class="th" style="background-image:url(bg-3.jpg)"></i><span><b data-t="evT"></b><span class="s" data-t="evS"></span></span></button>
     </div></div>
   </nav>
-  <footer class="foot"><div class="fl"><a class="pill" href="https://wa.me/201040311118" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg><span dir="ltr">001040311118</span></a><a class="pill" href="https://wa.me/201040311119" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg><span dir="ltr">001040311119</span></a></div><div class="fl"><a class="pill" href="https://maps.app.goo.gl/UGToXwwGqcBob4sA6" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21z'/><circle cx='12' cy='9.5' r='2.6'/></svg><span data-t="loc"></span></a><a class="pill" href="https://www.instagram.com/kanzel.lounge" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='3.5' width='17' height='17' rx='5'/><circle cx='12' cy='12' r='4'/><circle cx='17.2' cy='6.8' r='.6' fill='currentColor'/></svg><span dir="ltr">@kanzel.lounge</span></a><a class="pill" href="https://maps.app.goo.gl/UGToXwwGqcBob4sA6" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2 6.3 20.3l1.2-6.4L2.8 9.5l6.4-.8z'/></svg><span data-t="rate"></span></a></div><div class="fl"><a class="pill" href="table.html?t=1" id="guestBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='3.5' width='7' height='7' rx='1'/><rect x='13.5' y='3.5' width='7' height='7' rx='1'/><rect x='3.5' y='13.5' width='7' height='7' rx='1'/><path d='M14 14h2.5v2.5H14zM19 14v.01M14 19.5h.01M17 19.5h3.5V17'/></svg><span data-t="guest"></span></a><a class="pill" href="waiter.html" id="waiterBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M6 3v6a2 2 0 004 0V3M8 3v18M17 21V3c-2.2 1.2-3.5 3.8-3.5 7v3H17'/></svg><span data-t="waiter"></span></a><a class="pill" href="reception.html" id="recBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='5' width='17' height='15' rx='2'/><path d='M8 3v4M16 3v4M3.5 10h17'/></svg><span data-t="reception"></span></a><a class="pill" href="admin.html" id="adminBtn"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 7h10M18 7h2M4 17h2M10 17h10'/><circle cx='16' cy='7' r='2'/><circle cx='8' cy='17' r='2'/></svg><span data-t="admin"></span></a></div></footer>
+  <footer class="foot"><div class="fl"><button type="button" class="pill" id="waBtn" aria-haspopup="dialog"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg><span data-t="wa"></span></button></div><div class="fl"><a class="pill" href="https://maps.app.goo.gl/UGToXwwGqcBob4sA6" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21z'/><circle cx='12' cy='9.5' r='2.6'/></svg><span data-t="loc"></span></a><a class="pill" href="https://www.instagram.com/kanzel.lounge" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='3.5' width='17' height='17' rx='5'/><circle cx='12' cy='12' r='4'/><circle cx='17.2' cy='6.8' r='.6' fill='currentColor'/></svg><span dir="ltr">@kanzel.lounge</span></a><a class="pill" href="https://maps.app.goo.gl/UGToXwwGqcBob4sA6" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2 6.3 20.3l1.2-6.4L2.8 9.5l6.4-.8z'/></svg><span data-t="rate"></span></a></div><div class="fl"></div></footer>
 </main>
+<div class="wsheet" id="waSheet" role="dialog" aria-modal="true" aria-labelledby="waT" hidden><div class="wbd" data-x></div><div class="wpn"><h3 id="waT"></h3><p id="waP"></p>
+ <a class="wnum" dir="ltr" href="https://wa.me/201040311118" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg><span>010 4031 1118</span></a>
+ <a class="wnum" dir="ltr" href="https://wa.me/201040311119" target="_blank" rel="noopener"><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M12.04 2a9.9 9.9 0 00-8.43 15.1L2 22l5.05-1.32A9.9 9.9 0 1012.04 2zm0 1.8a8.1 8.1 0 11-4.2 15.03l-.3-.18-3 .78.8-2.92-.2-.31A8.1 8.1 0 0112.04 3.8zM8.6 7.6c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.15s.93 2.5 1.06 2.67c.13.17 1.8 2.86 4.45 3.9 2.2.87 2.65.7 3.13.65.48-.04 1.54-.63 1.76-1.24.22-.6.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.67.85-.82 1.02-.15.18-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.55-1.45-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.59-1.43-.81-1.95-.21-.5-.43-.44-.59-.45z'/></svg><span>010 4031 1119</span></a>
+ <button type="button" class="wx" data-x id="waX"></button></div></div>
 <div class="toast" id="toast" role="status"></div></div>
 <div id="menuView"><div class="wrap" id="app">
   <div class="bar">
@@ -169,13 +214,14 @@ body.leaving #homeView .rows{transform:translateY(28px);opacity:0}
   <nav id="mnav" aria-label="Categories"></nav>
   <div id="mlist"></div>
   <p class="tax" id="mtax"></p>
-</div></div>
+</div><button type="button" class="totop" id="mtop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button></div>
 <script src="menu.js"></script>
 <script src="kz.js"></script>
+<script src="dish.js"></script>
 <script>
 let lang=(()=>{try{return localStorage.getItem("kanzel-lang")==="ar"?"ar":"en"}catch(e){return "en"}})(),skipR=false,busy=false;
 const view=()=>document.body.classList.contains("is-menu");
-function route(){const m=location.hash==="#menu";document.body.classList.toggle("is-menu",m);
+function route(){if(window.KZX)KZX.reset();const m=location.hash==="#menu";document.body.classList.toggle("is-menu",m);
  const v=document.querySelector("video.bg");if(v){if(m)v.pause();else{const p=v.play();if(p&&p.catch)p.catch(()=>{})}}
  if(m){if(skipR)skipR=false;else renderMenu()}else{applyHome();document.body.classList.remove("leaving");$("#menuView").classList.remove("out");const h=$("#homeView");h.classList.add("homein");setTimeout(()=>h.classList.remove("homein"),700)}scrollTo(0,0)}
 function toggleLang(e){const b=e&&e.currentTarget,sv=b&&b.querySelector("svg");
@@ -188,16 +234,16 @@ addEventListener("hashchange",route);
 /* ---------- HOME ---------- */
 const HT={
  ar:{tag:"المكان اللي بتبدأ فيه الليلة",menu:"المنيو",menuS:"من الفطار للجريل",book:"احجز",bookS:"ترابيزة أو مناسبة",
-  regT:"ترابيزة عادية",regS:"عشاء أو قعدة مع الأصحاب",evT:"مناسبة",evS:"عيد ميلاد، خطوبة، أو تجمّع خاص",loc:"الموقع",rate:"قيّمنا على جوجل",soon:"الصفحة دي هنبنيها في الخطوة الجاية",guest:"صفحة الضيف (تجريبي)",waiter:"صفحة الويتر",reception:"الريسبشن",admin:"لوحة المالك",btn:"EN"},
+  regT:"ترابيزة عادية",regS:"عشاء أو قعدة مع الأصحاب",evT:"مناسبة",evS:"عيد ميلاد، خطوبة، أو تجمّع خاص",wa:"كلمنا على واتساب",waT:"اختار رقم واتساب",waP:"الرقمين شغالين، اختار اللي يريحك.",close:"إغلاق",loc:"الموقع",rate:"قيّمنا على جوجل",soon:"الصفحة دي هنبنيها في الخطوة الجاية",btn:"EN"},
  en:{tag:"Where the night begins",menu:"Menu",menuS:"From breakfast to the grill",book:"Book",bookS:"A table or an occasion",
-  regT:"Regular table",regS:"Dinner or a night out with friends",evT:"Occasion",evS:"Birthdays, engagements, private gatherings",loc:"Location",rate:"Rate us on Google",soon:"We’ll build this page next",guest:"Guest page (test)",waiter:"Waiter page",reception:"Reception",admin:"Owner dashboard",btn:"عربي"}
+  regT:"Regular table",regS:"Dinner or a night out with friends",evT:"Occasion",evS:"Birthdays, engagements, private gatherings",wa:"Chat on WhatsApp",waT:"Choose a WhatsApp number",waP:"Both numbers are active. Pick whichever you like.",close:"Close",loc:"Location",rate:"Rate us on Google",soon:"We’ll build this page next",btn:"عربي"}
 };
 const $=s=>document.querySelector(s),layers=[...document.querySelectorAll(".bgl")],
  toast=$("#toast"),mn=$("#mn"),bk=$("#bk");let tm;
 function applyHome(){const d=HT[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
  document.querySelectorAll("#homeView [data-t]").forEach(e=>e.textContent=d[e.dataset.t]);$("#lang").setAttribute("aria-label",d.btn==="EN"?"English":"العربية");$("#lang").title=d.btn==="EN"?"English":"العربية"}
 $("#lang").onclick=toggleLang;
-["#guestBtn","#waiterBtn","#recBtn","#adminBtn"].forEach(q=>$(q).addEventListener("click",()=>{try{localStorage.setItem("kanzel-lang",lang)}catch(e){}}));
+
 const show=i=>layers.forEach((e,j)=>e.style.opacity=j===i-1?1:0),rest=()=>show(bk.classList.contains("open")?2:0);
 function soon(){toast.textContent=HT[lang].soon;toast.classList.add("on");clearTimeout(tm);tm=setTimeout(()=>toast.classList.remove("on"),2200)}
 ["pointerenter","focus"].forEach(v=>mn.addEventListener(v,()=>show(1)));
@@ -219,30 +265,48 @@ bk.onclick=()=>{const o=bk.classList.toggle("open");bk.setAttribute("aria-expand
 document.querySelectorAll(".o").forEach(b=>{
  b.addEventListener("pointerenter",()=>show(+b.dataset.l+1));
  b.addEventListener("focus",()=>show(+b.dataset.l+1));
- b.onclick=()=>{try{localStorage.setItem("kanzel-lang",lang)}catch(e){}location.href=b.dataset.go==="booking-regular"?"booking.html":"events.html"}});
+ b.onclick=()=>{try{localStorage.setItem("kanzel-lang",lang)}catch(e){}location.href=b.dataset.go==="booking-regular"?"/booking":"/events"}});
 document.querySelector(".sub").addEventListener("pointerleave",rest);
 document.querySelector("video.bg").muted=true;
+
+/* WhatsApp chooser */
+(function(){const sh=$("#waSheet"),b=$("#waBtn");if(!sh||!b)return;
+ const open=()=>{const d=HT[lang];$("#waT").textContent=d.waT;$("#waP").textContent=d.waP;$("#waX").textContent=d.close;sh.hidden=false;sh.querySelector(".wnum").focus()};
+ const shut=()=>{sh.hidden=true;b.focus()};
+ b.onclick=open;sh.addEventListener("click",e=>{if(e.target.closest("[data-x]")||e.target.closest(".wnum"))shut()});
+ addEventListener("keydown",e=>{if(e.key==="Escape"&&!sh.hidden)shut()})})();
 /* ---------- MENU ---------- */
-const MT={en:{h1:"Menu",sub:"Prices in EGP",tax:"Plus 12% service and 14% tax",one:"dish",many:"dishes",egp:"EGP",btn:"عربي",back:"Back"},
- ar:{h1:"المنيو",sub:"الأسعار بالجنيه المصري",tax:"الأسعار + 12% خدمة و14% ضريبة",one:"صنف",many:"أصناف",egp:"ج.م",btn:"EN",back:"رجوع"}};
-const app=$("#app"),nav=$("#mnav");let secs=[],bs=[];
+const MT={en:{h1:"Menu",sub:"Prices in EGP",tax:"Plus 12% service and 14% tax",one:"dish",many:"dishes",egp:"EGP",btn:"عربي",back:"Back",top:"Back to top"},
+ ar:{h1:"المنيو",sub:"الأسعار بالجنيه المصري",tax:"الأسعار + 12% خدمة و14% ضريبة",one:"صنف",many:"أصناف",egp:"ج.م",btn:"EN",back:"رجوع",top:"رجوع لفوق"}};
+const app=$("#app"),nav=$("#mnav"),mv0=$("#menuView");let secs=[],bs=[],openK=-1;
 function renderMenu(){const t=MT[lang],i=lang==="ar"?1:0;
  document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
  $("#mh1").textContent=t.h1;$("#msub").textContent=t.sub;$("#mtax").textContent=t.tax;$("#mlang").setAttribute("aria-label",t.btn==="EN"?"English":"العربية");$("#mback").setAttribute("aria-label",t.back);
  nav.innerHTML=MENU.map((m,k)=>{const h=140+k*4,l=16+(k%4)*3,c=m[2].length;
   return`<button style="--c:${Math.min(k,8)};background:linear-gradient(150deg,hsl(${h} 32% ${l+6}%),hsl(${h} 38% ${l}%))"><span>${m[i][0]}</span><b>${m[i]}</b><small>${c} ${c===1?t.one:t.many}</small></button>`}).join("");
- $("#mlist").innerHTML=!MENU.length?`<p class="emptyM">${lang==="ar"?"المنيو بيتحدّث دلوقتي. جرّب كمان شوية.":"The menu is being updated. Please check back soon."}</p>`:MENU.map((m,k)=>`<section><h2>${m[i]}</h2>${m[2].map((x,j)=>`<div class="card" style="--i:${Math.min(j+k*2,7)}"><div class="ph"${x[5]?` style="background-image:url('${x[5]}')"`:""}>${x[5]?"":"K"}</div><div><h3>${x[i]}</h3><p>${x[i+3]}</p><b>${x[2].toLocaleString("en")} ${t.egp}</b></div></div>`).join("")}</section>`).join("");
+ $("#mlist").innerHTML=!MENU.length?`<p class="emptyM">${lang==="ar"?"المنيو بيتحدّث دلوقتي. جرّب كمان شوية.":"The menu is being updated. Please check back soon."}</p>`:MENU.map((m,k)=>`<section><h2><button type="button" class="acch" aria-expanded="false"><span class="nm">${m[i]}</span><small>${m[2].length}</small><i class="chev"></i></button></h2><div class="items">${m[2].map((x,j)=>`<div class="card" data-k="${k}" data-j="${j}" data-s="${KZX.hay(m[0],m[1],x[0],x[1],x[3],x[4])}" style="--i:${Math.min(j,7)}"><div class="ph"${x[5]?` style="background-image:url('${x[5]}')"`:""}>${x[5]?"":"K"}</div><div><h3>${x[i]}</h3><p>${x[i+3]}</p><b class="pr">${x[2].toLocaleString("en")}<small>${t.egp}</small></b></div></div>`).join("")}</div></section>`).join("");
+ $("#mtop").setAttribute("aria-label",t.top);openK=-1;
  secs=[...document.querySelectorAll("#menuView section")];bs=[...nav.children];
- bs.forEach((b,k)=>b.onclick=()=>secs[k].scrollIntoView());spy()}
-function spy(){if(!view())return;const y=scrollY;if(y>160)app.classList.add("min");else if(y<60)app.classList.remove("min");
- let a=0;secs.forEach((s,k)=>{if(s.getBoundingClientRect().top<170)a=k});
- bs.forEach((b,k)=>b.classList.toggle("on",k===a));
- if(spy.a!==a){spy.a=a;bs[a]&&bs[a].scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})}}
+ secs.forEach((sc,k)=>sc.querySelector(".acch").onclick=()=>openSec(k,false));
+ bs.forEach((b,k)=>b.onclick=()=>openSec(k,true));KZX.setLang(lang);KZX.reapply();spy()}
+/* one category open at a time; the bar stays pinned while you scroll */
+function openSec(k,force){const want=force?true:!secs[k].classList.contains("open");
+ secs.forEach((sc,j)=>{const o=j===k&&want;sc.classList.toggle("open",o);sc.querySelector(".acch").setAttribute("aria-expanded",o)});
+ openK=want?k:-1;paintNav();
+ if(want)requestAnimationFrame(()=>secs[k].scrollIntoView({block:"start"}))}
+function paintNav(){bs.forEach((b,k)=>b.classList.toggle("on",k===openK));if(openK>=0&&bs[openK])bs[openK].scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})}
+function spy(){if(!view())return;const y=scrollY;if(y>160)mv0.classList.add("min");else if(y<60)mv0.classList.remove("min");
+ $("#mtop").classList.toggle("on",y>500)}
+$("#mtop").onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});
 addEventListener("scroll",spy,{passive:true});
 $("#mlang").onclick=toggleLang;
 $("#mback").onclick=e=>{e.preventDefault();
  if(matchMedia("(prefers-reduced-motion:reduce)").matches){location.hash="";return}
  const mv=$("#menuView");mv.classList.add("out");setTimeout(()=>{location.hash=""},330)};
+KZX.init({list:"#mlist",nav:"#mnav"});
+$("#mlist").addEventListener("click",e=>{const c=e.target.closest(".card");if(!c)return;
+ const x=MENU[+c.dataset.k][2][+c.dataset.j],ar=lang==="ar",t=MT[lang];
+ KZX.open({img:x[5]||"",title:x[ar?1:0],desc:x[ar?4:3],price:x[2].toLocaleString("en")+"<small>"+t.egp+"</small>"})});
 route();
 </script>
 </body>
