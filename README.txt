@@ -1,4 +1,4 @@
-Kanzel site v26  ->  https://kanzel-eg.vercel.app
+Kanzel site v28  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -25,3 +25,7 @@ v24 design pass: text-only rows for dishes without a photo, compact cards (78px 
 v25: fixed home buttons failing when pages are opened without a server (file://) or when dish.js is missing/stale; links now use index.html/booking.html style paths on file:// and clean URLs on a host.
 
 v26: all internal links now use ./booking.html style paths, so they work on any static host (no clean-URL rewrite needed) and when opened as files.
+
+v27 home: live open/closed status (Cairo time, 10 AM-3 AM), time-based tagline, slow "From our kitchen" dish strip (tap opens the dish in the menu), logo shine, film grain, staggered entrance, round icon row for WhatsApp/location/Instagram/Google.
+
+v29: videos moved to video/ (like img/ for images). v28 video: new 720p videos (watermark cropped out). Home background changes by Cairo time: morning (6-12) home-morning.mp4, day (12-18) home-day.mp4, night home-night.mp4. Booking uses band-day.mp4 and events band-night.mp4 as a soft header band. Old bg.mp4 removed. Poster jpgs sit next to each video.

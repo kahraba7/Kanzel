@@ -140,10 +140,15 @@ body.lswap #bookView .bh,body.lswap #bookView .pane{opacity:0;transform:translat
 #bookView.anim .need li{animation:chip .5s calc(.65s + var(--i,0)*.06s) cubic-bezier(.2,.7,.2,1) both}
 #bookView.anim .rl{animation:up .65s calc(.9s + var(--i,0)*.09s) cubic-bezier(.2,.7,.2,1) both}
 @media(prefers-reduced-motion:reduce){#bookView *,#bookView,.spin{animation:none!important}}
+#bookView .bwrap{position:relative;isolation:isolate}
+#bookView .hvw{position:absolute;inset:0 0 auto 0;height:320px;z-index:-1;overflow:hidden;pointer-events:none;background-size:cover;background-position:center;background-blend-mode:multiply;background-color:#10211a;-webkit-mask-image:linear-gradient(#000 35%,transparent);mask-image:linear-gradient(#000 35%,transparent)}
+#bookView .hvw video{width:100%;height:100%;object-fit:cover;opacity:.3;filter:brightness(.75) saturate(.9)}
+#bookView .hvw::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,33,26,.55),rgba(16,33,26,.15) 70%)}
+@media(prefers-reduced-motion:reduce){#bookView .hvw video{display:none}}
 </style>
 </head>
 <body>
-<div id='bookView'><div class='bwrap'>
+<div id='bookView'><div class='bwrap'><div class='hvw' style="background-image:url(video/band-day.jpg)" aria-hidden='true'><video src='video/band-day.mp4' poster='video/band-day.jpg' muted loop autoplay playsinline></video></div>
  <div class='bbar'>
   <a class='lang' id='bback' href='/' aria-label='Back'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M15 5l-7 7 7 7'/></svg></a>
   <img id='bimg' src='logo.png' alt='Kanzel Restaurant &amp; Lounge'>
