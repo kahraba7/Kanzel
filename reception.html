@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="staff.css">
 <style>
 .tq{display:flex;gap:14px;align-items:flex-start}.tq canvas{width:104px;height:auto;border-radius:10px;flex:none;background:#10211a}
-.tq .in{flex:1;min-width:0}.tq .u{margin-top:8px;font-size:11.5px;color:rgba(244,239,221,.65);word-break:break-all;direction:ltr;text-align:start}
+.tq .in{flex:1;min-width:0}.tq .u{margin-top:8px;font-size:12.5px;color:rgba(244,239,221,.88);word-break:break-all;direction:ltr;text-align:start}
 #printArea{display:none}
 @media print{@page{size:A4;margin:0}html,body{background:#fff!important}body>*:not(#printArea){display:none!important}
  #printArea{display:grid!important;grid-template-columns:1fr 1fr;gap:8mm;padding:8mm}#printArea img{width:100%;display:block;break-inside:avoid}}
@@ -117,7 +117,7 @@ function drawCard(label,url,sc){const W=1000,H=1400,c=document.createElement("ca
  x.textAlign="center";x.fillStyle="#d3c994";x.font='500 32px "Readex Pro",system-ui,sans-serif';try{x.letterSpacing="8px"}catch(e){}x.fillText("TABLE · ترابيزة",W/2,1084);try{x.letterSpacing="0px"}catch(e){}
  let fs=150;const f=n=>'600 '+n+'px "Cormorant Garamond",Georgia,serif';x.font=f(fs);while(x.measureText(label).width>780&&fs>40){fs-=6;x.font=f(fs)}
  x.fillStyle="#f4efdd";x.fillText(label,W/2,1084+Math.round(fs*.9)+14);
- x.fillStyle="rgba(244,239,221,.75)";x.font='300 30px "Readex Pro",system-ui,sans-serif';x.fillText("Scan to order · امسح واطلب",W/2,H-86);return c}
+ x.fillStyle="rgba(244,239,221,.88)";x.font='300 30px "Readex Pro",system-ui,sans-serif';x.fillText("Scan to order · امسح واطلب",W/2,H-86);return c}
 const isDup=(l,id)=>TB.some(t=>t.id!==id&&t.label.trim().toLowerCase()===l.trim().toLowerCase());
 function tCard(tb){const t=T[lang],bad=!tb.label.trim()||isDup(tb.label,tb.id);
  return`<div class="card" data-tid="${esc(tb.id)}"><div class="tq"><canvas data-prev="${esc(tb.id)}" width="220" height="308" role="img" aria-label="QR ${esc(tb.label)}"></canvas>

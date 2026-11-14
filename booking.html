@@ -62,11 +62,11 @@ button:focus-visible,.ig:focus-visible,a:focus-visible{outline:2px solid var(--g
 #bookView .lang{cursor:pointer;color:var(--gold);text-decoration:none}
 #bookView #bback svg{width:18px;height:18px}
 [dir=rtl] #bookView #bback svg{transform:scaleX(-1)}
-#bookView .bh{padding:18px 20px 6px}
-#bookView .bh h1{font:600 36px/1.05 var(--serif)}
+#bookView .bh{padding:10px 20px 4px}
+#bookView .bh h1{font:600 30px/1.05 var(--serif)}
 #bookView .bh h1::after{content:'';display:block;height:1.5px;width:56px;background:var(--gold);margin-top:10px;transform-origin:left}
 [dir=rtl] #bookView .bh h1::after{transform-origin:right}
-#bookView .bh p{font-size:13px;opacity:.65;margin-top:6px}
+#bookView .bh p{font-size:13px;opacity:.85;margin-top:6px}
 #bookView .steps{display:flex;gap:6px;padding:14px 20px 4px}
 #bookView .steps i{flex:1;height:3px;border-radius:3px;background:rgba(211,201,148,.2);position:relative;overflow:hidden}
 #bookView .steps i::after{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
@@ -76,17 +76,18 @@ button:focus-visible,.ig:focus-visible,a:focus-visible{outline:2px solid var(--g
 #bookView .pane.on{display:block;animation:paneIn .5s cubic-bezier(.2,.7,.2,1) backwards}
 @keyframes paneIn{from{opacity:0;transform:translateX(calc(26px*var(--dx,1)))}}
 #bookView .bi{font-size:14px;line-height:1.7;color:rgba(244,239,221,.85)}
-#bookView .need{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-#bookView .need li{display:flex;align-items:center;gap:8px;padding-block:7px;padding-inline:8px 14px;border:1px solid rgba(211,201,148,.35);border-radius:99px;font-size:12.5px}
-#bookView .need b{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--forest);display:grid;place-items:center;font:500 11px var(--sans)}
-#bookView .bp{font:italic 600 28px var(--serif);color:var(--gold);margin:28px 0 12px}
+#bookView .need{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;list-style:none;padding:0}
+#bookView .need li{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--gold)}
+#bookView .need li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex:none}
+#bookView .need b{display:none}
+#bookView .bp{font:italic 600 24px var(--serif);color:var(--gold);margin:22px 0 10px}
 [dir=rtl] #bookView .bp{font-style:normal}
-#bookView .rl{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.04);border:1px solid rgba(211,201,148,.12);border-radius:24px 8px 24px 24px}
-#bookView .ri{width:44px;height:44px;border-radius:14px 5px 14px 14px;display:grid;place-items:center;background:linear-gradient(135deg,#3b6340,#2a4a2f);border:1px solid rgba(211,201,148,.25);color:var(--gold)}
-#bookView .ri svg{width:22px;height:22px}
-#bookView .rl h3{font:600 19px/1.2 var(--serif)}
+#bookView .rl{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:12px;margin-bottom:8px;background:rgba(255,255,255,.04);border:1px solid rgba(211,201,148,.12);border-radius:18px}
+#bookView .ri{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#3b6340,#2a4a2f);border:1px solid rgba(211,201,148,.25);color:var(--gold)}
+#bookView .ri svg{width:20px;height:20px}
+#bookView .rl h3{font:600 17px/1.25 var(--serif)}
 #bookView .rl p{font-size:13.5px;line-height:1.5;margin-top:4px;color:rgba(244,239,221,.85)}
-#bookView .rl small{display:block;font-size:12px;opacity:.6;margin-top:4px}
+#bookView .rl small{display:block;font-size:12.5px;opacity:.8;margin-top:4px}
 #bookView .bq{margin-top:18px;font-size:12.5px;text-align:center;opacity:.85;line-height:1.8}
 #bookView .cta{position:sticky;bottom:14px;padding-top:22px;margin-top:8px;display:grid;gap:10px;justify-items:center;background:linear-gradient(180deg,transparent,var(--forest) 30%)}
 #bookView .btn{width:100%;padding:16px 20px;border-radius:99px;border:0;background:var(--gold);color:var(--forest);font:500 16px var(--sans);cursor:pointer;transition:transform .2s,box-shadow .3s}
@@ -94,7 +95,7 @@ button:focus-visible,.ig:focus-visible,a:focus-visible{outline:2px solid var(--g
 #bookView .btn:active{transform:scale(.97)}
 #bookView .lnk{background:none;border:0;color:var(--gold);font:300 13px var(--sans);padding:6px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(211,201,148,.5)}
 #bookView .fld{margin-bottom:16px}
-#bookView label,#bookView .lb{display:block;font-size:12.5px;color:rgba(244,239,221,.7);margin-bottom:7px}
+#bookView label,#bookView .lb{display:block;font-size:12.5px;color:rgba(244,239,221,.88);margin-bottom:7px}
 #bookView input,#bookView select{display:block;width:100%;height:52px;min-height:52px;padding:0 16px;border-radius:18px 6px 18px 18px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);color:var(--cream);font:400 16px var(--sans);outline:0;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;appearance:none}
 #bookView select{background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23d3c994%27 stroke-width=%271.6%27 stroke-linecap=%27round%27%3E%3Cpath d=%27M6 9l6 6 6-6%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-size:18px;background-position:right 16px center;padding-inline-end:44px}
 [dir=rtl] #bookView select{background-position:left 16px center}
@@ -123,7 +124,7 @@ button:focus-visible,.ig:focus-visible,a:focus-visible{outline:2px solid var(--g
 #bookView .sum{border:1px solid rgba(211,201,148,.25);border-radius:24px 8px 24px 24px;background:rgba(255,255,255,.04);padding:6px 16px}
 #bookView .sum div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid rgba(211,201,148,.15);font-size:14px}
 #bookView .sum div:first-child{border-top:0}
-#bookView .sum span{opacity:.6}
+#bookView .sum span{opacity:.8}
 #bookView .sum b{font-weight:400;text-align:end}
 #bookView.out{animation:mout .33s ease forwards}
 #bookView .bh,#bookView .pane{transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s}
