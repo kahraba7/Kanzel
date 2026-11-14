@@ -219,6 +219,7 @@ body.leaving #homeView .rows{transform:translateY(28px);opacity:0}
 <script src="menu.js"></script>
 <script src="kz.js"></script>
 <script src="dish.js"></script>
+<script>window.KZX=window.KZX||{hay:function(){return""},init:function(){},setLang:function(){},reapply:function(){},open:function(){},refresh:function(){},reset:function(){},close:function(){}}</script>
 <script>
 let lang=(()=>{try{return localStorage.getItem("kanzel-lang")==="ar"?"ar":"en"}catch(e){return "en"}})(),skipR=false,busy=false;
 const view=()=>document.body.classList.contains("is-menu");
@@ -266,7 +267,7 @@ bk.onclick=()=>{const o=bk.classList.toggle("open");bk.setAttribute("aria-expand
 document.querySelectorAll(".o").forEach(b=>{
  b.addEventListener("pointerenter",()=>show(+b.dataset.l+1));
  b.addEventListener("focus",()=>show(+b.dataset.l+1));
- b.onclick=()=>{try{localStorage.setItem("kanzel-lang",lang)}catch(e){}location.href=b.dataset.go==="booking-regular"?"/booking":"/events"}});
+ b.onclick=()=>{try{localStorage.setItem("kanzel-lang",lang)}catch(e){}location.href=KZ.url(b.dataset.go==="booking-regular"?"booking":"events")}});
 document.querySelector(".sub").addEventListener("pointerleave",rest);
 document.querySelector("video.bg").muted=true;
 

@@ -1,4 +1,4 @@
-Kanzel site v24  ->  https://kanzel-eg.vercel.app
+Kanzel site v25  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -21,3 +21,5 @@ Data (orders, bookings, menu edits, tables) is stored in each browser for now an
 Menu search + dish window (v23): dish.js is shared by / and /table. The search box sits above the category bar (Arabic and English, ignores diacritics and alef/ya/ta variants). Tapping a dish opens a detail window with the big photo, full description and price; on /table it also has the + / - order controls. /table cards now show dish photos too.
 
 v24 design pass: text-only rows for dishes without a photo, compact cards (78px photo, plain gold price), chip category bar instead of big tiles, compact header + waiter/bill buttons, home scrim + 2x2 links, booking/events policy section tightened, PIN screen (logo, no stray focus ring, bigger Home), higher text contrast.
+
+v25: fixed home buttons failing when pages are opened without a server (file://) or when dish.js is missing/stale; links now use index.html/booking.html style paths on file:// and clean URLs on a host.

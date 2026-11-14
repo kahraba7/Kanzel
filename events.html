@@ -253,8 +253,8 @@ function submit(){const t=BT[lang],g=parseInt($('#fGuests').value,10);
  if(first){first.focus();return}
  st.data=v;if(st.rid)KZ.saveList('events',KZ.list('events').filter(x=>x.id!==st.rid));st.rid=KZ.uid();KZ.push('events',{id:st.rid,ts:Date.now(),status:'new',name:v.name,occEn:lab(OCC,v.occ,2),occAr:lab(OCC,v.occ,1),guests:v.guests,date:v.date,needsAr:v.needs.map(k=>lab(NEEDS,k,1)),needsEn:v.needs.map(k=>lab(NEEDS,k,2)),notes:v.notes});fillSummary();setPane(2);openWa()}
 $('#bsubmit').onclick=submit;$('#bagain').onclick=openWa;$('#bedit').onclick=()=>setPane(1);
-function leave(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href='/';return}
- $('#bookView').classList.add('out');setTimeout(()=>{location.href='/'},330)}
+function leave(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href=KZ.url("index");return}
+ $('#bookView').classList.add('out');setTimeout(()=>{location.href=KZ.url("index")},330)}
 $('#bback').onclick=e=>{e.preventDefault();leave()};$('#bdone').onclick=leave;
 function toggleLang(e){const b=e&&e.currentTarget,sv=b&&b.querySelector('svg');
  if(sv){sv.classList.remove('spin');void sv.getBoundingClientRect();sv.classList.add('spin')}

@@ -253,8 +253,8 @@ async function bkSubmit(){const t=BT[lang],v={date:$('#fDate').value,name:$('#fN
  KZ.busy(btn,0);bkS.data=v;fillDone();setStep(3)}
 $('#bsubmit').onclick=bkSubmit;
 function bkReset(){['fDate','fName','fPhone','fTime'].forEach(id=>$('#'+id).value='');bkS.g=2;$('#gv').textContent=2;bkS.data=null;bkNote();setStep(1,true)}
-function leaveBooking(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href='/';return}
- $('#bookView').classList.add('out');setTimeout(()=>{location.href='/'},330)}
+function leaveBooking(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href=KZ.url("index");return}
+ $('#bookView').classList.add('out');setTimeout(()=>{location.href=KZ.url("index")},330)}
 $('#bback').onclick=e=>{e.preventDefault();leaveBooking()};
 $('#bdone').onclick=()=>{bkReset();leaveBooking()};
 

@@ -18,7 +18,8 @@ KZ.ago=(ts,l)=>{const m=Math.floor((Date.now()-ts)/6e4),a=l==="ar";if(m<1)return
 const reduce=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
 function fade(fn){if(reduce()){fn();return}document.body.classList.add("kz-out");setTimeout(fn,230)}
 KZ.fade=fade;
-KZ.go=p=>fade(()=>{if(KZ.embed)parent.location.hash=(p==="index"?"":p);else location.href=(p==="index"?"/":"/"+p)});
+KZ.url=p=>location.protocol==="file:"?p+".html":(p==="index"?"/":"/"+p);
+KZ.go=p=>fade(()=>{if(KZ.embed)parent.location.hash=(p==="index"?"":p);else location.href=KZ.url(p)});
 addEventListener("pageshow",e=>{if(e.persisted)document.body.classList.remove("kz-out")});
 (function(){const c=document.createElement("style");c.textContent=
 "html{overflow-x:hidden}@keyframes kzin{from{opacity:0}to{opacity:1}}body{animation:kzin .35s ease both}body.kz-out{opacity:0;transition:opacity .22s ease}"+
@@ -36,7 +37,7 @@ const L2=(en,ar)=>KZ.lang()==="ar"?ar:en;
 /* internal page links fade out before navigating */
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[href]");
  if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||a.target==="_blank"||a.hasAttribute("download"))return;
- const h=a.getAttribute("href");if(!/^\/[\w-]*(\?.*)?$/.test(h))return;e.preventDefault();fade(()=>{location.href=h})});
+ const h=a.getAttribute("href"),m=h&&h.match(/^\/([\w-]*)(\?.*)?$/);if(!m)return;e.preventDefault();fade(()=>{location.href=KZ.url(m[1]||"index")+(m[2]||"")})});
 /* offline + storage + unexpected errors */
 document.addEventListener("DOMContentLoaded",()=>{
  const b=document.createElement("div");b.className="kz-off";b.setAttribute("role","status");document.body.appendChild(b);
