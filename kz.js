@@ -18,7 +18,7 @@ KZ.ago=(ts,l)=>{const m=Math.floor((Date.now()-ts)/6e4),a=l==="ar";if(m<1)return
 const reduce=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
 function fade(fn){if(reduce()){fn();return}document.body.classList.add("kz-out");setTimeout(fn,230)}
 KZ.fade=fade;
-KZ.url=p=>location.protocol==="file:"?p+".html":(p==="index"?"/":"/"+p);
+KZ.url=p=>"./"+p+".html";
 KZ.go=p=>fade(()=>{if(KZ.embed)parent.location.hash=(p==="index"?"":p);else location.href=KZ.url(p)});
 addEventListener("pageshow",e=>{if(e.persisted)document.body.classList.remove("kz-out")});
 (function(){const c=document.createElement("style");c.textContent=
