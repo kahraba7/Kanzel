@@ -1,4 +1,4 @@
-Kanzel site v28  ->  https://kanzel-eg.vercel.app
+Kanzel site v30  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -29,3 +29,5 @@ v26: all internal links now use ./booking.html style paths, so they work on any 
 v27 home: live open/closed status (Cairo time, 10 AM-3 AM), time-based tagline, slow "From our kitchen" dish strip (tap opens the dish in the menu), logo shine, film grain, staggered entrance, round icon row for WhatsApp/location/Instagram/Google.
 
 v29: videos moved to video/ (like img/ for images). v28 video: new 720p videos (watermark cropped out). Home background changes by Cairo time: morning (6-12) home-morning.mp4, day (12-18) home-day.mp4, night home-night.mp4. Booking uses band-day.mp4 and events band-night.mp4 as a soft header band. Old bg.mp4 removed. Poster jpgs sit next to each video.
+
+v30 menu page (index.html): 4 big tabs (Food / Drinks / Desserts / Shisha) hold the 24 categories (matched by English name, edit GROUPS in index.html); each category header is a banner with its top dish photo and a line icon; the open category title stays pinned under the tabs; categories with mostly photos (Pizza, Pasta, Main Dishes...) show a 2-column big-photo grid, drink categories stay compact lists; the menu opens on a section that fits Cairo time (edit TOD): morning Breakfast, otherwise Main Dishes, drinks tab picks Hot Drinks / Fresh Juice / Virgin Cocktail; photos fade in from a blur (ph.js holds the placeholder colours) and cards rise in as they appear.
