@@ -1,4 +1,4 @@
-Kanzel site v39  ->  https://kanzel-eg.vercel.app
+Kanzel site v44  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -50,3 +50,5 @@ v40 dish sheet (dish.js + small hooks in index.html / table.html): phone Back bu
 v41 menu rail: the side photo rail fades its top/bottom edge when more categories are hidden there, centres the open category (smoothly when you tap one), and gives a small one-time scroll nudge (first 2 visits per device, stops when touched, off for reduced-motion). sw cache v27.
 v42: dish sheet for dishes without a photo - prev/next arrows moved beside the K so they no longer cover the counter and the close button. sw cache v28.
 v43 PIN screen (kz.js, used by /admin /waiter /reception): default is typing - 4 boxes, tap them and the phone's number keyboard opens (16px field, no zoom); one link switches to an on-screen keypad (clear lining numerals, round 68px keys, backspace icon) and the choice is remembered; double-tap zoom is off site-wide (touch-action:manipulation). sw cache v29.
+v44 table page (table.html): the guest menu on /table?t=N now uses the exact same menu engine and CSS as the public menu (4 tabs, photo side rail, photo rows, search, dish sheet). The only differences: the "Table N" chip instead of the Back button, the order-status banner + Call waiter / Ask for the bill buttons, and + / - controls on every dish with the "View order" bar at the bottom. Ordering, totals, confirmation screen and waiter flow are unchanged.
+v44 admin (admin.html): redesigned owner dashboard. Reports: greeting + date, big Sales card with a bar chart and change vs the previous period, "Right now" strip (active orders, open table calls), KPI cards with change arrows, highlights, top dishes with revenue, sales by category, busiest hours (peak marked), busiest days, top tables, service speed. Menu: search, collapsed dish rows (photo, name, price, availability switch) that expand to edit, counts. Settings: grouped cards, PIN fields hidden with Show, export all data and orders as CSV. Works on phone and desktop, English and Arabic. sw cache v30.

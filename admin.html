@@ -17,6 +17,178 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="staff.css">
+<style>
+/* ===== Owner dashboard (v44) ===== */
+:root{--line:rgba(211,201,148,.2);--line2:rgba(211,201,148,.38);--mut:rgba(244,239,221,.72);--card:#ffffff0a}
+.wrap{max-width:1040px}
+.bar,.mh{max-width:1040px;margin:0 auto}
+.mh h1{font-size:clamp(34px,9vw,46px)}
+.mh p{font-size:14px;color:var(--mut)}
+.mh .dt{display:block;margin-top:2px;font-size:12.5px;opacity:.8}
+
+/* main navigation: sticky segmented control with icons */
+.anav{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;margin-top:14px;padding:10px 16px;background:rgba(16,33,26,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
+.anav.stuck{border-bottom-color:var(--line)}
+.anav .in{max-width:680px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:99px;background:#ffffff0d;border:1px solid var(--line)}
+.anav button{display:flex;align-items:center;justify-content:center;gap:8px;height:42px;border-radius:99px;font-size:14px;color:var(--mut);transition:background .2s,color .2s}
+.anav button svg{width:18px;height:18px;flex:none}
+.anav button.on{background:var(--gold);color:var(--forest);font-weight:500}
+.page{max-width:680px;margin:0 auto}
+.page.wide{max-width:1040px}
+
+/* range chips */
+.chips{display:flex;gap:6px;padding:16px 16px 0;overflow-x:auto;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 15px;border-radius:99px;border:1px solid var(--line2);font-size:13px;color:var(--mut);transition:background .2s}
+.chip.on{background:#d3c9942b;color:var(--gold);border-color:var(--gold)}
+.sp{flex:1}
+
+/* hero: sales */
+.hero2{position:relative;margin:14px 16px 0;padding:20px 20px 16px;border-radius:30px 10px 30px 30px;border:1px solid var(--line2);background:radial-gradient(120% 140% at 0% 0%,rgba(211,201,148,.2),rgba(211,201,148,.04) 55%,transparent),#ffffff08;overflow:hidden}
+.hero2 .k{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+[dir=rtl] .hero2 .k{letter-spacing:0;font-size:13px;text-transform:none}
+.hero2 .big{display:flex;align-items:baseline;gap:8px;margin-top:8px;font:500 clamp(44px,13vw,64px)/1 var(--serif);color:var(--cream);font-variant-numeric:lining-nums}
+.hero2 .big small{font:400 14px var(--sans);color:var(--mut);letter-spacing:.06em}
+.hero2 .sub2{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:13px;color:var(--mut)}
+.dl{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font:500 12.5px var(--sans);background:#ffffff12;color:var(--mut)}
+.dl.up{background:rgba(143,209,158,.16);color:var(--ok)}.dl.dn{background:rgba(229,154,143,.16);color:var(--bad)}
+.dl svg{width:11px;height:11px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:92px;margin-top:18px;direction:ltr}
+.spark i{flex:1;min-width:2px;border-radius:5px 5px 2px 2px;background:rgba(211,201,148,.34);transition:background .2s,height .5s cubic-bezier(.2,.7,.2,1)}
+.spark i.pk{background:var(--gold)}
+.spark i.z{background:rgba(211,201,148,.12)}
+.spark i.now{box-shadow:0 0 0 1.5px var(--gold) inset}
+.sax{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--mut);direction:ltr}
+.hero2 .empty-s{margin-top:14px;font-size:13px;color:var(--mut)}
+
+/* live strip */
+.live{margin:12px 16px 0;padding:12px 14px;border-radius:20px;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.live .lt{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+[dir=rtl] .live .lt{letter-spacing:0;font-size:13px;text-transform:none}
+.live .lv{display:flex;align-items:center;gap:7px;font-size:13.5px}
+.live .lv b{font:500 18px var(--serif);color:var(--gold)}
+.live .pd{width:8px;height:8px;border-radius:50%;background:rgba(244,239,221,.3)}
+.live .pd.on{background:var(--ok);animation:pl 1.4s infinite}
+@keyframes pl{50%{opacity:.3;transform:scale(.7)}}
+.live a{margin-inline-start:auto;font-size:12.5px;color:var(--gold);border-bottom:1px solid var(--line2);padding-bottom:1px}
+
+/* KPI cards */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px 16px 0}
+.kpi{position:relative;padding:14px 14px 13px;border-radius:22px 8px 22px 22px;border:1px solid var(--line);background:var(--card)}
+.kpi .ic{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#d3c9941f;color:var(--gold)}
+.kpi .ic svg{width:17px;height:17px}
+.kpi b{display:block;margin-top:10px;font:500 30px/1 var(--serif);color:var(--cream)}
+.kpi span{display:block;margin-top:4px;font-size:12.5px;color:var(--mut)}
+.kpi .dl{position:absolute;top:12px;inset-inline-end:12px;padding:2px 8px;font-size:11.5px}
+
+/* panels */
+.grid2{display:grid;grid-template-columns:1fr;gap:0;align-items:start}
+.pnl{margin:12px 16px 0;padding:16px 16px 14px;border-radius:24px;border:1px solid var(--line);background:var(--card)}
+.pnl h2{display:flex;align-items:center;justify-content:space-between;gap:10px;font:500 24px/1.1 var(--serif);margin-bottom:12px}
+.pnl h2 small{font:400 12px var(--sans);color:var(--mut)}
+.pnl .hint{margin-top:10px;font-size:12.5px;color:var(--mut)}
+.pnl .none{padding:14px 4px;text-align:center;font-size:13px;color:var(--mut)}
+.rk{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.rk:first-of-type{border-top:0;padding-top:2px}
+.rk .n{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#ffffff10;font:500 11.5px var(--sans);color:var(--mut)}
+.rk:nth-of-type(-n+3) .n{background:var(--gold);color:var(--forest)}
+.rk .nm{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk .v{font:500 13.5px var(--sans);color:var(--gold);text-align:end;white-space:nowrap}
+.rk .tr{grid-column:2/-1;height:5px;border-radius:99px;background:#ffffff12;overflow:hidden}
+.rk .tr i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,rgba(211,201,148,.55),var(--gold))}
+.rk .sv{grid-column:2/-1;font-size:11.5px;color:var(--mut);margin-top:-2px}
+
+/* stacked share bar */
+.share{display:flex;height:14px;border-radius:99px;overflow:hidden;gap:2px;direction:ltr}
+.share i{display:block;height:100%}
+.leg{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:14px}
+.leg div{display:flex;align-items:center;gap:8px;font-size:12.5px;min-width:0}
+.leg i{flex:none;width:9px;height:9px;border-radius:3px}
+.leg span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.leg b{font-weight:500;color:var(--gold)}
+
+/* hour + weekday charts */
+.cols{display:flex;align-items:flex-end;gap:3px;height:110px;direction:ltr}
+.cols>div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;min-width:0}
+.cols i{display:block;width:100%;border-radius:5px 5px 2px 2px;background:rgba(211,201,148,.34);min-height:3px}
+.cols .pk i{background:var(--gold)}.cols .z i{background:rgba(211,201,148,.12)}
+.cols span{margin-top:6px;font-size:10px;color:var(--mut);height:13px;white-space:nowrap}
+.cols.wk{gap:8px}.cols.wk span{font-size:11.5px}
+.callout{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;border-radius:14px;background:#d3c9941a;font-size:13px}
+.callout svg{width:18px;height:18px;color:var(--gold);flex:none}
+.callout b{color:var(--gold);font-weight:500}
+
+/* highlights */
+.hl{display:grid;gap:10px}
+.hl div{display:flex;align-items:center;gap:12px;font-size:13.5px}
+.hl .ic{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#d3c9941f;color:var(--gold)}
+.hl .ic svg{width:17px;height:17px}
+.hl small{display:block;font-size:11.5px;color:var(--mut)}
+
+/* service speed */
+.spd{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.spd>div{padding:12px;border-radius:16px;background:#ffffff08;border:1px solid var(--line)}
+.spd b{display:block;font:500 28px/1 var(--serif);color:var(--cream)}
+.spd b small{font:400 12px var(--sans);color:var(--mut);margin-inline-start:4px}
+.spd span{display:block;margin-top:6px;font-size:12px;color:var(--mut)}
+
+.foot2{margin:18px 22px 0;font-size:12.5px;color:var(--mut);line-height:1.7;text-align:center}
+
+/* menu editor */
+.mstat{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px 0}
+.mstat .pill{background:#ffffff08}
+.msearch{position:relative;margin:12px 16px 0}
+.msearch svg{position:absolute;top:50%;inset-inline-start:14px;width:18px;height:18px;transform:translateY(-50%);color:var(--gold);pointer-events:none}
+.msearch input{padding-inline-start:42px;border-radius:99px;font-size:16px}
+.cat{margin:10px 16px 0}
+.cat>summary{padding:14px 16px;font:500 22px var(--serif)}
+.cat>summary .r{display:flex;align-items:center;gap:8px}
+.cat>summary .chv,.dtop .chv{flex:none;width:8px;height:8px;border:solid var(--gold);border-width:0 1.5px 1.5px 0;transform:rotate(45deg);transition:transform .25s;margin-inline:4px}
+.cat[open]>summary .chv,.drow.ex .dtop .chv{transform:rotate(-135deg)}
+.cat .cb{padding:0 12px 14px}
+.cfld{padding:0 4px 6px}
+.drow{margin-top:8px;border-radius:18px;background:#ffffff08;border:1px solid var(--line);transition:background .2s,border-color .2s}
+.drow.ex{background:#ffffff0d;border-color:var(--line2)}
+.drow.off .dtop .ph,.drow.off .dm{opacity:.5}
+.dtop{display:flex;align-items:center;gap:12px;padding:10px 12px;cursor:pointer;border-radius:18px}
+.dtop:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.dtop .ph{width:46px;height:46px;border-radius:12px;font-size:18px}
+.dm{flex:1;min-width:0}
+.dm b{display:block;font:500 14.5px/1.25 var(--sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dm span{display:block;margin-top:2px;font-size:12.5px;color:var(--gold)}
+.dm em{font-style:normal;color:var(--bad)}
+.dtop .sw{margin:0;flex:none}
+.dbody{display:none;padding:2px 14px 14px;border-top:1px solid var(--line)}
+.drow.ex .dbody{display:block}
+.drow.hide,.cat.hide{display:none}
+.dbody .tools{margin-top:14px}
+.addrow{display:flex;gap:8px;margin-top:12px}
+.addrow .btn{margin:0}
+
+/* settings */
+.set{margin:12px 16px 0;padding:16px;border-radius:24px;border:1px solid var(--line);background:var(--card)}
+.set h2{display:flex;align-items:center;gap:10px;font:500 24px var(--serif)}
+.set h2 .ic{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#d3c9941f;color:var(--gold)}
+.set h2 .ic svg{width:17px;height:17px}
+.set .d{margin-top:6px;font-size:13px;color:var(--mut);line-height:1.6}
+.set .fld:first-of-type{margin-top:14px}
+.g1{display:grid;grid-template-columns:1fr;gap:0}
+.pw{position:relative}
+.pw input{padding-inline-end:70px;letter-spacing:.3em;font-size:16px}
+.pw button{position:absolute;top:50%;inset-inline-end:10px;transform:translateY(-50%);padding:6px 10px;border-radius:99px;font-size:12px;color:var(--gold);border:1px solid var(--line2)}
+.danger{border-color:rgba(229,154,143,.28)}
+.btn svg{width:16px;height:16px;vertical-align:-3px;margin-inline-end:6px}
+
+.skl2{margin:12px 16px 0;height:120px;border-radius:24px;background:linear-gradient(100deg,#ffffff0a 30%,#ffffff1c 50%,#ffffff0a 70%) 0 0/200% 100%;animation:kzsh 1.2s linear infinite}
+
+@media(min-width:560px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){
+ .grid2{display:block;column-count:2;column-gap:0}
+ .grid2 .pnl{margin-inline:16px;break-inside:avoid}
+ .kpis{grid-template-columns:repeat(6,1fr)}
+ .page.wide .hero2,.page.wide .live{margin-inline:16px}
+}
+@media(prefers-reduced-motion:reduce){.spark i,.live .pd.on{transition:none;animation:none}}
+</style>
 </head>
 <body>
 <div class="wrap" id="app" hidden>
@@ -29,44 +201,62 @@
   </div>
  </div>
  <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
- <div class="tabs" id="tabs"></div>
- <div id="view"><div class="skl"></div><div class="skl"></div></div>
+ <div class="anav" id="anav"><div class="in" id="tabs" role="tablist"></div></div>
+ <div id="view"><div class="skl2"></div><div class="skl2"></div></div>
 </div>
 <script src="menu.js"></script>
 <script src="kz.js"></script>
 <script>
 const $=s=>document.querySelector(s),esc=KZ.esc,fmt=KZ.fmt;
 let imp={open:false,txt:"",mode:"replace"};
-let lang=KZ.lang(),tab="reports",range="7",raw=null,open=new Set([0]),tmT=0,tmS=0;
-const T={en:{h1:"Owner dashboard",sub:"Reports, menu and settings. Only the owner should open this page.",
- reports:"Reports",menu:"Menu",settings:"Settings",r1:"Today",r7:"7 days",r30:"30 days",rall:"All",
- orders:"Orders",revenue:"Sales",avg:"Avg. order",bookings:"Bookings",events:"Event requests",calls:"Table calls",
- top:"Top dishes",hours:"Busiest hours",tables:"Top tables",speed:"Service speed",toConfirm:"Order to confirmation",toServe:"Order to delivery",
- minU:"min",egp:"EGP",none:"No data yet for this period",taxNote:"Sales are before 12% service and 14% tax.",
+let lang=KZ.lang(),tab="reports",range="7",raw=null,open=new Set([0]),openD=new Set(),mq="",tmT=0,tmS=0;
+
+/* ---------- text ---------- */
+const T={en:{h1:"Owner dashboard",
+ gM:"Good morning",gA:"Good afternoon",gE:"Good evening",gN:"Good night",gSub:"Here is how Kanzel is doing.",
+ reports:"Reports",menu:"Menu",settings:"Settings",r1:"Today",r7:"7 days",r30:"30 days",rall:"All time",
+ cmp1:"vs yesterday",cmp7:"vs previous 7 days",cmp30:"vs previous 30 days",sales:"Sales",salesNote:"before service and tax",
+ orders:"Orders",avg:"Avg. order",items:"Items sold",bookings:"Bookings",events:"Event requests",calls:"Table calls",new:"new",
+ live:"Right now",liveO:"active orders",liveC:"open calls",openW:"Waiter screen",
+ top:"Top dishes",topH:"Most ordered this period",sold:"sold",hours:"Busiest hours",hoursH:"Orders by hour of day",days:"Busiest days",daysH:"Orders by day of week",
+ tables:"Top tables",speed:"Service speed",toConfirm:"Order to confirmation",toServe:"Order to delivery",
+ cats:"Sales by category",other:"Other",hi:"Highlights",hiPeak:"Busiest hour",hiDay:"Best day",hiTop:"Most ordered",hiBasket:"Items per order",
+ peak:"Peak",ordersW:"orders",minU:"min",egp:"EGP",table:"Table",
+ none:"Nothing here yet",noOrders:"No orders in this period yet. They will show here as guests order from their tables.",
+ taxNote:"Sales are before 12% service and 14% tax.",
  cat:"Category",catEn:"Name (English)",catAr:"Name (Arabic)",dishEn:"Dish name (English)",dishAr:"Dish name (Arabic)",price:"Price",
  dEn:"Description (English)",dAr:"Description (Arabic)",avail:"Available to guests",photo:"Add photo",rmPhoto:"Remove photo",
  add:"Add dish",addCat:"Add category",del:"Delete",delSure:"Tap again to delete",up:"Up",down:"Down",dishes:"dishes",newDish:"New dish",newCat:"New category",
+ hidden:"Hidden",mCats:"categories",mDishes:"dishes",mHidden:"hidden",search:"Search dishes",noMatch:"No dish matches your search.",
  imp:"Import / export menu",impH:"Paste your menu from Excel or Google Sheets, or paste JSON, or choose a file. First row = column names:",impCols:"category_en, category_ar, name_en, name_ar, price, desc_en, desc_ar",
  impMode:"Import mode",impRep:"Replace the whole menu",impAdd:"Add to the current menu",impGo:"Import now",impExp:"Show current menu as CSV",impDl:"Download CSV",impFile:"Choose a file",
  impNone:"Nothing to import yet.",impBad:"Couldn’t read this text. Check the column names.",impDone:"Menu imported",impClose:"Close", saved:"Saved",full:"Couldn’t save: storage is full. Use a smaller photo.",invalid:"Not saved yet: every dish and category needs an English and an Arabic name.",imgErr:"Couldn’t read this image. Try a JPG or PNG.",mapsBad:"The link must start with https://",resetMenu:"Reset menu to default",resetSure:"Tap again to reset",
- maps:"Google Maps review link",mapsH:"Opens when a guest taps the rating button. Paste your place link from Google Maps (Share, Copy link).",
- sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",
- data:"Data",export:"Export all data",clearData:"Clear orders, bookings and calls",clearSure:"Tap again to clear",cleared:"Cleared",
+ sGuest:"Guest rating",maps:"Google Maps review link",mapsH:"Opens when a guest taps the rating button after their meal. Paste your place link from Google Maps (Share, then Copy link).",
+ sAccess:"Access",sAccessD:"Four digits each. Change them if a staff member leaves.",sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",show:"Show",hide:"Hide",
+ data:"Data",dataD:"Everything is stored on this device for now. Export a copy from time to time.",export:"Export all data",exportO:"Export orders (CSV)",clearData:"Clear orders, bookings and calls",clearSure:"Tap again to clear",cleared:"Cleared",noOrdersX:"No orders to export yet.",
  note:"The PIN protects the page on this device only. Real protection arrives with the backend.",lock:"Lock",back:"Back",langA:"العربية"},
- ar:{h1:"لوحة المالك",sub:"التقارير والمنيو والإعدادات. الصفحة دي للمالك بس.",
- reports:"التقارير",menu:"المنيو",settings:"الإعدادات",r1:"النهارده",r7:"7 أيام",r30:"30 يوم",rall:"الكل",
- orders:"الطلبات",revenue:"المبيعات",avg:"متوسط الطلب",bookings:"الحجوزات",events:"طلبات المناسبات",calls:"نداءات الترابيزات",
- top:"أكتر الأطباق طلبًا",hours:"أوقات الزحمة",tables:"أكتر الترابيزات",speed:"سرعة الخدمة",toConfirm:"من الطلب للتأكيد",toServe:"من الطلب للتسليم",
- minU:"دقيقة",egp:"ج.م",none:"مفيش بيانات للفترة دي",taxNote:"المبيعات قبل 12% خدمة و14% ضريبة.",
+ ar:{h1:"لوحة المالك",
+ gM:"صباح الخير",gA:"نهارك سعيد",gE:"مساء الخير",gN:"تصبح على خير",gSub:"دي حالة كانزل دلوقتي.",
+ reports:"التقارير",menu:"المنيو",settings:"الإعدادات",r1:"النهارده",r7:"7 أيام",r30:"30 يوم",rall:"من البداية",
+ cmp1:"مقارنة بإمبارح",cmp7:"مقارنة بآخر 7 أيام قبلها",cmp30:"مقارنة بآخر 30 يوم قبلها",sales:"المبيعات",salesNote:"قبل الخدمة والضريبة",
+ orders:"الطلبات",avg:"متوسط الطلب",items:"أصناف اتباعت",bookings:"الحجوزات",events:"طلبات المناسبات",calls:"نداءات الترابيزات",new:"جديد",
+ live:"دلوقتي",liveO:"طلب شغال",liveC:"نداء مفتوح",openW:"شاشة الويتر",
+ top:"أكتر الأطباق طلبًا",topH:"الأكتر طلبًا في الفترة دي",sold:"اتباع",hours:"أوقات الزحمة",hoursH:"الطلبات حسب ساعات اليوم",days:"أيام الزحمة",daysH:"الطلبات حسب أيام الأسبوع",
+ tables:"أكتر الترابيزات",speed:"سرعة الخدمة",toConfirm:"من الطلب للتأكيد",toServe:"من الطلب للتسليم",
+ cats:"المبيعات حسب القسم",other:"أخرى",hi:"أهم الملاحظات",hiPeak:"ساعة الذروة",hiDay:"أحسن يوم",hiTop:"الأكتر طلبًا",hiBasket:"أصناف في الطلب",
+ peak:"الذروة",ordersW:"طلب",minU:"دقيقة",egp:"ج.م",table:"ترابيزة",
+ none:"لسه مفيش حاجة",noOrders:"مفيش طلبات في الفترة دي لسه. هتظهر هنا أول ما الضيوف يطلبوا من ترابيزاتهم.",
+ taxNote:"المبيعات قبل 12% خدمة و14% ضريبة.",
  cat:"القسم",catEn:"الاسم (إنجليزي)",catAr:"الاسم (عربي)",dishEn:"اسم الطبق (إنجليزي)",dishAr:"اسم الطبق (عربي)",price:"السعر",
  dEn:"الوصف (إنجليزي)",dAr:"الوصف (عربي)",avail:"متاح للضيوف",photo:"أضف صورة",rmPhoto:"شيل الصورة",
  add:"أضف طبق",addCat:"أضف قسم",del:"حذف",delSure:"دوس تاني للحذف",up:"فوق",down:"تحت",dishes:"أطباق",newDish:"طبق جديد",newCat:"قسم جديد",
+ hidden:"مخفي",mCats:"قسم",mDishes:"طبق",mHidden:"مخفي",search:"ابحث في الأطباق",noMatch:"مفيش طبق بالاسم ده.",
  imp:"استيراد وتصدير المنيو",impH:"الصق المنيو من Excel أو Google Sheets، أو الصق JSON، أو اختار ملف. أول صف = أسماء الأعمدة:",impCols:"category_en, category_ar, name_en, name_ar, price, desc_en, desc_ar",
  impMode:"طريقة الاستيراد",impRep:"استبدل المنيو كله",impAdd:"أضف على المنيو الحالي",impGo:"استورد دلوقتي",impExp:"اعرض المنيو الحالي كـ CSV",impDl:"حمّل CSV",impFile:"اختار ملف",
  impNone:"مفيش حاجة للاستيراد لسه.",impBad:"معرفناش نقرأ النص ده. راجع أسماء الأعمدة.",impDone:"المنيو اتستورد",impClose:"قفل", saved:"اتحفظ",full:"معرفناش نحفظ: المساحة خلصت. استخدم صورة أصغر.",invalid:"لسه متحفظش: كل طبق وقسم محتاج اسم عربي واسم إنجليزي.",imgErr:"معرفناش نقرأ الصورة دي. جرّب JPG أو PNG.",mapsBad:"اللينك لازم يبدأ بـ https://",resetMenu:"رجّع المنيو للأصل",resetSure:"دوس تاني للرجوع",
- maps:"لينك تقييم جوجل ماب",mapsH:"بيفتح لما الضيف يدوس على زر التقييم. الصق لينك مكانك من جوجل ماب (مشاركة ثم نسخ الرابط).",
- sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",
- data:"البيانات",export:"صدّر كل البيانات",clearData:"امسح الطلبات والحجوزات والنداءات",clearSure:"دوس تاني للمسح",cleared:"اتمسح",
+ sGuest:"تقييم الضيوف",maps:"لينك تقييم جوجل ماب",mapsH:"بيفتح لما الضيف يدوس على زر التقييم بعد الأكل. الصق لينك مكانك من جوجل ماب (مشاركة ثم نسخ الرابط).",
+ sAccess:"الدخول",sAccessD:"4 أرقام لكل واحد. غيّرهم لو حد من الموظفين سابك.",sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",show:"إظهار",hide:"إخفاء",
+ data:"البيانات",dataD:"كل حاجة متخزنة على الجهاز ده دلوقتي. صدّر نسخة من وقت للتاني.",export:"صدّر كل البيانات",exportO:"صدّر الطلبات (CSV)",clearData:"امسح الطلبات والحجوزات والنداءات",clearSure:"دوس تاني للمسح",cleared:"اتمسح",noOrdersX:"مفيش طلبات تتصدّر لسه.",
  note:"الرقم السري بيحمي الصفحة على الجهاز ده بس. الحماية الحقيقية هتيجي مع الباك إند.",lock:"قفل",back:"رجوع",langA:"English"}};
 const t=()=>T[lang];
 function toast(m,err){KZ.toast(m,err)}
@@ -74,28 +264,106 @@ function toast(m,err){KZ.toast(m,err)}
 function arm(b,label,fn){if(b.dataset.armed){clearTimeout(+b.dataset.armed);fn();return}
  const old=b.textContent;b.textContent=label;b.dataset.armed=setTimeout(()=>{b.textContent=old;delete b.dataset.armed},4000)}
 
+/* ---------- icons ---------- */
+const I={
+ receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/>',
+ coins:'<circle cx="12" cy="12" r="9"/><path d="M14.6 9.3c-.6-.8-1.5-1.3-2.6-1.3-1.5 0-2.6.8-2.6 2 0 2.6 5.2 1.3 5.2 4 0 1.2-1.2 2-2.6 2-1.2 0-2.1-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
+ bag:'<path d="M5 8h14l-1.2 11H6.2zM9 8V6a3 3 0 016 0v2"/>',
+ cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
+ spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18 16l.7 1.8 1.8.7-1.8.7L18 21l-.7-1.8-1.8-.7 1.8-.7z"/>',
+ bell:'<path d="M6 16v-5a6 6 0 0112 0v5l1.5 2h-15zM10 20.5a2 2 0 004 0"/>',
+ dish:'<path d="M6.5 3v5a2.5 2.5 0 005 0V3M9 3v18M17 21V3c-2.5 1.5-3.5 4.5-3.5 7.5 0 1.8 1.2 3 3.5 3"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ chart:'<path d="M3 20h18M6 20v-6M11 20V6M16 20v-9"/>',
+ book:'<path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3zM5 17a3 3 0 013-3h11"/>',
+ sliders:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+ search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
+ star:'<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8L3.5 9.7l5.9-.9z"/>',
+ key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
+ db:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',
+ up:'<path d="M6 14l6-6 6 6"/>',dn:'<path d="M6 10l6 6 6-6"/>',
+ dl:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>'};
+const ic=(n,w)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w||1.6}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+
 /* ---------- reports ---------- */
-function from(){const d=new Date();d.setHours(0,0,0,0);if(range==="1")return d.getTime();if(range==="7")return d.getTime()-6*864e5;if(range==="30")return d.getTime()-29*864e5;return 0}
-function bars(rows){const m=Math.max(1,...rows.map(r=>r[1]));return rows.map(r=>`<div class="bar-r"><span>${esc(r[0])}</span><div class="t"><i style="width:${Math.round(r[1]/m*100)}%"></i></div><b>${r[2]}</b></div>`).join("")}
-function reports(){const x=t(),ar=lang==="ar",f=from(),inR=o=>o.ts>=f;
- const O=KZ.list("orders").filter(o=>o&&o.items&&inR(o)),B=KZ.list("bookings").filter(inR),E=KZ.list("events").filter(inR),C=KZ.list("calls").filter(inR);
- const rev=O.reduce((a,o)=>a+(o.total||0),0),avg=O.length?Math.round(rev/O.length):0;
- const dish={},tb={},hr=Array(24).fill(0);const conf=[],serve=[];
- O.forEach(o=>{o.items.forEach(i=>{const k=i.en,d=dish[k]||(dish[k]={en:i.en,ar:i.ar,q:0,v:0});d.q+=i.qty;d.v+=i.qty*i.price});
-  const g=tb[o.table]||(tb[o.table]={n:0,v:0});g.n++;g.v+=o.total||0;hr[new Date(o.ts).getHours()]++;
+const DAY=864e5,sod=ts=>{const d=ts==null?new Date():new Date(ts);d.setHours(0,0,0,0);return d.getTime()};
+const locale=()=>lang==="ar"?"ar-EG-u-nu-latn":"en-GB";
+function bounds(){const s=sod();
+ if(range==="1")return{from:s,prev:[s-DAY,s],cmp:"cmp1"};
+ if(range==="7")return{from:s-6*DAY,prev:[s-13*DAY,s-6*DAY],cmp:"cmp7"};
+ if(range==="30")return{from:s-29*DAY,prev:[s-59*DAY,s-29*DAY],cmp:"cmp30"};
+ return{from:0,prev:null,cmp:""}}
+const sum=O=>{const rev=O.reduce((a,o)=>a+(o.total||0),0),it=O.reduce((a,o)=>a+o.items.reduce((p,i)=>p+i.qty,0),0);return{n:O.length,rev,avg:O.length?Math.round(rev/O.length):0,it}};
+function delta(cur,prev,hasPrev){if(!hasPrev)return"";
+ if(!prev)return cur>0?`<span class="dl up">${t().new}</span>`:"";
+ const p=Math.round((cur-prev)/prev*100);if(p===0)return`<span class="dl">0%</span>`;
+ return`<span class="dl ${p>0?"up":"dn"}"><svg viewBox="0 0 12 12" fill="currentColor"><path d="${p>0?"M6 2l4.5 7h-9z":"M6 10L1.5 3h9z"}"/></svg>${Math.abs(p)}%</span>`}
+const hr12=h=>`${h%12||12} ${lang==="ar"?(h<12?"ص":"م"):(h<12?"AM":"PM")}`;
+const hrS=h=>`${h%12||12}${lang==="ar"?(h<12?"ص":"م"):(h<12?"a":"p")}`;
+const dShort=ts=>new Date(ts).toLocaleDateString(locale(),{day:"numeric",month:"short"});
+function series(O,b){/* sales buckets for the hero chart */
+ if(range==="1"){const a=Array(24).fill(0);O.forEach(o=>a[new Date(o.ts).getHours()]+=o.total||0);
+  return{v:a,lab:i=>hr12(i),l0:hr12(0),l1:hr12(23),now:new Date().getHours()}}
+ let start=b.from;if(range==="all"){const m=Math.min(...O.map(o=>o.ts));start=sod(isFinite(m)?m:Date.now())}
+ const span=Math.round((sod()-start)/DAY)+1,wk=span>45,n=wk?Math.ceil(span/7):span,a=Array(n).fill(0);
+ O.forEach(o=>{const di=Math.round((sod(o.ts)-start)/DAY),i=Math.min(n-1,Math.max(0,wk?Math.floor(di/7):di));a[i]+=o.total||0});
+ const at=i=>start+i*(wk?7:1)*DAY;
+ return{v:a,lab:i=>dShort(at(i)),l0:dShort(at(0)),l1:dShort(at(n-1)),now:n-1}}
+function bars(rows,unit){const m=Math.max(1,...rows.map(r=>r.v));
+ return rows.map((r,i)=>`<div class="rk"><span class="n">${i+1}</span><span class="nm">${esc(r.name)}</span><span class="v">${r.label}</span><div class="tr"><i style="width:${Math.max(4,Math.round(r.v/m*100))}%"></i></div>${r.sub?`<div class="sv">${r.sub}</div>`:""}</div>`).join("")}
+const PAL=["#d3c994","#8fd19e","#7fb6cf","#d99a7f","#b79ad9","#8d9482"];
+function catMap(){const m={};KZ.menuRaw().forEach(c=>c[2].forEach(d=>{m[String(d[0]).toLowerCase()]=[c[0],c[1]]}));return m}
+function reports(){const x=t(),ar=lang==="ar",b=bounds(),inR=o=>o.ts>=b.from,all=KZ.list("orders").filter(o=>o&&o.items&&o.ts);
+ const O=all.filter(inR),B=KZ.list("bookings").filter(inR),E=KZ.list("events").filter(inR),C=KZ.list("calls").filter(inR);
+ const hasP=!!b.prev,P=hasP?all.filter(o=>o.ts>=b.prev[0]&&o.ts<b.prev[1]):[];
+ const S=sum(O),PS=sum(P),PB=hasP?KZ.list("bookings").filter(o=>o.ts>=b.prev[0]&&o.ts<b.prev[1]).length:0;
+ const ser=series(O,b),mx=Math.max(1,...ser.v),pkI=ser.v.indexOf(Math.max(...ser.v));
+ const dish={},tb={},cat={},hr=Array(24).fill(0),wd=Array(7).fill(0),wdv=Array(7).fill(0),conf=[],serve=[],cm=catMap();
+ O.forEach(o=>{o.items.forEach(i=>{const k=i.en,d=dish[k]||(dish[k]={en:i.en,ar:i.ar,q:0,v:0});d.q+=i.qty;d.v+=i.qty*i.price;
+   const c=cm[String(i.en).toLowerCase()]||[x.other,x.other],ck=c[0],g=cat[ck]||(cat[ck]={n:c[ar?1:0],v:0});g.v+=i.qty*i.price});
+  const g=tb[o.table]||(tb[o.table]={n:0,v:0});g.n++;g.v+=o.total||0;const dt=new Date(o.ts);hr[dt.getHours()]++;wd[dt.getDay()]++;wdv[dt.getDay()]+=o.total||0;
   if(o.confirmedAt)conf.push((o.confirmedAt-o.ts)/6e4);if(o.servedAt)serve.push((o.servedAt-o.ts)/6e4)});
- const mean=a=>a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length):null;
- const topD=Object.values(dish).sort((a,b)=>b.q-a.q).slice(0,6).map(d=>[ar?d.ar:d.en,d.q,d.q]);
- const topT=Object.entries(tb).sort((a,b)=>b[1].v-a[1].v).slice(0,5).map(([k,v])=>[x.orders.slice(0,0)+(ar?"ترابيزة ":"Table ")+k,v.v,fmt(v.v)+" "+x.egp]);
- const mh=Math.max(1,...hr);
- return`<div class="tabs">${[["1",x.r1],["7",x.r7],["30",x.r30],["all",x.rall]].map(r=>`<button class="tab${range===r[0]?" on":""}" data-range="${r[0]}">${r[1]}</button>`).join("")}</div>
- <div class="stats s3"><div class="stat"><b>${O.length}</b><span>${x.orders}</span></div><div class="stat"><b>${fmt(rev)}</b><span>${x.revenue} (${x.egp})</span></div><div class="stat"><b>${fmt(avg)}</b><span>${x.avg}</span></div></div>
- <div class="stats s3"><div class="stat"><b>${B.length}</b><span>${x.bookings}</span></div><div class="stat"><b>${E.length}</b><span>${x.events}</span></div><div class="stat"><b>${C.length}</b><span>${x.calls}</span></div></div>
- <div class="hd"><h2>${x.top}</h2></div><div class="bars">${topD.length?bars(topD):`<p class="note" style="margin:0">${x.none}</p>`}</div>
- <div class="hd"><h2>${x.hours}</h2></div><div class="bars">${O.length?`<div class="hrs">${hr.map((n,h)=>`<div title="${h}:00 · ${n}"><i style="height:${Math.round(n/mh*80)}%"></i><span>${h%3===0?h:"&nbsp;"}</span></div>`).join("")}</div>`:`<p class="note" style="margin:0">${x.none}</p>`}</div>
- <div class="hd"><h2>${x.tables}</h2></div><div class="bars">${topT.length?bars(topT):`<p class="note" style="margin:0">${x.none}</p>`}</div>
- <div class="hd"><h2>${x.speed}</h2></div><div class="stats s2"><div class="stat"><b>${mean(conf)==null?"–":mean(conf)}</b><span>${x.toConfirm} (${x.minU})</span></div><div class="stat"><b>${mean(serve)==null?"–":mean(serve)}</b><span>${x.toServe} (${x.minU})</span></div></div>
- <p class="note">${x.taxNote}</p>`}
+ const mean=a=>a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length):null,mc=mean(conf),ms=mean(serve);
+ const topD=Object.values(dish).sort((a,b)=>b.q-a.q||b.v-a.v).slice(0,6).map(d=>({name:ar?d.ar:d.en,v:d.q,label:`${d.q} ${x.sold}`,sub:`${fmt(d.v)} ${x.egp}`}));
+ const topT=Object.entries(tb).sort((a,b)=>b[1].v-a[1].v).slice(0,5).map(([k,v])=>({name:x.table+" "+k,v:v.v,label:`${fmt(v.v)} ${x.egp}`,sub:`${v.n} ${x.ordersW}`}));
+ const cats=Object.values(cat).sort((a,b)=>b.v-a.v),ctot=cats.reduce((a,c)=>a+c.v,0)||1;
+ const cs=cats.slice(0,5).map((c,i)=>({n:c.n,v:c.v,col:PAL[i]}));const rest=cats.slice(5).reduce((a,c)=>a+c.v,0);if(rest)cs.push({n:x.other,v:rest,col:PAL[5]});
+ const hm=Math.max(...hr),hp=hr.indexOf(hm),wm=Math.max(1,...wd),order=[6,0,1,2,3,4,5];
+ const wdName=d=>new Date(2024,0,7+d).toLocaleDateString(locale(),{weekday:"short"});
+ const bestD=order.reduce((a,d)=>wdv[d]>wdv[a]?d:a,order[0]);
+ const rname=O.length&&topD[0]?topD[0].name:"";
+ const bk=O.length?(S.it/S.n).toFixed(1):"0";
+ const now=Date.now(),active=all.filter(o=>o.status!=="served"&&now-o.ts<3*3600e3).length,openC=KZ.list("calls").filter(c=>!c.done).length;
+ const rl={1:x.r1,7:x.r7,30:x.r30,all:x.rall}[range];
+ const spark=O.length?`<div class="spark" role="img" aria-label="${x.sales}">${ser.v.map((v,i)=>`<i class="${v===0?"z":i===pkI?"pk":""}${i===ser.now&&range!=="all"?" now":""}" style="height:${Math.max(4,Math.round(v/mx*100))}%" title="${esc(ser.lab(i))}: ${fmt(v)} ${x.egp}"></i>`).join("")}</div><div class="sax"><span>${ser.l0}</span><span>${ser.l1}</span></div>`:`<p class="empty-s">${x.noOrders}</p>`;
+ return`<div class="chips" role="group">${[["1",x.r1],["7",x.r7],["30",x.r30],["all",x.rall]].map(r=>`<button class="chip${range===r[0]?" on":""}" data-range="${r[0]}">${r[1]}</button>`).join("")}</div>
+ <section class="hero2" aria-label="${x.sales}"><div class="k"><span>${x.sales} · ${rl}</span>${hasP?`<span class="dl-c">${x[b.cmp]}</span>`:""}</div>
+  <div class="big">${fmt(S.rev)}<small>${x.egp}</small></div>
+  <div class="sub2">${delta(S.rev,PS.rev,hasP)}<span>${S.n} ${x.ordersW}${S.n?` · ${x.avg} ${fmt(S.avg)}`:""}</span></div>${spark}</section>
+ <div class="live"><span class="lt">${ic("clock",1.7).replace("<svg",'<svg width="15" height="15"')}${x.live}</span>
+  <span class="lv"><i class="pd${active?" on":""}"></i><b>${active}</b>${x.liveO}</span><span class="lv"><i class="pd${openC?" on":""}"></i><b>${openC}</b>${x.liveC}</span>
+  <a href="/waiter" data-go="waiter">${x.openW}</a></div>
+ <div class="kpis">
+  <div class="kpi"><span class="ic">${ic("receipt")}</span>${delta(S.n,PS.n,hasP)}<b>${S.n}</b><span>${x.orders}</span></div>
+  <div class="kpi"><span class="ic">${ic("bag")}</span>${delta(S.avg,PS.avg,hasP)}<b>${fmt(S.avg)}</b><span>${x.avg} (${x.egp})</span></div>
+  <div class="kpi"><span class="ic">${ic("dish")}</span>${delta(S.it,PS.it,hasP)}<b>${S.it}</b><span>${x.items}</span></div>
+  <div class="kpi"><span class="ic">${ic("cal")}</span>${delta(B.length,PB,hasP)}<b>${B.length}</b><span>${x.bookings}</span></div>
+  <div class="kpi"><span class="ic">${ic("spark")}</span><b>${E.length}</b><span>${x.events}</span></div>
+  <div class="kpi"><span class="ic">${ic("bell")}</span><b>${C.length}</b><span>${x.calls}</span></div></div>
+ <div class="grid2">
+ ${O.length?`<section class="pnl"><h2>${x.hi}</h2><div class="hl">
+  <div><span class="ic">${ic("clock")}</span><span><small>${x.hiPeak}</small>${hr12(hp)} – ${hr12((hp+1)%24)}</span></div>
+  <div><span class="ic">${ic("cal")}</span><span><small>${x.hiDay}</small>${wdv[bestD]?wdName(bestD):"–"}</span></div>
+  <div><span class="ic">${ic("star")}</span><span><small>${x.hiTop}</small>${esc(rname)}</span></div>
+  <div><span class="ic">${ic("bag")}</span><span><small>${x.hiBasket}</small>${bk}</span></div></div></section>`:""}
+ <section class="pnl"><h2>${x.top}<small>${x.topH}</small></h2>${topD.length?bars(topD):`<p class="none">${x.none}</p>`}</section>
+ <section class="pnl"><h2>${x.cats}</h2>${cs.length?`<div class="share" role="img" aria-label="${x.cats}">${cs.map(c=>`<i style="width:${(c.v/ctot*100).toFixed(1)}%;background:${c.col}" title="${esc(c.n)}"></i>`).join("")}</div><div class="leg">${cs.map(c=>`<div><i style="background:${c.col}"></i><span>${esc(c.n)}</span><b>${Math.round(c.v/ctot*100)}%</b></div>`).join("")}</div>`:`<p class="none">${x.none}</p>`}</section>
+ <section class="pnl"><h2>${x.hours}<small>${x.hoursH}</small></h2>${O.length?`<div class="cols" role="img" aria-label="${x.hours}">${hr.map((n,h)=>`<div class="${n===0?"z":h===hp?"pk":""}" title="${hr12(h)} · ${n}"><i style="height:${Math.max(3,Math.round(n/Math.max(1,hm)*100))}%"></i><span>${h%3===0?hrS(h):""}</span></div>`).join("")}</div><div class="callout">${ic("clock")}<span>${x.peak}: <b>${hr12(hp)} – ${hr12((hp+1)%24)}</b> · ${hm} ${x.ordersW}</span></div>`:`<p class="none">${x.none}</p>`}</section>
+ <section class="pnl"><h2>${x.days}<small>${x.daysH}</small></h2>${O.length?`<div class="cols wk" role="img" aria-label="${x.days}">${order.map(d=>`<div class="${wd[d]===0?"z":wd[d]===Math.max(...wd)?"pk":""}" title="${wdName(d)} · ${wd[d]}"><i style="height:${Math.max(3,Math.round(wd[d]/wm*100))}%"></i><span>${wdName(d)}</span></div>`).join("")}</div>`:`<p class="none">${x.none}</p>`}</section>
+ <section class="pnl"><h2>${x.tables}</h2>${topT.length?bars(topT):`<p class="none">${x.none}</p>`}</section>
+ <section class="pnl"><h2>${x.speed}</h2><div class="spd"><div><b>${mc==null?"–":mc}${mc==null?"":`<small>${x.minU}</small>`}</b><span>${x.toConfirm}</span></div><div><b>${ms==null?"–":ms}${ms==null?"":`<small>${x.minU}</small>`}</b><span>${x.toServe}</span></div></div></section>
+ </div>
+ <p class="foot2">${x.taxNote}</p>`}
 
 /* ---------- menu editor ---------- */
 function pad(d){while(d.length<7)d.push(d.length===5?"":d.length===6?0:"");return d}
@@ -105,25 +373,38 @@ function impPanel(){const x=t();
  <label class="fld"><textarea id="impTxt" rows="7" dir="ltr" spellcheck="false" style="font-size:13px">${esc(imp.txt)}</textarea></label>
  <div class="tools"><label class="btn sm ghost" style="cursor:pointer">${x.impFile}<input type="file" id="impFile" accept=".csv,.tsv,.txt,.json,text/*,application/json" hidden></label><button class="btn sm ghost" data-a="impexp">${x.impExp}</button><button class="btn sm ghost" data-a="impdl">${x.impDl}</button></div>
  <p class="note" id="impSum" style="margin:12px 0 0"></p><div class="row"><button class="btn sm" id="impGo" data-a="impgo" disabled>${x.impGo}</button><button class="btn sm ghost" data-a="imp">${x.impClose}</button></div></div>`:"")}
-function menuView(){const x=t(),ar=lang==="ar";
- return impPanel()+raw.map((c,ci)=>`<details class="cat" data-ci="${ci}"${open.has(ci)?" open":""}><summary><span>${esc(ar?c[1]:c[0])}</span><small>${c[2].length} ${x.dishes}</small></summary><div class="cb">
- <div class="g2"><label class="fld"><span>${x.catEn}</span><input data-ci="${ci}" data-f="c0" value="${esc(c[0])}"></label><label class="fld"><span>${x.catAr}</span><input data-ci="${ci}" data-f="c1" value="${esc(c[1])}" dir="rtl"></label></div>
- ${c[2].map((d,di)=>{pad(d);return`<div class="dish${d[6]?" off":""}">
-  <div class="dh"><div class="ph" style="${d[5]?`background-image:url('${esc(d[5])}')`:""}">${d[5]?"":"K"}</div><label class="sw" style="margin:0;flex:1"><span>${x.avail}</span><input type="checkbox" data-ci="${ci}" data-di="${di}" data-f="d6" ${d[6]?"":"checked"}></label></div>
-  <div class="g2"><label class="fld"><span>${x.dishEn}</span><input data-ci="${ci}" data-di="${di}" data-f="d0" value="${esc(d[0])}"></label><label class="fld"><span>${x.dishAr}</span><input data-ci="${ci}" data-di="${di}" data-f="d1" value="${esc(d[1])}" dir="rtl"></label></div>
-  <label class="fld"><span>${x.price} (${x.egp})</span><input type="number" inputmode="numeric" min="0" step="5" data-ci="${ci}" data-di="${di}" data-f="d2" value="${esc(d[2])}"></label>
-  <label class="fld"><span>${x.dEn}</span><input data-ci="${ci}" data-di="${di}" data-f="d3" value="${esc(d[3])}"></label>
-  <label class="fld"><span>${x.dAr}</span><input data-ci="${ci}" data-di="${di}" data-f="d4" value="${esc(d[4])}" dir="rtl"></label>
-  <div class="tools"><label class="btn sm ghost" style="cursor:pointer">${x.photo}<input type="file" accept="image/*" hidden data-ci="${ci}" data-di="${di}" data-photo></label>${d[5]?`<button class="btn sm ghost" data-a="rmphoto" data-ci="${ci}" data-di="${di}">${x.rmPhoto}</button>`:""}
-  <button class="btn sm ghost" data-a="dup" data-ci="${ci}" data-di="${di}" ${di===0?"disabled":""}>${x.up}</button><button class="btn sm ghost" data-a="ddn" data-ci="${ci}" data-di="${di}" ${di===c[2].length-1?"disabled":""}>${x.down}</button>
-  <button class="btn sm bad" data-a="ddel" data-ci="${ci}" data-di="${di}">${x.del}</button></div></div>`}).join("")}
- <div class="tools"><button class="btn sm" data-a="dadd" data-ci="${ci}">${x.add}</button><button class="btn sm ghost" data-a="cup" data-ci="${ci}" ${ci===0?"disabled":""}>${x.up}</button><button class="btn sm ghost" data-a="cdn" data-ci="${ci}" ${ci===raw.length-1?"disabled":""}>${x.down}</button><button class="btn sm bad" data-a="cdel" data-ci="${ci}">${x.del} ${x.cat}</button></div></div></details>`).join("")+
- `<div class="row" style="margin:6px 16px 0"><button class="btn" data-a="cadd">${x.addCat}</button></div>`}
+const initial=s=>String(s||"K").trim().charAt(0).toUpperCase()||"K";
+function metaOf(d){const x=t();return`${fmt(d[2])} ${x.egp}${d[6]?` · <em>${x.hidden}</em>`:""}`}
+function dishRow(ci,di,d){pad(d);const x=t(),ar=lang==="ar",key=ci+"-"+di,ex=openD.has(key);
+ return`<div class="drow${d[6]?" off":""}${ex?" ex":""}" data-key="${key}" data-q="${esc((d[0]+" "+d[1]).toLowerCase())}">
+  <div class="dtop" role="button" tabindex="0" aria-expanded="${ex}" data-toggle>
+   <div class="ph" style="${d[5]?`background-image:url('${esc(d[5])}')`:""}">${d[5]?"":esc(initial(d[0]))}</div>
+   <div class="dm"><b>${esc(ar?d[1]:d[0])}</b><span>${metaOf(d)}</span></div>
+   <label class="sw" title="${x.avail}"><input type="checkbox" data-ci="${ci}" data-di="${di}" data-f="d6" aria-label="${x.avail}" ${d[6]?"":"checked"}></label><i class="chv"></i></div>
+  <div class="dbody">
+   <div class="g2"><label class="fld"><span>${x.dishEn}</span><input data-ci="${ci}" data-di="${di}" data-f="d0" value="${esc(d[0])}"></label><label class="fld"><span>${x.dishAr}</span><input data-ci="${ci}" data-di="${di}" data-f="d1" value="${esc(d[1])}" dir="rtl"></label></div>
+   <label class="fld"><span>${x.price} (${x.egp})</span><input type="number" inputmode="numeric" min="0" step="5" data-ci="${ci}" data-di="${di}" data-f="d2" value="${esc(d[2])}"></label>
+   <label class="fld"><span>${x.dEn}</span><input data-ci="${ci}" data-di="${di}" data-f="d3" value="${esc(d[3])}"></label>
+   <label class="fld"><span>${x.dAr}</span><input data-ci="${ci}" data-di="${di}" data-f="d4" value="${esc(d[4])}" dir="rtl"></label>
+   <div class="tools"><label class="btn sm ghost" style="cursor:pointer">${x.photo}<input type="file" accept="image/*" hidden data-ci="${ci}" data-di="${di}" data-photo></label>${d[5]?`<button class="btn sm ghost" data-a="rmphoto" data-ci="${ci}" data-di="${di}">${x.rmPhoto}</button>`:""}
+   <button class="btn sm ghost" data-a="dup" data-ci="${ci}" data-di="${di}" ${di===0?"disabled":""}>${x.up}</button><button class="btn sm ghost" data-a="ddn" data-ci="${ci}" data-di="${di}" ${di===raw[ci][2].length-1?"disabled":""}>${x.down}</button>
+   <button class="btn sm bad" data-a="ddel" data-ci="${ci}" data-di="${di}">${x.del}</button></div></div></div>`}
+function menuView(){const x=t(),ar=lang==="ar",nD=raw.reduce((a,c)=>a+c[2].length,0),nH=raw.reduce((a,c)=>a+c[2].filter(d=>d[6]).length,0);
+ return`<div class="mstat"><span class="pill">${raw.length} ${x.mCats}</span><span class="pill">${nD} ${x.mDishes}</span>${nH?`<span class="pill no">${nH} ${x.mHidden}</span>`:""}</div>
+ <div class="msearch">${ic("search")}<input id="mSearch" type="search" placeholder="${x.search}" value="${esc(mq)}" autocomplete="off"></div>`+impPanel().replace('margin:0 16px 12px','margin:12px 16px 0')+
+ raw.map((c,ci)=>`<details class="cat" data-ci="${ci}"${open.has(ci)?" open":""}><summary><span>${esc(ar?c[1]:c[0])}</span><span class="r"><small>${c[2].length} ${x.dishes}</small><i class="chv"></i></span></summary><div class="cb">
+ <div class="cfld g2"><label class="fld"><span>${x.catEn}</span><input data-ci="${ci}" data-f="c0" value="${esc(c[0])}"></label><label class="fld"><span>${x.catAr}</span><input data-ci="${ci}" data-f="c1" value="${esc(c[1])}" dir="rtl"></label></div>
+ ${c[2].map((d,di)=>dishRow(ci,di,d)).join("")}
+ <div class="tools" style="margin-top:14px"><button class="btn sm" data-a="dadd" data-ci="${ci}">${x.add}</button><button class="btn sm ghost" data-a="cup" data-ci="${ci}" ${ci===0?"disabled":""}>${x.up}</button><button class="btn sm ghost" data-a="cdn" data-ci="${ci}" ${ci===raw.length-1?"disabled":""}>${x.down}</button><button class="btn sm bad" data-a="cdel" data-ci="${ci}">${x.del} ${x.cat}</button></div></div></details>`).join("")+
+ `<p class="none" id="mNone" hidden style="margin:14px 16px;text-align:center;font-size:13px;color:var(--mut)">${x.noMatch}</p><div class="addrow" style="margin:12px 16px 0"><button class="btn" data-a="cadd">${x.addCat}</button></div>`}
+function filterMenu(){const q=mq.trim().toLowerCase();let any=false;
+ document.querySelectorAll(".cat").forEach(c=>{let n=0;c.querySelectorAll(".drow").forEach(r=>{const h=!!q&&!r.dataset.q.includes(q);r.classList.toggle("hide",h);if(!h)n++});
+  c.classList.toggle("hide",!!q&&!n);if(q&&n){c.open=true;any=true}});
+ const nn=$("#mNone");if(nn)nn.hidden=!q||any}
 function badMenu(){return raw.some(c=>!String(c[0]).trim()||!String(c[1]).trim()||c[2].some(d=>!String(d[0]).trim()||!String(d[1]).trim()))}
 function saveMenu(){clearTimeout(tmS);tmS=setTimeout(()=>{if(badMenu()){toast(t().invalid,1);return}const ok=KZ.saveMenu(raw);toast(ok?t().saved:t().full,!ok)},500)}
 function move(a,i,j){if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]]}
 function shrink(file,cb){const r=new FileReader();r.onerror=()=>cb(null);r.onload=()=>{const im=new Image();im.onerror=()=>cb(null);im.onload=()=>{const m=640,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.78))};im.src=r.result};r.readAsDataURL(file)}
-
 
 /* ---------- menu import / export (CSV, TSV, JSON) ---------- */
 const AL={cen:["category","categoryen","cat","section","group","قسم","الفئة"],car:["categoryar","catar","sectionar","قسمعربي","الفئةعربي"],
@@ -166,7 +447,7 @@ function applyImport(){const r=parseMenuText(imp.txt);if(!r||!r.dishes){toast(t(
  if(imp.mode==="replace")raw=r.cats;
  else{r.cats.forEach(c=>{const e=raw.find(x=>x[0].trim().toLowerCase()===c[0].trim().toLowerCase());if(!e){raw.push(c);return}
    c[2].forEach(d=>{const m=e[2].find(x=>x[0].trim().toLowerCase()===d[0].trim().toLowerCase());if(m){m[1]=d[1];m[2]=d[2];if(d[3])m[3]=d[3];if(d[4])m[4]=d[4]}else e[2].push(d)})})}
- open=new Set();const ok=KZ.saveMenu(raw);imp.open=false;imp.txt="";toast(ok?t().impDone:t().full,!ok);render()}
+ open=new Set();openD.clear();const ok=KZ.saveMenu(raw);imp.open=false;imp.txt="";toast(ok?t().impDone:t().full,!ok);render()}
 document.addEventListener("input",e=>{if(e.target.id==="impTxt"){imp.txt=e.target.value;impStatus()}});
 document.addEventListener("change",e=>{const el=e.target;
  if(el.id==="impMode"){imp.mode=el.value}
@@ -174,55 +455,83 @@ document.addEventListener("change",e=>{const el=e.target;
 
 /* ---------- settings ---------- */
 function settingsView(){const x=t(),s=KZ.settings();
- return`<div class="sec"><label class="fld"><span>${x.maps}</span><input id="sMaps" type="url" dir="ltr" value="${esc(s.mapsUrl)}"></label><p class="note" style="margin:8px 0 0">${x.mapsH}</p>
- <div class="g2"><label class="fld"><span>${x.sPin}</span><input id="sStaff" inputmode="numeric" maxlength="4" placeholder="${x.pinH}" value="${esc(s.staffPin)}" dir="ltr"></label><label class="fld"><span>${x.aPin}</span><input id="sAdmin" inputmode="numeric" maxlength="4" placeholder="${x.pinH}" value="${esc(s.adminPin)}" dir="ltr"></label></div>
- <button class="btn" data-a="savesettings">${x.save}</button></div>
- <div class="hd"><h2>${x.data}</h2></div><div class="sec"><div class="row"><button class="btn sm ghost" data-a="export">${x.export}</button><button class="btn sm bad" data-a="reset">${x.resetMenu}</button><button class="btn sm bad" data-a="clear">${x.clearData}</button></div></div>
+ return`<div class="set"><h2><span class="ic">${ic("star")}</span>${x.sGuest}</h2><p class="d">${x.mapsH}</p>
+  <label class="fld"><span>${x.maps}</span><input id="sMaps" type="url" dir="ltr" value="${esc(s.mapsUrl)}"></label></div>
+ <div class="set"><h2><span class="ic">${ic("key")}</span>${x.sAccess}</h2><p class="d">${x.sAccessD}</p>
+  <div class="g1"><label class="fld"><span>${x.sPin}</span><div class="pw"><input id="sStaff" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="${x.pinH}" value="${esc(s.staffPin)}" dir="ltr"><button type="button" data-a="showpin">${x.show}</button></div></label>
+  <label class="fld"><span>${x.aPin}</span><div class="pw"><input id="sAdmin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="${x.pinH}" value="${esc(s.adminPin)}" dir="ltr"><button type="button" data-a="showpin">${x.show}</button></div></label></div></div>
+ <div class="addrow" style="margin:12px 16px 0"><button class="btn" data-a="savesettings">${x.save}</button></div>
+ <div class="set"><h2><span class="ic">${ic("db")}</span>${x.data}</h2><p class="d">${x.dataD}</p>
+  <div class="row"><button class="btn sm ghost" data-a="export">${ic("dl")}${x.export}</button><button class="btn sm ghost" data-a="exportO">${ic("dl")}${x.exportO}</button></div></div>
+ <div class="set danger"><div class="row" style="margin-top:0"><button class="btn sm bad" data-a="reset">${x.resetMenu}</button><button class="btn sm bad" data-a="clear">${x.clearData}</button></div></div>
  <p class="note">${x.note}</p>`}
 
+/* ---------- shell ---------- */
+function head(){const x=t(),d=new Date(),g=d.getHours(),greet=g<5?x.gN:g<12?x.gM:g<17?x.gA:g<22?x.gE:x.gN;
+ $("#sub").innerHTML=`${greet}. ${x.gSub}<span class="dt">${d.toLocaleDateString(locale(),{weekday:"long",day:"numeric",month:"long"})}</span>`}
 function render(){const x=t(),ar=lang==="ar";
  document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
- $("#h1").textContent=x.h1;$("#sub").textContent=x.sub;$("#lock").setAttribute("aria-label",x.lock);$("#back").setAttribute("aria-label",x.back);$("#lang").setAttribute("aria-label",x.langA);
- $("#tabs").innerHTML=["reports","menu","settings"].map(k=>`<button class="tab${tab===k?" on":""}" data-tab="${k}">${x[k]}</button>`).join("");
- $("#view").innerHTML=tab==="reports"?reports():tab==="menu"?menuView():settingsView()}
+ $("#h1").textContent=x.h1;head();$("#lock").setAttribute("aria-label",x.lock);$("#back").setAttribute("aria-label",x.back);$("#lang").setAttribute("aria-label",x.langA);
+ $("#tabs").innerHTML=[["reports","chart"],["menu","book"],["settings","sliders"]].map(([k,i])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?"on":""}" data-tab="${k}">${ic(i)}<span>${x[k]}</span></button>`).join("");
+ $("#view").innerHTML=`<div class="page${tab==="reports"?" wide":""}">`+(tab==="reports"?reports():tab==="menu"?menuView():settingsView())+`</div>`;
+ if(tab==="menu")filterMenu()}
+
+function csvOrders(){const O=KZ.list("orders");if(!O.length){toast(t().noOrdersX,1);return}
+ const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"',L=["date,time,table,status,items,subtotal,service,tax,total,note"];
+ O.forEach(o=>{const d=new Date(o.ts),pad2=n=>String(n).padStart(2,"0");
+  L.push([`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`,`${pad2(d.getHours())}:${pad2(d.getMinutes())}`,o.table,o.status,(o.items||[]).map(i=>i.qty+"x "+i.en).join("; "),o.total||0,o.service||"",o.tax||"",o.grand||"",o.note||""].map(q).join(","))});
+ dl("kanzel-orders.csv","﻿"+L.join("\n"),"text/csv;charset=utf-8")}
+function dl(name,txt,type){const u=URL.createObjectURL(new Blob([txt],{type})),l=document.createElement("a");l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
 
 document.addEventListener("click",e=>{
- const tb=e.target.closest("[data-tab]");if(tb){tab=tb.dataset.tab;if(tab==="menu")raw=KZ.menuRaw();render();return}
+ const tb=e.target.closest("[data-tab]");if(tb){tab=tb.dataset.tab;if(tab==="menu")raw=KZ.menuRaw();render();scrollTo(0,0);return}
  const rg=e.target.closest("[data-range]");if(rg){range=rg.dataset.range;render();return}
+ const tg=e.target.closest("[data-toggle]");if(tg&&!e.target.closest("label.sw")){const r=tg.closest(".drow"),on=r.classList.toggle("ex");tg.setAttribute("aria-expanded",on);if(on)openD.add(r.dataset.key);else openD.delete(r.dataset.key);return}
  const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,ci=+b.dataset.ci,di=+b.dataset.di,x=t();
- const keep=()=>{open.add(ci);saveMenu();render()};
+ const keep=(k)=>{open.add(ci);if(k!=null)openD.add(ci+"-"+k);saveMenu();render()};
+ const clearD=()=>{openD.clear()};
  if(a==="imp"){imp.open=!imp.open;render();if(imp.open)impStatus();return}
  if(a==="impgo"){applyImport();return}
  if(a==="impexp"){imp.txt=toCsv();const ta=$("#impTxt");if(ta)ta.value=imp.txt;impStatus();return}
- if(a==="impdl"){const u=URL.createObjectURL(new Blob(["\uFEFF"+toCsv()],{type:"text/csv;charset=utf-8"})),l=document.createElement("a");l.href=u;l.download="kanzel-menu.csv";document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);return}
- if(a==="dadd"){raw[ci][2].push([x.newDish,x.newDish,0,"","","",0]);keep()}
- else if(a==="ddel")arm(b,x.delSure,()=>{raw[ci][2].splice(di,1);keep()});
- else if(a==="dup"){move(raw[ci][2],di,di-1);keep()}else if(a==="ddn"){move(raw[ci][2],di,di+1);keep()}
- else if(a==="rmphoto"){raw[ci][2][di][5]="";keep()}
- else if(a==="cadd"){raw.push([x.newCat,x.newCat,[]]);open=new Set([raw.length-1]);saveMenu();render()}
- else if(a==="cdel")arm(b,x.delSure,()=>{raw.splice(ci,1);open=new Set();saveMenu();render()});
- else if(a==="cup"){move(raw,ci,ci-1);open=new Set([ci-1]);saveMenu();render()}else if(a==="cdn"){move(raw,ci,ci+1);open=new Set([ci+1]);saveMenu();render()}
+ if(a==="impdl"){dl("kanzel-menu.csv","﻿"+toCsv(),"text/csv;charset=utf-8");return}
+ if(a==="showpin"){const i=b.parentElement.querySelector("input"),s=i.type==="password";i.type=s?"text":"password";i.style.letterSpacing=s?".3em":".3em";b.textContent=s?x.hide:x.show;return}
+ if(a==="dadd"){raw[ci][2].push([x.newDish,x.newDish,0,"","","",0]);clearD();keep(raw[ci][2].length-1)}
+ else if(a==="ddel")arm(b,x.delSure,()=>{raw[ci][2].splice(di,1);clearD();keep()});
+ else if(a==="dup"){move(raw[ci][2],di,di-1);clearD();keep(di-1)}else if(a==="ddn"){move(raw[ci][2],di,di+1);clearD();keep(di+1)}
+ else if(a==="rmphoto"){raw[ci][2][di][5]="";keep(di)}
+ else if(a==="cadd"){raw.push([x.newCat,x.newCat,[]]);open=new Set([raw.length-1]);clearD();saveMenu();render()}
+ else if(a==="cdel")arm(b,x.delSure,()=>{raw.splice(ci,1);open=new Set();clearD();saveMenu();render()});
+ else if(a==="cup"){move(raw,ci,ci-1);open=new Set([ci-1]);clearD();saveMenu();render()}else if(a==="cdn"){move(raw,ci,ci+1);open=new Set([ci+1]);clearD();saveMenu();render()}
  else if(a==="savesettings"){const s=KZ.settings(),sp=$("#sStaff").value.trim(),ap=$("#sAdmin").value.trim();
   if(!/^\d{4}$/.test(sp)||!/^\d{4}$/.test(ap)){toast(x.pinBad,1);return}
   const mu=$("#sMaps").value.trim();if(mu&&!/^https?:\/\//i.test(mu)){toast(x.mapsBad,1);return}
   s.mapsUrl=$("#sMaps").value.trim()||s.mapsUrl;s.staffPin=sp;s.adminPin=ap;KZ.saveSettings(s);toast(x.saved)}
  else if(a==="reset")arm(b,x.resetSure,()=>{KZ.resetMenu();raw=null;toast(x.saved)});
  else if(a==="clear")arm(b,x.clearSure,()=>{["orders","bookings","events","calls"].forEach(n=>KZ.saveList(n,[]));toast(x.cleared)});
+ else if(a==="exportO")csvOrders();
  else if(a==="export"){const o={exportedAt:new Date().toISOString(),menu:KZ.menuRaw(),settings:KZ.settings()};["orders","bookings","events","calls"].forEach(n=>o[n]=KZ.list(n));
-  const u=URL.createObjectURL(new Blob([JSON.stringify(o,null,1)],{type:"application/json"})),l=document.createElement("a");l.href=u;l.download="kanzel-data.json";document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}});
+  dl("kanzel-data.json",JSON.stringify(o,null,1),"application/json")}});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches("[data-toggle]")){e.preventDefault();e.target.click()}});
+document.addEventListener("toggle",e=>{const d=e.target;if(d.matches&&d.matches("details.cat")){const ci=+d.dataset.ci;if(d.open)open.add(ci);else open.delete(ci)}},true);
 /* typing in the menu editor: update data without re-rendering so the keyboard stays open */
-document.addEventListener("input",e=>{const el=e.target,f=el.dataset&&el.dataset.f;if(!f||!raw)return;
+document.addEventListener("input",e=>{const el=e.target;
+ if(el.id==="mSearch"){mq=el.value;filterMenu();return}
+ const f=el.dataset&&el.dataset.f;if(!f||!raw)return;
  const ci=+el.dataset.ci,di=+el.dataset.di,k=f.slice(1);
  if(["c0","c1","d0","d1"].includes(f))el.classList.toggle("bad",!el.value.trim());
  if(f[0]==="c")raw[ci][+k]=el.value;
- else if(f==="d6"){raw[ci][2][di][6]=el.checked?0:1;el.closest(".dish").classList.toggle("off",!el.checked)}
+ else if(f==="d6"){raw[ci][2][di][6]=el.checked?0:1}
  else if(f==="d2")raw[ci][2][di][2]=Math.max(0,Number(el.value)||0);
  else raw[ci][2][di][+k]=el.value;
+ if(f[0]==="d"&&["d0","d1","d2","d6"].includes(f)){const row=el.closest(".drow"),d=raw[ci][2][di];if(row){row.classList.toggle("off",!!d[6]);row.querySelector(".dm b").textContent=lang==="ar"?d[1]:d[0];row.querySelector(".dm span").innerHTML=metaOf(d);row.dataset.q=(d[0]+" "+d[1]).toLowerCase();const ph=row.querySelector(".dtop .ph");if(!d[5])ph.textContent=initial(d[0])}}
+ if(f==="c0"||f==="c1"){const s=el.closest("details").querySelector("summary>span");if(s&&((f==="c1")===(lang==="ar")))s.textContent=el.value}
  saveMenu()});
 document.addEventListener("change",e=>{const el=e.target;if(!el.matches("[data-photo]")||!el.files[0])return;
- const ci=+el.dataset.ci,di=+el.dataset.di;shrink(el.files[0],url=>{if(!url){toast(t().imgErr,1);return}raw[ci][2][di][5]=url;open.add(ci);saveMenu();render()})});
+ const ci=+el.dataset.ci,di=+el.dataset.di;shrink(el.files[0],url=>{if(!url){toast(t().imgErr,1);return}raw[ci][2][di][5]=url;open.add(ci);openD.add(ci+"-"+di);saveMenu();render()})});
 $("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);render()};
 $("#lock").onclick=()=>{KZ.logout("admin");location.reload()};
+addEventListener("scroll",()=>{const n=$("#anav");if(n)n.classList.toggle("stuck",scrollY>120)},{passive:true});
+setInterval(()=>{if(tab==="reports"&&!document.hidden&&!document.activeElement.matches("input,textarea"))render()},30000);
 KZ.gate("admin").then(()=>{$("#app").hidden=false;render()});
 </script>
 </body>
