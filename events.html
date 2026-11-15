@@ -222,7 +222,7 @@ function renderPage(){const t=BT[lang],ar=lang==='ar';
  $('#fName').placeholder=t.phName;$('#fGuests').placeholder=t.phGuests;$('#fNotes').placeholder=t.phNotes;
  const so=$('#fOcc'),cur=so.value;so.innerHTML='<option value="">'+t.pick+'</option>'+OCC.map(o=>'<option value="'+o[0]+'">'+o[idx()]+'</option>').join('');so.value=cur;
  $('#fNeeds').innerHTML=NEEDS.map(n=>'<button type="button" data-k="'+n[0]+'" aria-pressed="'+st.needs.has(n[0])+'">'+n[idx()]+'</button>').join('');
- $('#fWa').innerHTML=WA.map((n,i)=>'<button type="button" dir="ltr" data-i="'+i+'" aria-pressed="'+(st.wa===i)+'">0'+n.slice(1).replace(/^2/,'')+'</button>').join('');
+ $('#fWa').innerHTML=WA.map((n,i)=>'<button type="button" dir="ltr" data-i="'+i+'" aria-pressed="'+(st.wa===i)+'">0'+n.slice(2)+'</button>').join('');
  $('#bsubmit').innerHTML=WA_ICON+t.submit;
  $('#bagain').innerHTML=WA_ICON+t.again;$('#bedit').textContent=t.edit;$('#bdone').textContent=t.home;
  $('#bdt').textContent=t.doneT;$('#bdp').textContent=t.doneP;
@@ -234,7 +234,7 @@ const d0=new Date();$('#fDate').min=d0.getFullYear()+'-'+String(d0.getMonth()+1)
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lab(list,k,i){const r=list.find(x=>x[0]===k);return r?r[i]:''}
 function fillSummary(){const d=st.data;if(!d)return;const t=BT[lang],ar=lang==='ar',i=idx();
- const ds=d.date?new Date(d.date+'T00:00:00').toLocaleDateString(ar?'ar-EG':'en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';
+ const ds=d.date?new Date(d.date+'T00:00:00').toLocaleDateString(ar?'ar-EG-u-nu-latn':'en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';
  const rows=[[t.sName,esc(d.name)],[t.sOcc,lab(OCC,d.occ,i)],[t.sGuests,'<bdi dir="ltr">'+d.guests+'</bdi>']];
  if(ds)rows.push([t.sDate,ds]);
  if(d.needs.length)rows.push([t.sNeeds,d.needs.map(k=>lab(NEEDS,k,i)).join(ar?'، ':', ')]);

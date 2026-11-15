@@ -66,10 +66,12 @@ const T={en:{ tables:"Tables & QR",tH:"Table QR codes",tSub:"Print one code per 
  waMsg:(n,d,tm)=>"أهلاً "+n+"، معاك كنزل. حجزك يوم "+d+" الساعة "+tm+" اتأكد. في انتظارك."}};
 const digits=p=>String(p||"").replace(/\D/g,"");
 function wa(p){let d=digits(p);if(d.startsWith("00"))d=d.slice(2);else if(d.startsWith("0"))d="2"+d;return d}
+const fD=(d,l)=>{try{return new Date(d+"T00:00:00").toLocaleDateString(l==="ar"?"ar-EG-u-nu-latn":"en-GB",{weekday:"long",day:"numeric",month:"long"})}catch(e){return d}};
+const fT=(tm,l)=>{const p=String(tm||"").split(":"),h=+p[0],mi=+p[1];if(isNaN(h))return tm;const a=l==="ar";return (h%12||12)+":"+String(mi||0).padStart(2,"0")+" "+(h>=12&&h<24?(a?"م":"PM"):(a?"ص":"AM"))};
 function bookCard(b){const t=T[lang];
  return`<div class="card${b.status==="new"?" hl":""}"><div class="top"><div class="tb">${esc(b.name)}</div><div class="tm">${t.received} ${KZ.clock(b.ts,lang)}<br>${KZ.ago(b.ts,lang)}</div></div>
- <div class="items"><div class="r"><span>${t.date}</span><i>${esc(b.date)}</i></div><div class="r"><span>${t.time}</span><i>${esc(b.time)}</i></div><div class="r"><span>${b.guests} ${t.guests}</span><i dir="ltr">${esc(b.phone)}</i></div></div>
- <div class="row"><a class="btn sm ghost" href="tel:${esc(digits(b.phone))}">${t.call}</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://wa.me/${wa(b.phone)}?text=${encodeURIComponent(t.waMsg(b.name,b.date,b.time))}">${t.wa}</a></div>${acts(b)}</div>`}
+ <div class="items"><div class="r"><span>${t.date}</span><i>${esc(fD(b.date,lang))}</i></div><div class="r"><span>${t.time}</span><i>${esc(fT(b.time,lang))}</i></div><div class="r"><span>${b.guests} ${t.guests}</span><i dir="ltr">${esc(b.phone)}</i></div></div>
+ <div class="row"><a class="btn sm ghost" href="tel:${esc(digits(b.phone))}">${t.call}</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://wa.me/${wa(b.phone)}?text=${encodeURIComponent(t.waMsg(b.name,fD(b.date,lang),fT(b.time,lang)))}">${t.wa}</a></div>${acts(b)}</div>`}
 function evCard(b){const t=T[lang],ar=lang==="ar",needs=(ar?b.needsAr:b.needsEn)||[];
  return`<div class="card${b.status==="new"?" hl":""}"><div class="top"><div class="tb">${esc(b.name)}</div><div class="tm">${t.received} ${KZ.clock(b.ts,lang)}<br>${KZ.ago(b.ts,lang)}</div></div>
  <div class="items"><div class="r"><span>${esc(ar?b.occAr:b.occEn)}</span><i>${b.guests} ${t.guests}</i></div>${b.date?`<div class="r"><span>${t.date}</span><i>${esc(b.date)}</i></div>`:""}${needs.length?`<div class="r"><span>${t.needs}</span><i style="white-space:normal;text-align:end">${esc(needs.join("، "))}</i></div>`:""}</div>
@@ -105,7 +107,7 @@ const DEFT=()=>Array.from({length:20},(_,i)=>({id:"t"+(i+1),label:String(i+1)}))
 let TB=KZ.read("kanzel-tables",null);if(!Array.isArray(TB)||!TB.length)TB=DEFT();
 const saveTB=()=>KZ.write("kanzel-tables",TB);
 const baseUrl=()=>KZQR.base();
-const tUrl=l=>baseUrl()+"/table?t="+encodeURIComponent(l);
+const tUrl=l=>baseUrl()+"/table.html?t="+encodeURIComponent(l);
 let logoImg=null;const logoReady=new Promise(r=>{const i=new Image();i.onload=()=>{logoImg=i;r()};i.onerror=r;i.src="logo.png"});
 function qrOf(text){const L=window.QRCodeLib;for(let v=2;v<=20;v++){try{const q=new L.QRCode(v,L.ECC.M);q.addData(text);q.make();return q}catch(e){}}return null}
 function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}

@@ -13,7 +13,7 @@ KZ.uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 KZ.phoneLang=()=>{try{const l=(navigator.languages&&navigator.languages[0])||navigator.language||"en";return/^ar(\b|-|_)/i.test(String(l))?"ar":"en"}catch(e){return"en"}};
 KZ.lang=()=>{const v=S.get("kanzel-lang");return v==="ar"||v==="en"?v:KZ.phoneLang()};
 KZ.setLang=l=>S.set("kanzel-lang",l);
-KZ.clock=(ts,l)=>new Date(ts).toLocaleTimeString(l==="ar"?"ar-EG":"en-GB",{hour:"2-digit",minute:"2-digit"});
+KZ.clock=(ts,l)=>new Date(ts).toLocaleTimeString(l==="ar"?"ar-EG-u-nu-latn":"en-GB",{hour:"2-digit",minute:"2-digit"});
 KZ.ago=(ts,l)=>{const m=Math.floor((Date.now()-ts)/6e4),a=l==="ar";if(m<1)return a?"دلوقتي":"just now";if(m<60)return a?"من "+m+" دقيقة":m+" min ago";const h=Math.floor(m/60);return a?"من "+h+" ساعة و"+(m%60)+" دقيقة":h+" h "+(m%60)+" min ago"};
 /* navigation: real pages in the zip, hash views when embedded in the single-file preview */
 /* ---------- UI: transitions, toast, busy buttons, offline banner, error net ---------- */

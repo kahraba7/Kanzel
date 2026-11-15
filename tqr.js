@@ -1,6 +1,6 @@
 /* tqr.js: table QR cards, shared by /admin (and the same data as /reception > Tables & QR).
    Needs qr.js (window.QRCodeLib) and kz.js. Tables are stored under "kanzel-tables" as [{id,label}].
-   Each code opens  <site>/table?t=<label>  so the guest lands on the ordering page for that table. */
+   Each code opens  <site>/table.html?t=<label>  so the guest lands on the ordering page for that table. */
 (function(){
 const KQ=window.KZQR={COUNT:20};
 KQ.defaults=()=>Array.from({length:KQ.COUNT},(_,i)=>({id:"t"+(i+1),label:String(i+1)}));
@@ -10,7 +10,7 @@ KQ.save=a=>KZ.write("kanzel-tables",a);
 KQ.base=()=>{const saved=(KZ.read("kanzel-settings",{})||{}).siteUrl;let u=saved;
  if(!u&&/^https:$/.test(location.protocol)&&!/^(localhost|127\.)/.test(location.hostname))u=location.origin;
  return String(u||KZ.settings().siteUrl||"https://kanzel-eg.vercel.app").replace(/\/+$/,"")};
-KQ.url=l=>KQ.base()+"/table?t="+encodeURIComponent(l);
+KQ.url=l=>KQ.base()+"/table.html?t="+encodeURIComponent(l);
 /* card fonts: El Messiri (elegant Arabic + clean numbers) from Google Fonts, with the site font as fallback */
 (function(){if(document.getElementById("kqFont"))return;const l=document.createElement("link");l.id="kqFont";l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&display=swap";document.head.appendChild(l)})();
 let logo=null;KQ.ready=Promise.race([Promise.all([new Promise(r=>{const i=new Image();i.onload=()=>{logo=i;r()};i.onerror=r;i.src="logo.png"}),document.fonts?Promise.all([document.fonts.load('600 60px "El Messiri"',"ترابيزة امسح 1234"),document.fonts.load('500 60px "Readex Pro"',"ترابيزة 1"),document.fonts.load('300 30px "Readex Pro"',"Scan")]).then(()=>document.fonts.ready):0]),new Promise(r=>setTimeout(r,1500))]);

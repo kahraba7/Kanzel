@@ -1,6 +1,6 @@
 /* Kanzel service worker: offline shell. Bump V to force an update. */
-const V="kanzel-v34";
-const CORE=["/","/table","/booking","/events","/menu.js","/kz.js","/tqr.js","/qr.js","/dish.js","/ph.js","/staff.css","/manifest.json","/logo.png","/poster.jpg","/bg-1.jpg","/bg-2.jpg","/bg-3.jpg","/icon-192.png","/icon-512.png","/apple-touch-icon.png","/og-image.jpg"];
+const V="kanzel-v36";
+const CORE=["/","/table.html","/booking","/events","/menu.js","/kz.js","/tqr.js","/qr.js","/dish.js","/ph.js","/staff.css","/manifest.json","/logo.png","/poster.jpg","/bg-1.jpg","/bg-2.jpg","/bg-3.jpg","/icon-192.png","/icon-512.png","/apple-touch-icon.png","/og-image.jpg"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(CORE.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{

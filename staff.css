@@ -13,7 +13,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .mh h1{font:500 clamp(38px,10vw,50px)/1.1 var(--serif)}
 .mh h1::after{content:"";display:block;height:1.5px;width:56px;background:var(--gold);margin-top:10px}
 .mh p{margin-top:10px;font-size:13px;color:rgba(244,239,221,.8)}
-.tabs{display:flex;gap:8px;padding:14px 20px 0;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px 0;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
 .tab{flex:none;padding:9px 16px;border-radius:99px;border:1px solid rgba(211,201,148,.4);font-size:13.5px;color:rgba(244,239,221,.85);white-space:nowrap;transition:background .2s}
 .tab.on{background:var(--gold);color:var(--forest);border-color:var(--gold);font-weight:500}
 .tab b{font-weight:500;margin-inline-start:6px;opacity:.85}

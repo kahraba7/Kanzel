@@ -65,3 +65,7 @@ v49b: new table card design (Arabic joined, readable numbers in a gold pill). Th
 v49c: card uses El Messiri font, adds call-waiter / bill line.
 v49d: arch-style table card, dark and light looks (admin > Table QR > Card style).
 v49e: minimal table card (hairline frame, logo on the frame, big number). Dark and light looks.
+
+v49f: table QR codes now open /table.html?t=N (works even when clean URLs are not active on the host; /table?t=N gave 404). sw cache v35. Reprint the QR cards.
+
+v49g: fixes from the pre-demo review. Table page: the table-number field is hidden when the QR already gives the table. Events: WhatsApp numbers no longer show an extra 0. Brand spelled the same everywhere in Arabic (كنزل). No italic on Arabic text. Latin digits for times and dates in Arabic. Booking: times that already passed today are disabled, after-midnight slots are labelled. Reception: readable date/time (weekday, 8:00 م), tab row wraps instead of clipping. sw cache v36.
