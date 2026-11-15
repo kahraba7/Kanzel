@@ -315,6 +315,33 @@ body.searching #menuView section.gh{display:block}
 #menuView .gc .ph .pr{position:absolute;z-index:2;inset-inline-end:8px;bottom:8px;margin:0;padding:6px 10px;border-radius:99px;background:rgba(16,33,26,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(211,201,148,.4);font:700 14px/1 var(--sans);color:#e8d98a}
 #menuView .gc .ph .pr small{font-size:10.5px}
 @media(prefers-reduced-motion:reduce){#menuView .plt img{transition:none;filter:none;transform:none}}
+
+/* v35 menu: side index (round photo rail) + clean photo rows */
+#menuView .mbody{display:grid;grid-template-columns:76px 1fr;align-items:start;padding-inline-start:14px;margin-top:6px}
+#menuView .mbody.norail{grid-template-columns:1fr;padding-inline-start:0}.mbody.norail #mrail{display:none}
+body.searching #menuView .mbody{grid-template-columns:1fr;padding-inline-start:0}body.searching #menuView #mrail{display:none}
+#menuView #mrail{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--stkh,128px) + 8px);max-height:calc(100dvh - var(--stkh,128px) - 80px);overflow-y:auto;scrollbar-width:none;padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:14px;background:rgba(8,16,12,.6);border:1px solid rgba(211,201,148,.22);border-radius:26px}
+#menuView #mrail::-webkit-scrollbar{display:none}
+#menuView .av{flex:none;width:68px;padding:0;border:0;background:none;color:#b9b393;font:500 10px/1.25 var(--sans);text-align:center;cursor:pointer}
+#menuView .av[hidden]{display:none}
+#menuView .av span{position:relative;display:grid;place-items:center;width:46px;height:46px;margin:0 auto 5px;border-radius:50%;overflow:hidden;border:2px solid transparent;background:var(--ph,#1b3a2a);color:var(--gold);opacity:.72;transition:opacity .25s,transform .3s,border-color .25s,box-shadow .25s}
+#menuView .av span svg{width:22px;height:22px}
+#menuView .av span img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;filter:blur(8px);transition:opacity .5s,filter .6s}#menuView .av span img.ok{opacity:1;filter:none}
+#menuView .av b{display:block;font-weight:500}
+#menuView .av.on{color:var(--gold)}#menuView .av.on span{opacity:1;border-color:var(--gold);transform:scale(1.07);box-shadow:0 0 0 4px rgba(211,201,148,.16)}
+#menuView #mlist section{padding:2px 16px 0 14px;display:none}
+#menuView #mlist section.open,body.searching #menuView #mlist section{display:block}
+#menuView h2.sh{position:static;display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:4px 2px 14px;background:none}
+#menuView h2.sh .nm{font:italic 600 34px/1.05 var(--serif);color:var(--gold)}
+#menuView h2.sh small{font:500 10.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+[dir=rtl] #menuView h2.sh small{letter-spacing:0;text-transform:none;font-size:12px}
+#menuView .card{grid-template-columns:84px 1fr;gap:12px;padding:0 0 14px;margin-bottom:14px;background:none;border-radius:0;border-bottom:1px solid rgba(211,201,148,.16)}
+#menuView .card .ph{width:84px;height:84px;border:0;border-radius:18px}
+#menuView .card h3{font:600 17px/1.2 var(--serif);color:var(--cream)}
+#menuView .card p{font-size:12px;line-height:1.4;opacity:.72;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#menuView .card .pr{margin-top:5px;font-size:14.5px}
+#menuView .card.np{grid-template-columns:1fr;padding:0 0 14px}
+#menuView .items .card:last-child{border-bottom:0}
 </style>
 </head>
 <body>
@@ -355,7 +382,7 @@ body.searching #menuView section.gh{display:block}
   </div>
   <div class="mh"><h1 id="mh1"></h1><p id="msub"></p></div>
   <nav id="mnav" aria-label="Categories"></nav>
-  <div id="mlist"></div>
+  <div class="mbody"><aside id="mrail" aria-label="Sections"></aside><div id="mlist"></div></div>
   <p class="tax" id="mtax"></p>
 </div><button type="button" class="totop" id="mtop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button></div>
 <script src="menu.js"></script>
@@ -464,7 +491,7 @@ const phOf=s=>{const c=(window.PH||{})[s];return c?"linear-gradient(#"+c.slice(0
 const imgT=s=>`<img src="${s}" alt="" loading="lazy" decoding="async">`;
 function cairoNow(){try{const p=new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Cairo",hour:"numeric",minute:"numeric",month:"numeric",hour12:false}).formatToParts(new Date()),g=t=>+p.find(x=>x.type===t).value;return{m:(g("hour")%24)*60+g("minute"),mo:g("month")}}catch(e){const d=new Date();return{m:d.getHours()*60+d.getMinutes(),mo:d.getMonth()+1}}}
 function phase(){const t=cairoNow();return t.m>=360&&t.m<720?"morning":t.m>=720&&t.m<SUN[t.mo-1]?"day":"night"}
-const app=$("#app"),nav=$("#mnav"),mv0=$("#menuView");let secs=[],tabs=[],secG=[],openK=-1,grp=-1;
+const app=$("#app"),nav=$("#mnav"),mv0=$("#menuView");let secs=[],tabs=[],avs=[],secG=[],openK=-1,grp=-1;
 const io="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{rootMargin:"0px 0px -4% 0px"}):null;
 mv0.addEventListener("load",e=>{if(e.target.tagName==="IMG")e.target.classList.add("ok")},true);
 function renderMenu(){const t=MT[lang],i=lang==="ar"?1:0,first=grp<0,prev=openK;
@@ -474,31 +501,31 @@ function renderMenu(){const t=MT[lang],i=lang==="ar"?1:0,first=grp<0,prev=openK;
  nav.style.display=gs.length<2?"none":"";
  nav.innerHTML=gs.map((g,n)=>`<button type="button" data-g="${g}" style="--c:${n}"><i class="ti">${ico(GROUPS[g].ic)}</i><b>${GROUPS[g][lang]}</b></button>`).join("");
  $("#mlist").innerHTML=!MENU.length?`<p class="emptyM">${lang==="ar"?"المنيو بيتحدّث دلوقتي. جرّب كمان شوية.":"The menu is being updated. Please check back soon."}</p>`:MENU.map((m,k)=>{
-  const it=m[2],np=it.filter(x=>x[5]).length,top=it.find(x=>x[5]),grid=GROUPS[secG[k]].id!=="drinks"&&np>=4&&np/it.length>=.6;
-  return`<section data-g="${secG[k]}"><h2><button type="button" class="acch${top?"":" nopl"}" aria-expanded="false" style="--ph:${top?phOf(top[5]):"#1b3a2a"}"><span class="ci">${ico(m[0])}</span><span class="tx"><small>${it.length} ${it.length===1?t.one:t.many}</small><span class="nm">${m[i]}</span></span>${top?`<span class="plt">${imgT(top[5])}</span>`:""}<i class="chev"></i></button></h2><div class="items${grid?" g":""}">${it.map((x,j)=>`<div class="card${x[5]?(grid?" gc":""):" np"}" data-k="${k}" data-j="${j}" data-s="${KZX.hay(m[0],m[1],x[0],x[1],x[3],x[4])}" style="--i:${j%4}">${(()=>{const pr=`<b class="pr">${x[2].toLocaleString("en")}<small>${t.egp}</small></b>`,g2=grid&&x[5];return(x[5]?`<div class="ph" style="--ph:${phOf(x[5])}">${imgT(x[5])}${g2?pr:""}</div>`:"")+`<div><h3>${x[i]}</h3><p>${x[i+3]}</p>${g2?"":pr}</div>`})()}</div>`).join("")}</div></section>`}).join("");
+  const it=m[2];
+  return`<section data-g="${secG[k]}"><h2 class="sh"><span class="nm">${m[i]}</span><small>${it.length} ${it.length===1?t.one:t.many}</small></h2><div class="items">${it.map((x,j)=>`<div class="card${x[5]?"":" np"}" data-k="${k}" data-j="${j}" data-s="${KZX.hay(m[0],m[1],x[0],x[1],x[3],x[4])}" style="--i:${j%4}">${x[5]?`<div class="ph" style="--ph:${phOf(x[5])}">${imgT(x[5])}</div>`:""}<div><h3>${x[i]}</h3><p>${x[i+3]}</p><b class="pr">${x[2].toLocaleString("en")}<small>${t.egp}</small></b></div></div>`).join("")}</div></section>`}).join("");
+ $("#mrail").innerHTML=MENU.map((m,k)=>{const top=m[2].find(x=>x[5]);return`<button type="button" class="av" data-k="${k}" data-g="${secG[k]}" aria-label="${m[i]}"><span style="--ph:${top?phOf(top[5]):"#1b3a2a"}">${top?imgT(top[5]):ico(m[0])}</span><b>${m[i]}</b></button>`}).join("");
  $("#mtop").setAttribute("aria-label",t.top);
- secs=[...document.querySelectorAll("#menuView section")];tabs=[...nav.children];
- secs.forEach((sc,k)=>sc.querySelector(".acch").onclick=()=>openSec(k,false));
+ secs=[...document.querySelectorAll("#menuView section")];tabs=[...nav.children];avs=[...$("#mrail").children];
+ avs.forEach(b=>b.onclick=()=>openSec(+b.dataset.k,true));
  tabs.forEach(b=>b.onclick=()=>pickGroup(+b.dataset.g));
- document.querySelectorAll("#mlist img").forEach(m=>{if(m.complete&&m.naturalWidth)m.classList.add("ok")});
+ document.querySelectorAll("#menuView img").forEach(m=>{if(m.complete&&m.naturalWidth)m.classList.add("ok")});
  if(io)document.querySelectorAll("#mlist .card").forEach(c=>{c.classList.add("rv");io.observe(c)});
  if(gs.indexOf(grp)<0)grp=gs.length?gs[0]:0;
- paintG();openK=-1;const want=first?defK(grp):prev;if(want>=0&&secs[want])openSec(want,true,true);
+ paintG();openK=-1;const want=first||prev<0?defK(grp):prev;if(want>=0&&secs[want])openSec(want,true,true);
  KZX.setLang(lang);KZX.reapply();spy();
  if(pendingDish){const[k,j]=pendingDish;pendingDish=null;openSec(k,true);setTimeout(()=>{const c=document.querySelector('#mlist .card[data-k="'+k+'"][data-j="'+j+'"]');if(c){c.scrollIntoView({block:"center"});c.click()}},380)}}
-function paintG(){secs.forEach((sc,k)=>sc.classList.toggle("gh",secG[k]!==grp));tabs.forEach(b=>{const o=+b.dataset.g===grp;b.classList.toggle("on",o);b.setAttribute("aria-pressed",o)})}
-/* the section a group opens with: its only section, or the one that fits the Cairo time of day */
-function defK(g){const ks=secG.map((x,k)=>x===g?k:-1).filter(k=>k>=0);if(ks.length<2)return ks.length?ks[0]:-1;
- const w=(TOD[phase()]||{})[GROUPS[g].id],k=MENU.findIndex(m=>m[0]===w);return k>=0&&secG[k]===g?k:-1}
-function pickGroup(g){if(g===grp)return;grp=g;paintG();const sh=$(".stk"),sy=sh?sh.offsetHeight:0,past=$("#mlist").getBoundingClientRect().top<=sy+4;
- secs.forEach(sc=>{sc.classList.remove("open");sc.querySelector(".acch").setAttribute("aria-expanded","false")});openK=-1;
- const k=defK(g);if(k>=0)openSec(k,true,!past);else if(past)scrollTo({top:scrollY+$("#mlist").getBoundingClientRect().top-sy,behavior:"auto"})}
-/* one section open at a time; tabs and the open section's title stay pinned while you scroll */
+function paintG(){secs.forEach((sc,k)=>sc.classList.toggle("gh",secG[k]!==grp));avs.forEach(b=>b.hidden=+b.dataset.g!==grp);
+ $(".mbody").classList.toggle("norail",secG.filter(x=>x===grp).length<2);
+ tabs.forEach(b=>{const o=+b.dataset.g===grp;b.classList.toggle("on",o);b.setAttribute("aria-pressed",o)})}
+/* the category a tab opens with: its only one, or the one that fits the Cairo time of day (else its first) */
+function defK(g){const ks=secG.map((x,k)=>x===g?k:-1).filter(k=>k>=0);if(!ks.length)return -1;if(ks.length<2)return ks[0];
+ const w=(TOD[phase()]||{})[GROUPS[g].id],k=MENU.findIndex(m=>m[0]===w);return k>=0&&secG[k]===g?k:ks[0]}
+function pickGroup(g){if(g===grp)return;grp=g;paintG();openK=-1;const k=defK(g);if(k>=0)openSec(k,true)}
+/* side index: tap a round photo to switch category; the rail stays pinned while you scroll */
 function openSec(k,force,quiet){if(!secs[k])return;if(secG[k]!==grp){grp=secG[k];paintG()}
- const want=force?true:!secs[k].classList.contains("open");
- secs.forEach((sc,j)=>{const o=j===k&&want;sc.classList.toggle("open",o);sc.querySelector(".acch").setAttribute("aria-expanded",o)});
- openK=want?k:-1;
- if(want&&!quiet)requestAnimationFrame(()=>secs[k].scrollIntoView({block:"start"}))}
+ secs.forEach((sc,j)=>sc.classList.toggle("open",j===k));avs.forEach((b,j)=>b.classList.toggle("on",j===k));openK=k;
+ const r=$("#mrail"),a=avs[k];if(a&&r&&a.offsetParent)r.scrollTop=a.offsetTop-r.clientHeight/2+a.offsetHeight/2;
+ if(!quiet){const s=$(".stk"),sy=s?s.offsetHeight:0,top=$(".mbody").getBoundingClientRect().top;if(top<sy)requestAnimationFrame(()=>scrollTo({top:scrollY+$(".mbody").getBoundingClientRect().top-sy-8,behavior:"auto"}))}}
 function spy(){if(!view())return;const y=scrollY;if(y>160)mv0.classList.add("min");else if(y<60)mv0.classList.remove("min");
  $("#mtop").classList.toggle("on",y>500)}
 $("#mtop").onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});
