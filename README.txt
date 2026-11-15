@@ -61,3 +61,7 @@ v49:
 - Note per dish: the guest adds it in the order sheet (quick chips or typed), the waiter sees it on the order and can edit it in Edit order.
 - Language: pages open in Arabic on phones whose main language is Arabic, English otherwise. The AR/EN button still overrides and is remembered.
 - sw cache v34.
+v49b: new table card design (Arabic joined, readable numbers in a gold pill). The QR address is now the site the admin is opened from (https), unless you saved another one in Table QR > Website address.
+v49c: card uses El Messiri font, adds call-waiter / bill line.
+v49d: arch-style table card, dark and light looks (admin > Table QR > Card style).
+v49e: minimal table card (hairline frame, logo on the frame, big number). Dark and light looks.

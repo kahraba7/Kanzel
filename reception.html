@@ -46,6 +46,7 @@
 <script src="menu.js"></script>
 <script src="qr.js"></script>
 <script src="kz.js"></script>
+<script src="tqr.js"></script>
 <script>
 const $=s=>document.querySelector(s),esc=KZ.esc;
 let lang=KZ.lang(),kind="bookings",flt="new",seen=null;
@@ -103,21 +104,12 @@ addEventListener("storage",e=>{if(e.key===KZ.KEYS.bookings||e.key===KZ.KEYS.even
 const DEFT=()=>Array.from({length:20},(_,i)=>({id:"t"+(i+1),label:String(i+1)}));
 let TB=KZ.read("kanzel-tables",null);if(!Array.isArray(TB)||!TB.length)TB=DEFT();
 const saveTB=()=>KZ.write("kanzel-tables",TB);
-const baseUrl=()=>String(KZ.settings().siteUrl||"https://kanzel-eg.vercel.app").replace(/\/+$/,"");
+const baseUrl=()=>KZQR.base();
 const tUrl=l=>baseUrl()+"/table?t="+encodeURIComponent(l);
 let logoImg=null;const logoReady=new Promise(r=>{const i=new Image();i.onload=()=>{logoImg=i;r()};i.onerror=r;i.src="logo.png"});
 function qrOf(text){const L=window.QRCodeLib;for(let v=2;v<=20;v++){try{const q=new L.QRCode(v,L.ECC.M);q.addData(text);q.make();return q}catch(e){}}return null}
 function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
-function drawCard(label,url,sc){const W=1000,H=1400,c=document.createElement("canvas");c.width=Math.round(W*sc);c.height=Math.round(H*sc);const x=c.getContext("2d");x.scale(sc,sc);
- x.fillStyle="#10211a";x.fillRect(0,0,W,H);x.strokeStyle="rgba(211,201,148,.6)";x.lineWidth=4;x.strokeRect(36,36,W-72,H-72);
- if(logoImg){const lw=420,lh=logoImg.height*lw/logoImg.width;x.drawImage(logoImg,(W-lw)/2,84,lw,lh)}
- const P=660,px=(W-P)/2,py=354;x.fillStyle="#f4efdd";rr(x,px,py,P,P,36);x.fill();
- const q=qrOf(url);if(q){const n=q.getModuleCount(),A=P-140,m=A/n,ox=px+70,oy=py+70;x.fillStyle="#10211a";
-  for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k)){const l=Math.round(ox+k*m),t=Math.round(oy+r*m);x.fillRect(l,t,Math.round(ox+(k+1)*m)-l,Math.round(oy+(r+1)*m)-t)}}
- x.textAlign="center";x.fillStyle="#d3c994";x.font='500 32px "Readex Pro",system-ui,sans-serif';try{x.letterSpacing="8px"}catch(e){}x.fillText("TABLE · ترابيزة",W/2,1084);try{x.letterSpacing="0px"}catch(e){}
- let fs=150;const f=n=>'600 '+n+'px "Cormorant Garamond",Georgia,serif';x.font=f(fs);while(x.measureText(label).width>780&&fs>40){fs-=6;x.font=f(fs)}
- x.fillStyle="#f4efdd";x.fillText(label,W/2,1084+Math.round(fs*.9)+14);
- x.fillStyle="rgba(244,239,221,.88)";x.font='300 30px "Readex Pro",system-ui,sans-serif';x.fillText("Scan to order · امسح واطلب",W/2,H-86);return c}
+function drawCard(label,url,sc){return KZQR.draw(label,sc)}
 const isDup=(l,id)=>TB.some(t=>t.id!==id&&t.label.trim().toLowerCase()===l.trim().toLowerCase());
 function tCard(tb){const t=T[lang],bad=!tb.label.trim()||isDup(tb.label,tb.id);
  return`<div class="card" data-tid="${esc(tb.id)}"><div class="tq"><canvas data-prev="${esc(tb.id)}" width="220" height="308" role="img" aria-label="QR ${esc(tb.label)}"></canvas>

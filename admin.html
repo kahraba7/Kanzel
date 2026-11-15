@@ -254,7 +254,7 @@ const T={en:{h1:"Owner dashboard",
  sWait:"Waiters",sWaitD:"Each waiter picks their name after typing the staff PIN. The waiter who confirms an order keeps it until it is served.",wEn:"Name (English)",wAr:"Name (Arabic)",wAdd:"Add waiter",wDel:"Remove",wMin:"Keep at least one waiter, each with a name",sAccess:"Access",sAccessD:"Four digits each. Change them if a staff member leaves.",sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",show:"Show",hide:"Hide",
  data:"Data",dataD:"Everything is stored on this device for now. Export a copy from time to time.",export:"Export all data",exportO:"Export orders (CSV)",clearData:"Clear orders, bookings and calls",clearSure:"Tap again to clear",cleared:"Cleared",noOrdersX:"No orders to export yet.",
  note:"The PIN protects the page on this device only. Real protection arrives with the backend.",lock:"Lock",back:"Back",langA:"العربية",
- tables:"Table QR",tqH:"Table QR codes",tqSub:"One code per table. Print them, stick one on each table: the guest scans it and the ordering page opens already set to that table number.",siteUrl:"Website address",addT:"Add table",printAll:"Print all",dl:"Download",tLabel:"Table number or name",dup:"Already used",urlBad:"The address must start with https://",qrNote:"Print on A4: 4 codes per page. If you change the website address, print the codes again.",
+ tables:"Table QR",tqStyle:"Card style",tqDark:"Dark (stands, print shop)",tqLight:"Light (office printer, saves ink)",tqH:"Table QR codes",tqSub:"One code per table. Print them, stick one on each table: the guest scans it and the ordering page opens already set to that table number.",siteUrl:"Website address",addT:"Add table",printAll:"Print all",dl:"Download",tLabel:"Table number or name",dup:"Already used",urlBad:"The address must start with https://",qrNote:"Print on A4: 4 codes per page. If you change the website address, print the codes again.",
  wRep:"Waiters",wRepH:"Performance of each waiter",wOrders:"orders",wSales:"sales",wConf:"to confirm",wServe:"to serve",wCanc:"declined / cancelled",wNone:"Orders will show here once waiters start confirming them.",
  cancH:"Declined and cancelled",cancTop:"Why orders were stopped",rej:"Declined",canc:"Cancelled",by:"by",noReason:"No reason",
  soldOut:"Sold out",soldMark:"Mark sold out",soldBack:"Back in stock",soldNote:"Waiters can also mark a dish sold out from their screen.",itemNote:"Note"},
@@ -281,7 +281,7 @@ const T={en:{h1:"Owner dashboard",
  sWait:"الويترز",sWaitD:"كل ويتر بيختار اسمه بعد ما يكتب رقم الموظفين. الويتر اللي بيأكد الطلب هو اللي بيكمله لحد ما يتسلّم.",wEn:"الاسم بالإنجليزي",wAr:"الاسم بالعربي",wAdd:"أضف ويتر",wDel:"شيل",wMin:"لازم يفضل ويتر واحد على الأقل وليه اسم",sAccess:"الدخول",sAccessD:"4 أرقام لكل واحد. غيّرهم لو حد من الموظفين سابك.",sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",show:"إظهار",hide:"إخفاء",
  data:"البيانات",dataD:"كل حاجة متخزنة على الجهاز ده دلوقتي. صدّر نسخة من وقت للتاني.",export:"صدّر كل البيانات",exportO:"صدّر الطلبات (CSV)",clearData:"امسح الطلبات والحجوزات والنداءات",clearSure:"دوس تاني للمسح",cleared:"اتمسح",noOrdersX:"مفيش طلبات تتصدّر لسه.",
  note:"الرقم السري بيحمي الصفحة على الجهاز ده بس. الحماية الحقيقية هتيجي مع الباك إند.",lock:"قفل",back:"رجوع",langA:"English",
- tables:"QR الترابيزات",tqH:"أكواد QR للترابيزات",tqSub:"كود لكل ترابيزة. اطبعهم والصق كود على كل ترابيزة: الضيف بيمسحه وصفحة الطلب بتفتح على رقم ترابيزته على طول.",siteUrl:"عنوان الموقع",addT:"أضف ترابيزة",printAll:"اطبع الكل",dl:"حمّل",tLabel:"رقم أو اسم الترابيزة",dup:"مستخدم قبل كده",urlBad:"العنوان لازم يبدأ بـ https://",qrNote:"الطباعة A4: 4 أكواد في الصفحة. لو غيّرت عنوان الموقع اطبع الأكواد تاني.",
+ tables:"QR الترابيزات",tqStyle:"شكل الكارت",tqDark:"غامق (ستاند، مطبعة)",tqLight:"فاتح (طابعة عادية، يوفر حبر)",tqH:"أكواد QR للترابيزات",tqSub:"كود لكل ترابيزة. اطبعهم والصق كود على كل ترابيزة: الضيف بيمسحه وصفحة الطلب بتفتح على رقم ترابيزته على طول.",siteUrl:"عنوان الموقع",addT:"أضف ترابيزة",printAll:"اطبع الكل",dl:"حمّل",tLabel:"رقم أو اسم الترابيزة",dup:"مستخدم قبل كده",urlBad:"العنوان لازم يبدأ بـ https://",qrNote:"الطباعة A4: 4 أكواد في الصفحة. لو غيّرت عنوان الموقع اطبع الأكواد تاني.",
  wRep:"الويترز",wRepH:"أداء كل ويتر",wOrders:"طلب",wSales:"مبيعات",wConf:"للتأكيد",wServe:"للتسليم",wCanc:"مرفوض / ملغي",wNone:"الطلبات هتظهر هنا أول ما الويترز يبدأوا يأكدوها.",
  cancH:"المرفوض والملغي",cancTop:"أسباب إيقاف الطلبات",rej:"مرفوض",canc:"ملغي",by:"بواسطة",noReason:"من غير سبب",
  soldOut:"نفد",soldMark:"علّم إنه نفد",soldBack:"رجع متاح",soldNote:"الويتر كمان يقدر يعلّم الصنف إنه نفد من شاشته.",itemNote:"ملاحظة"}};
@@ -524,6 +524,7 @@ const tqBad=(l,id)=>!String(l).trim()||TQ.some(t=>t.id!==id&&t.label.trim().toLo
 function tablesView(){const x=t();if(!TQ)TQ=KZQR.tables();
  return`<div class="set"><h2><span class="ic">${ic("qr")}</span>${x.tqH}</h2><p class="d">${x.tqSub}</p>
   <label class="fld"><span>${x.siteUrl}</span><input id="tqUrl" type="url" dir="ltr" value="${esc(KZQR.base())}"></label>
+  <p class="d" style="margin:14px 0 0">${x.tqStyle}</p><div class="row" style="margin-top:8px">${["dark","light"].map(v=>`<button class="btn sm ${KZQR.theme()===v?"":"ghost"}" data-a="tqtheme" data-v="${v}">${v==="dark"?x.tqDark:x.tqLight}</button>`).join("")}</div>
   <div class="row"><button class="btn sm" data-a="tqprint">${x.printAll} (${TQ.length})</button><button class="btn sm ghost" data-a="tqadd">${x.addT}</button></div></div>
   <div class="tqg">${TQ.map(tb=>`<div class="tqc" data-tid="${esc(tb.id)}"><canvas data-prev="${esc(tb.id)}" width="220" height="308" role="img" aria-label="QR ${esc(tb.label)}"></canvas>
    <label class="fld"><span>${x.tLabel}</span><input data-tl="${esc(tb.id)}" maxlength="14" value="${esc(tb.label)}"${tqBad(tb.label,tb.id)?' class="bad"':""}></label>
@@ -558,6 +559,7 @@ document.addEventListener("click",e=>{
  if(a==="impgo"){applyImport();return}
  if(a==="impexp"){imp.txt=toCsv();const ta=$("#impTxt");if(ta)ta.value=imp.txt;impStatus();return}
  if(a==="impdl"){dl("kanzel-menu.csv","﻿"+toCsv(),"text/csv;charset=utf-8");return}
+ if(a==="tqtheme"){KZQR.setTheme(b.dataset.v);render();return}
  if(a==="tqprint"){if(TQ.some(t=>tqBad(t.label,t.id))){toast(x.dup,1);return}KZQR.ready.then(()=>KZQR.print(TQ));return}
  if(a==="tqdl"){const tb=TQ.find(t=>t.id===b.dataset.id);if(tb&&!tqBad(tb.label,tb.id))KZQR.ready.then(()=>KZQR.download(tb));else toast(x.dup,1);return}
  if(a==="tqdel"){arm(b,x.delSure,()=>{TQ=TQ.filter(t=>t.id!==b.dataset.id);if(!TQ.length)TQ=KZQR.defaults();KZQR.save(TQ);render()});return}
