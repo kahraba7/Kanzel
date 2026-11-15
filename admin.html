@@ -29,9 +29,9 @@
 /* main navigation: sticky segmented control with icons */
 .anav{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;margin-top:14px;padding:10px 16px;background:rgba(16,33,26,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
 .anav.stuck{border-bottom-color:var(--line)}
-.anav .in{max-width:680px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:99px;background:#ffffff0d;border:1px solid var(--line)}
+.anav .in{max-width:680px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;border-radius:99px;background:#ffffff0d;border:1px solid var(--line)}
 .anav button{display:flex;align-items:center;justify-content:center;gap:8px;height:42px;border-radius:99px;font-size:14px;color:var(--mut);transition:background .2s,color .2s}
-.anav button svg{width:18px;height:18px;flex:none}
+.anav button svg{width:18px;height:18px;flex:none}@media(max-width:560px){.anav button{flex-direction:column;gap:2px;height:52px;font-size:11.5px}.anav .in{border-radius:26px}}
 .anav button.on{background:var(--gold);color:var(--forest);font-weight:500}
 .page{max-width:680px;margin:0 auto}
 .page.wide{max-width:1040px}
@@ -188,6 +188,23 @@
  .page.wide .hero2,.page.wide .live{margin-inline:16px}
 }
 @media(prefers-reduced-motion:reduce){.spark i,.live .pd.on{transition:none;animation:none}}
+
+/* table QR tab */
+.tqg{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:12px 16px 0}
+.tqc{padding:12px;border-radius:22px 8px 22px 22px;background:var(--card);border:1px solid var(--line)}
+.tqc canvas{display:block;width:100%;height:auto;border-radius:10px;background:#10211a}
+.tqc .fld{margin-top:10px}.tqc .tools{margin-top:10px}
+/* waiter + cancelled reports */
+.pnl.full{grid-column:1/-1}
+.wlist{display:grid;gap:14px;margin-top:10px}
+.wr .wh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.wr .wh b{font:500 16px var(--sans)}.wr .wh span{color:var(--gold);font-size:14px}
+.wr .tr{height:6px;border-radius:99px;background:#ffffff14;margin:7px 0 9px;overflow:hidden}.wr .tr i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.wm{display:flex;flex-wrap:wrap;gap:6px 18px}.wm span{font-size:12.5px;color:var(--mut)}.wm i{font-style:normal;font-weight:500;color:var(--cream);margin-inline-end:5px}.wm .bd i{color:var(--bad)}
+.sub3{font:400 13px var(--sans);color:var(--mut);margin:12px 0 4px}
+.cl{margin-top:12px;border-top:1px solid var(--line)}.cl>div{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.cl b{font-weight:500}.cl span{color:var(--mut)}.cl i{font-style:normal;color:var(--gold)}
+em.so{color:var(--bad);font-style:normal}
+.btn.ghost.on{border-color:var(--bad);color:var(--bad)}
+@media print{.tqg{display:none}}
 </style>
 </head>
 <body>
@@ -205,7 +222,9 @@
  <div id="view"><div class="skl2"></div><div class="skl2"></div></div>
 </div>
 <script src="menu.js"></script>
+<script src="qr.js"></script>
 <script src="kz.js"></script>
+<script src="tqr.js"></script>
 <script>
 const $=s=>document.querySelector(s),esc=KZ.esc,fmt=KZ.fmt;
 let imp={open:false,txt:"",mode:"replace"};
@@ -232,9 +251,13 @@ const T={en:{h1:"Owner dashboard",
  impMode:"Import mode",impRep:"Replace the whole menu",impAdd:"Add to the current menu",impGo:"Import now",impExp:"Show current menu as CSV",impDl:"Download CSV",impFile:"Choose a file",
  impNone:"Nothing to import yet.",impBad:"Couldn’t read this text. Check the column names.",impDone:"Menu imported",impClose:"Close", saved:"Saved",full:"Couldn’t save: storage is full. Use a smaller photo.",invalid:"Not saved yet: every dish and category needs an English and an Arabic name.",imgErr:"Couldn’t read this image. Try a JPG or PNG.",mapsBad:"The link must start with https://",resetMenu:"Reset menu to default",resetSure:"Tap again to reset",
  sGuest:"Guest rating",maps:"Google Maps review link",mapsH:"Opens when a guest taps the rating button after their meal. Paste your place link from Google Maps (Share, then Copy link).",
- sAccess:"Access",sAccessD:"Four digits each. Change them if a staff member leaves.",sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",show:"Show",hide:"Hide",
+ sWait:"Waiters",sWaitD:"Each waiter picks their name after typing the staff PIN. The waiter who confirms an order keeps it until it is served.",wEn:"Name (English)",wAr:"Name (Arabic)",wAdd:"Add waiter",wDel:"Remove",wMin:"Keep at least one waiter, each with a name",sAccess:"Access",sAccessD:"Four digits each. Change them if a staff member leaves.",sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",show:"Show",hide:"Hide",
  data:"Data",dataD:"Everything is stored on this device for now. Export a copy from time to time.",export:"Export all data",exportO:"Export orders (CSV)",clearData:"Clear orders, bookings and calls",clearSure:"Tap again to clear",cleared:"Cleared",noOrdersX:"No orders to export yet.",
- note:"The PIN protects the page on this device only. Real protection arrives with the backend.",lock:"Lock",back:"Back",langA:"العربية"},
+ note:"The PIN protects the page on this device only. Real protection arrives with the backend.",lock:"Lock",back:"Back",langA:"العربية",
+ tables:"Table QR",tqH:"Table QR codes",tqSub:"One code per table. Print them, stick one on each table: the guest scans it and the ordering page opens already set to that table number.",siteUrl:"Website address",addT:"Add table",printAll:"Print all",dl:"Download",tLabel:"Table number or name",dup:"Already used",urlBad:"The address must start with https://",qrNote:"Print on A4: 4 codes per page. If you change the website address, print the codes again.",
+ wRep:"Waiters",wRepH:"Performance of each waiter",wOrders:"orders",wSales:"sales",wConf:"to confirm",wServe:"to serve",wCanc:"declined / cancelled",wNone:"Orders will show here once waiters start confirming them.",
+ cancH:"Declined and cancelled",cancTop:"Why orders were stopped",rej:"Declined",canc:"Cancelled",by:"by",noReason:"No reason",
+ soldOut:"Sold out",soldMark:"Mark sold out",soldBack:"Back in stock",soldNote:"Waiters can also mark a dish sold out from their screen.",itemNote:"Note"},
  ar:{h1:"لوحة المالك",
  gM:"صباح الخير",gA:"نهارك سعيد",gE:"مساء الخير",gN:"تصبح على خير",gSub:"دي حالة كانزل دلوقتي.",
  reports:"التقارير",menu:"المنيو",settings:"الإعدادات",r1:"النهارده",r7:"7 أيام",r30:"30 يوم",rall:"من البداية",
@@ -255,9 +278,13 @@ const T={en:{h1:"Owner dashboard",
  impMode:"طريقة الاستيراد",impRep:"استبدل المنيو كله",impAdd:"أضف على المنيو الحالي",impGo:"استورد دلوقتي",impExp:"اعرض المنيو الحالي كـ CSV",impDl:"حمّل CSV",impFile:"اختار ملف",
  impNone:"مفيش حاجة للاستيراد لسه.",impBad:"معرفناش نقرأ النص ده. راجع أسماء الأعمدة.",impDone:"المنيو اتستورد",impClose:"قفل", saved:"اتحفظ",full:"معرفناش نحفظ: المساحة خلصت. استخدم صورة أصغر.",invalid:"لسه متحفظش: كل طبق وقسم محتاج اسم عربي واسم إنجليزي.",imgErr:"معرفناش نقرأ الصورة دي. جرّب JPG أو PNG.",mapsBad:"اللينك لازم يبدأ بـ https://",resetMenu:"رجّع المنيو للأصل",resetSure:"دوس تاني للرجوع",
  sGuest:"تقييم الضيوف",maps:"لينك تقييم جوجل ماب",mapsH:"بيفتح لما الضيف يدوس على زر التقييم بعد الأكل. الصق لينك مكانك من جوجل ماب (مشاركة ثم نسخ الرابط).",
- sAccess:"الدخول",sAccessD:"4 أرقام لكل واحد. غيّرهم لو حد من الموظفين سابك.",sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",show:"إظهار",hide:"إخفاء",
+ sWait:"الويترز",sWaitD:"كل ويتر بيختار اسمه بعد ما يكتب رقم الموظفين. الويتر اللي بيأكد الطلب هو اللي بيكمله لحد ما يتسلّم.",wEn:"الاسم بالإنجليزي",wAr:"الاسم بالعربي",wAdd:"أضف ويتر",wDel:"شيل",wMin:"لازم يفضل ويتر واحد على الأقل وليه اسم",sAccess:"الدخول",sAccessD:"4 أرقام لكل واحد. غيّرهم لو حد من الموظفين سابك.",sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",show:"إظهار",hide:"إخفاء",
  data:"البيانات",dataD:"كل حاجة متخزنة على الجهاز ده دلوقتي. صدّر نسخة من وقت للتاني.",export:"صدّر كل البيانات",exportO:"صدّر الطلبات (CSV)",clearData:"امسح الطلبات والحجوزات والنداءات",clearSure:"دوس تاني للمسح",cleared:"اتمسح",noOrdersX:"مفيش طلبات تتصدّر لسه.",
- note:"الرقم السري بيحمي الصفحة على الجهاز ده بس. الحماية الحقيقية هتيجي مع الباك إند.",lock:"قفل",back:"رجوع",langA:"English"}};
+ note:"الرقم السري بيحمي الصفحة على الجهاز ده بس. الحماية الحقيقية هتيجي مع الباك إند.",lock:"قفل",back:"رجوع",langA:"English",
+ tables:"QR الترابيزات",tqH:"أكواد QR للترابيزات",tqSub:"كود لكل ترابيزة. اطبعهم والصق كود على كل ترابيزة: الضيف بيمسحه وصفحة الطلب بتفتح على رقم ترابيزته على طول.",siteUrl:"عنوان الموقع",addT:"أضف ترابيزة",printAll:"اطبع الكل",dl:"حمّل",tLabel:"رقم أو اسم الترابيزة",dup:"مستخدم قبل كده",urlBad:"العنوان لازم يبدأ بـ https://",qrNote:"الطباعة A4: 4 أكواد في الصفحة. لو غيّرت عنوان الموقع اطبع الأكواد تاني.",
+ wRep:"الويترز",wRepH:"أداء كل ويتر",wOrders:"طلب",wSales:"مبيعات",wConf:"للتأكيد",wServe:"للتسليم",wCanc:"مرفوض / ملغي",wNone:"الطلبات هتظهر هنا أول ما الويترز يبدأوا يأكدوها.",
+ cancH:"المرفوض والملغي",cancTop:"أسباب إيقاف الطلبات",rej:"مرفوض",canc:"ملغي",by:"بواسطة",noReason:"من غير سبب",
+ soldOut:"نفد",soldMark:"علّم إنه نفد",soldBack:"رجع متاح",soldNote:"الويتر كمان يقدر يعلّم الصنف إنه نفد من شاشته.",itemNote:"ملاحظة"}};
 const t=()=>T[lang];
 function toast(m,err){KZ.toast(m,err)}
 /* two-tap confirm instead of confirm() */
@@ -282,7 +309,10 @@ const I={
  key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
  db:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',
  up:'<path d="M6 14l6-6 6 6"/>',dn:'<path d="M6 10l6 6 6-6"/>',
- dl:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>'};
+ dl:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
+ qr:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2.5v2.5H14zM19.5 14v2.5M14 19.5h2.5M19 19.5h1"/>',
+ users:'<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.4-3.2 2.6-5 5.5-5s5.1 1.8 5.5 5M16 5.2a3 3 0 010 5.6M17.5 14.3c1.8.6 2.8 2.2 3 4.7"/>',
+ ban:'<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>'};
 const ic=(n,w)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w||1.6}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 
 /* ---------- reports ---------- */
@@ -314,8 +344,8 @@ function bars(rows,unit){const m=Math.max(1,...rows.map(r=>r.v));
 const PAL=["#d3c994","#8fd19e","#7fb6cf","#d99a7f","#b79ad9","#8d9482"];
 function catMap(){const m={};KZ.menuRaw().forEach(c=>c[2].forEach(d=>{m[String(d[0]).toLowerCase()]=[c[0],c[1]]}));return m}
 function reports(){const x=t(),ar=lang==="ar",b=bounds(),inR=o=>o.ts>=b.from,all=KZ.list("orders").filter(o=>o&&o.items&&o.ts);
- const O=all.filter(inR),B=KZ.list("bookings").filter(inR),E=KZ.list("events").filter(inR),C=KZ.list("calls").filter(inR);
- const hasP=!!b.prev,P=hasP?all.filter(o=>o.ts>=b.prev[0]&&o.ts<b.prev[1]):[];
+ const D=all.filter(o=>inR(o)&&KZ.dead(o)),O=all.filter(o=>inR(o)&&!KZ.dead(o)),B=KZ.list("bookings").filter(inR),E=KZ.list("events").filter(inR),C=KZ.list("calls").filter(inR);
+ const hasP=!!b.prev,P=hasP?all.filter(o=>o.ts>=b.prev[0]&&o.ts<b.prev[1]&&!KZ.dead(o)):[];
  const S=sum(O),PS=sum(P),PB=hasP?KZ.list("bookings").filter(o=>o.ts>=b.prev[0]&&o.ts<b.prev[1]).length:0;
  const ser=series(O,b),mx=Math.max(1,...ser.v),pkI=ser.v.indexOf(Math.max(...ser.v));
  const dish={},tb={},cat={},hr=Array(24).fill(0),wd=Array(7).fill(0),wdv=Array(7).fill(0),conf=[],serve=[],cm=catMap();
@@ -333,8 +363,17 @@ function reports(){const x=t(),ar=lang==="ar",b=bounds(),inR=o=>o.ts>=b.from,all
  const bestD=order.reduce((a,d)=>wdv[d]>wdv[a]?d:a,order[0]);
  const rname=O.length&&topD[0]?topD[0].name:"";
  const bk=O.length?(S.it/S.n).toFixed(1):"0";
- const now=Date.now(),active=all.filter(o=>o.status!=="served"&&now-o.ts<3*3600e3).length,openC=KZ.list("calls").filter(c=>!c.done).length;
+ const now=Date.now(),active=all.filter(o=>o.status!=="served"&&!KZ.dead(o)&&now-o.ts<3*3600e3).length,openC=KZ.list("calls").filter(c=>!c.done).length;
  const rl={1:x.r1,7:x.r7,30:x.r30,all:x.rall}[range];
+ /* per waiter: the waiter who confirmed / handled the order owns it; declined and cancelled orders count against whoever stopped them */
+ const wk={},wget=(w)=>{const id=(w&&w.id)||"?";return wk[id]||(wk[id]={name:w?KZ.wname(w,lang):x.noReason,n:0,v:0,it:0,conf:[],serve:[],canc:0})};
+ O.forEach(o=>{if(!o.waiter)return;const g=wget(o.waiter);g.n++;g.v+=o.total||0;g.it+=o.items.reduce((p,i)=>p+i.qty,0);if(o.confirmedAt)g.conf.push((o.confirmedAt-o.ts)/6e4);if(o.servedAt)g.serve.push((o.servedAt-o.ts)/6e4)});
+ D.forEach(o=>{const w=o.reasonBy||o.waiter;if(w)wget(w).canc++});
+ const WR=Object.values(wk).sort((a,b)=>b.v-a.v||b.n-a.n),wmx=Math.max(1,...WR.map(g=>g.v));
+ const why={};D.forEach(o=>{const k=KZ.reasonText(o,lang)||x.noReason;why[k]=(why[k]||0)+1});
+ const WHY=Object.entries(why).sort((a,b)=>b[1]-a[1]).slice(0,5),whm=Math.max(1,...WHY.map(r=>r[1]));
+ const lastD=D.slice().sort((a,b)=>(b.endedAt||b.ts)-(a.endedAt||a.ts)).slice(0,5);
+ const mn=a=>{const m=mean(a);return m==null?"–":m+" "+x.minU};
  const spark=O.length?`<div class="spark" role="img" aria-label="${x.sales}">${ser.v.map((v,i)=>`<i class="${v===0?"z":i===pkI?"pk":""}${i===ser.now&&range!=="all"?" now":""}" style="height:${Math.max(4,Math.round(v/mx*100))}%" title="${esc(ser.lab(i))}: ${fmt(v)} ${x.egp}"></i>`).join("")}</div><div class="sax"><span>${ser.l0}</span><span>${ser.l1}</span></div>`:`<p class="empty-s">${x.noOrders}</p>`;
  return`<div class="chips" role="group">${[["1",x.r1],["7",x.r7],["30",x.r30],["all",x.rall]].map(r=>`<button class="chip${range===r[0]?" on":""}" data-range="${r[0]}">${r[1]}</button>`).join("")}</div>
  <section class="hero2" aria-label="${x.sales}"><div class="k"><span>${x.sales} · ${rl}</span>${hasP?`<span class="dl-c">${x[b.cmp]}</span>`:""}</div>
@@ -362,6 +401,10 @@ function reports(){const x=t(),ar=lang==="ar",b=bounds(),inR=o=>o.ts>=b.from,all
  <section class="pnl"><h2>${x.days}<small>${x.daysH}</small></h2>${O.length?`<div class="cols wk" role="img" aria-label="${x.days}">${order.map(d=>`<div class="${wd[d]===0?"z":wd[d]===Math.max(...wd)?"pk":""}" title="${wdName(d)} · ${wd[d]}"><i style="height:${Math.max(3,Math.round(wd[d]/wm*100))}%"></i><span>${wdName(d)}</span></div>`).join("")}</div>`:`<p class="none">${x.none}</p>`}</section>
  <section class="pnl"><h2>${x.tables}</h2>${topT.length?bars(topT):`<p class="none">${x.none}</p>`}</section>
  <section class="pnl"><h2>${x.speed}</h2><div class="spd"><div><b>${mc==null?"–":mc}${mc==null?"":`<small>${x.minU}</small>`}</b><span>${x.toConfirm}</span></div><div><b>${ms==null?"–":ms}${ms==null?"":`<small>${x.minU}</small>`}</b><span>${x.toServe}</span></div></div></section>
+ <section class="pnl full"><h2>${x.wRep}<small>${x.wRepH}</small></h2>${WR.length?`<div class="wlist">${WR.map(g=>`<div class="wr"><div class="wh"><b>${esc(g.name)}</b><span>${fmt(g.v)} ${x.egp}</span></div><div class="tr"><i style="width:${Math.max(4,Math.round(g.v/wmx*100))}%"></i></div>
+   <div class="wm"><span><i>${g.n}</i>${x.wOrders}</span><span><i>${g.it}</i>${x.items}</span><span><i>${mn(g.conf)}</i>${x.wConf}</span><span><i>${mn(g.serve)}</i>${x.wServe}</span><span class="${g.canc?"bd":""}"><i>${g.canc}</i>${x.wCanc}</span></div></div>`).join("")}</div>`:`<p class="none">${x.wNone}</p>`}</section>
+ ${D.length?`<section class="pnl full"><h2>${x.cancH}<small>${D.length} ${x.wOrders}</small></h2><h3 class="sub3">${x.cancTop}</h3>${bars(WHY.map(r=>({name:r[0],v:r[1],label:String(r[1])})))}
+   <div class="cl">${lastD.map(o=>`<div><b>${x.table} ${esc(o.table)}</b><span>${o.status==="rejected"?x.rej:x.canc}${o.reasonBy?` ${x.by} ${esc(KZ.wname(o.reasonBy,lang))}`:""} · ${esc(KZ.reasonText(o,lang)||x.noReason)}</span><i>${KZ.clock(o.endedAt||o.ts,lang)}</i></div>`).join("")}</div></section>`:""}
  </div>
  <p class="foot2">${x.taxNote}</p>`}
 
@@ -374,7 +417,7 @@ function impPanel(){const x=t();
  <div class="tools"><label class="btn sm ghost" style="cursor:pointer">${x.impFile}<input type="file" id="impFile" accept=".csv,.tsv,.txt,.json,text/*,application/json" hidden></label><button class="btn sm ghost" data-a="impexp">${x.impExp}</button><button class="btn sm ghost" data-a="impdl">${x.impDl}</button></div>
  <p class="note" id="impSum" style="margin:12px 0 0"></p><div class="row"><button class="btn sm" id="impGo" data-a="impgo" disabled>${x.impGo}</button><button class="btn sm ghost" data-a="imp">${x.impClose}</button></div></div>`:"")}
 const initial=s=>String(s||"K").trim().charAt(0).toUpperCase()||"K";
-function metaOf(d){const x=t();return`${fmt(d[2])} ${x.egp}${d[6]?` · <em>${x.hidden}</em>`:""}`}
+function metaOf(d){const x=t();return`${fmt(d[2])} ${x.egp}${d[6]?` · <em>${x.hidden}</em>`:""}${KZ.isSold(d[0])?` · <em class="so">${x.soldOut}</em>`:""}`}
 function dishRow(ci,di,d){pad(d);const x=t(),ar=lang==="ar",key=ci+"-"+di,ex=openD.has(key);
  return`<div class="drow${d[6]?" off":""}${ex?" ex":""}" data-key="${key}" data-q="${esc((d[0]+" "+d[1]).toLowerCase())}">
   <div class="dtop" role="button" tabindex="0" aria-expanded="${ex}" data-toggle>
@@ -388,6 +431,7 @@ function dishRow(ci,di,d){pad(d);const x=t(),ar=lang==="ar",key=ci+"-"+di,ex=ope
    <label class="fld"><span>${x.dAr}</span><input data-ci="${ci}" data-di="${di}" data-f="d4" value="${esc(d[4])}" dir="rtl"></label>
    <div class="tools"><label class="btn sm ghost" style="cursor:pointer">${x.photo}<input type="file" accept="image/*" hidden data-ci="${ci}" data-di="${di}" data-photo></label>${d[5]?`<button class="btn sm ghost" data-a="rmphoto" data-ci="${ci}" data-di="${di}">${x.rmPhoto}</button>`:""}
    <button class="btn sm ghost" data-a="dup" data-ci="${ci}" data-di="${di}" ${di===0?"disabled":""}>${x.up}</button><button class="btn sm ghost" data-a="ddn" data-ci="${ci}" data-di="${di}" ${di===raw[ci][2].length-1?"disabled":""}>${x.down}</button>
+   <button class="btn sm ghost${KZ.isSold(d[0])?" on":""}" data-a="sold" data-ci="${ci}" data-di="${di}">${KZ.isSold(d[0])?x.soldBack:x.soldMark}</button>
    <button class="btn sm bad" data-a="ddel" data-ci="${ci}" data-di="${di}">${x.del}</button></div></div></div>`}
 function menuView(){const x=t(),ar=lang==="ar",nD=raw.reduce((a,c)=>a+c[2].length,0),nH=raw.reduce((a,c)=>a+c[2].filter(d=>d[6]).length,0);
  return`<div class="mstat"><span class="pill">${raw.length} ${x.mCats}</span><span class="pill">${nD} ${x.mDishes}</span>${nH?`<span class="pill no">${nH} ${x.mHidden}</span>`:""}</div>
@@ -448,15 +492,23 @@ function applyImport(){const r=parseMenuText(imp.txt);if(!r||!r.dishes){toast(t(
  else{r.cats.forEach(c=>{const e=raw.find(x=>x[0].trim().toLowerCase()===c[0].trim().toLowerCase());if(!e){raw.push(c);return}
    c[2].forEach(d=>{const m=e[2].find(x=>x[0].trim().toLowerCase()===d[0].trim().toLowerCase());if(m){m[1]=d[1];m[2]=d[2];if(d[3])m[3]=d[3];if(d[4])m[4]=d[4]}else e[2].push(d)})})}
  open=new Set();openD.clear();const ok=KZ.saveMenu(raw);imp.open=false;imp.txt="";toast(ok?t().impDone:t().full,!ok);render()}
-document.addEventListener("input",e=>{if(e.target.id==="impTxt"){imp.txt=e.target.value;impStatus()}});
+document.addEventListener("input",e=>{const el=e.target;
+ if(el.dataset&&el.dataset.tl&&TQ){const tb=TQ.find(t=>t.id===el.dataset.tl);if(tb){tb.label=el.value;const bad=tqBad(el.value,tb.id);el.classList.toggle("bad",bad);
+  if(!bad){KZQR.save(TQ);clearTimeout(el._t);el._t=setTimeout(()=>KZQR.paint(el.closest(".tqc"),TQ),250)}else toast(t().dup,1)}return}
+ if(e.target.id==="impTxt"){imp.txt=e.target.value;impStatus()}const w=e.target.dataset&&e.target.dataset.w;if(w!==undefined&&wsE&&wsE[+w])wsE[+w][e.target.dataset.f]=e.target.value});
 document.addEventListener("change",e=>{const el=e.target;
+ if(el.id==="tqUrl"){const v=el.value.trim().replace(/\/+$/,"");if(!/^https:\/\/[^\s/]+/i.test(v)){toast(t().urlBad,1);el.value=KZQR.base();return}const st=KZ.settings();st.siteUrl=v;KZ.saveSettings(st);toast(t().saved);KZQR.paint($("#view"),TQ);return}
  if(el.id==="impMode"){imp.mode=el.value}
  else if(el.id==="impFile"&&el.files[0]){const fr=new FileReader();fr.onload=()=>{imp.txt=String(fr.result);const ta=$("#impTxt");if(ta)ta.value=imp.txt;impStatus()};fr.onerror=()=>toast(t().impBad,1);fr.readAsText(el.files[0],"utf-8")}});
 
 /* ---------- settings ---------- */
+let wsE=null;
+function wsRows(){const x=t();if(!wsE)wsE=KZ.waiters().map(w=>({id:w.id,en:w.en||"",ar:w.ar||""}));
+ return wsE.map((w,i)=>`<div class="wrow" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:10px"><label class="fld" style="margin:0"><span>${x.wEn}</span><input data-w="${i}" data-f="en" value="${esc(w.en)}" dir="ltr" maxlength="24"></label><label class="fld" style="margin:0"><span>${x.wAr}</span><input data-w="${i}" data-f="ar" value="${esc(w.ar)}" dir="rtl" maxlength="24"></label><button type="button" class="btn sm bad" data-a="delw" data-i="${i}">${x.wDel}</button></div>`).join("")}
 function settingsView(){const x=t(),s=KZ.settings();
  return`<div class="set"><h2><span class="ic">${ic("star")}</span>${x.sGuest}</h2><p class="d">${x.mapsH}</p>
   <label class="fld"><span>${x.maps}</span><input id="sMaps" type="url" dir="ltr" value="${esc(s.mapsUrl)}"></label></div>
+ <div class="set"><h2><span class="ic">${ic("key")}</span>${x.sWait}</h2><p class="d">${x.sWaitD}</p><div id="wsBox">${wsRows()}</div><div class="addrow"><button class="btn sm ghost" type="button" data-a="addw">${x.wAdd}</button></div></div>
  <div class="set"><h2><span class="ic">${ic("key")}</span>${x.sAccess}</h2><p class="d">${x.sAccessD}</p>
   <div class="g1"><label class="fld"><span>${x.sPin}</span><div class="pw"><input id="sStaff" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="${x.pinH}" value="${esc(s.staffPin)}" dir="ltr"><button type="button" data-a="showpin">${x.show}</button></div></label>
   <label class="fld"><span>${x.aPin}</span><div class="pw"><input id="sAdmin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="${x.pinH}" value="${esc(s.adminPin)}" dir="ltr"><button type="button" data-a="showpin">${x.show}</button></div></label></div></div>
@@ -466,20 +518,32 @@ function settingsView(){const x=t(),s=KZ.settings();
  <div class="set danger"><div class="row" style="margin-top:0"><button class="btn sm bad" data-a="reset">${x.resetMenu}</button><button class="btn sm bad" data-a="clear">${x.clearData}</button></div></div>
  <p class="note">${x.note}</p>`}
 
+/* ---------- table QR codes (20 by default) ---------- */
+let TQ=null;
+const tqBad=(l,id)=>!String(l).trim()||TQ.some(t=>t.id!==id&&t.label.trim().toLowerCase()===String(l).trim().toLowerCase());
+function tablesView(){const x=t();if(!TQ)TQ=KZQR.tables();
+ return`<div class="set"><h2><span class="ic">${ic("qr")}</span>${x.tqH}</h2><p class="d">${x.tqSub}</p>
+  <label class="fld"><span>${x.siteUrl}</span><input id="tqUrl" type="url" dir="ltr" value="${esc(KZQR.base())}"></label>
+  <div class="row"><button class="btn sm" data-a="tqprint">${x.printAll} (${TQ.length})</button><button class="btn sm ghost" data-a="tqadd">${x.addT}</button></div></div>
+  <div class="tqg">${TQ.map(tb=>`<div class="tqc" data-tid="${esc(tb.id)}"><canvas data-prev="${esc(tb.id)}" width="220" height="308" role="img" aria-label="QR ${esc(tb.label)}"></canvas>
+   <label class="fld"><span>${x.tLabel}</span><input data-tl="${esc(tb.id)}" maxlength="14" value="${esc(tb.label)}"${tqBad(tb.label,tb.id)?' class="bad"':""}></label>
+   <div class="tools"><button class="btn sm" data-a="tqdl" data-id="${esc(tb.id)}">${x.dl}</button><button class="btn sm bad" data-a="tqdel" data-id="${esc(tb.id)}">${x.del}</button></div></div>`).join("")}</div>
+  <p class="note">${x.qrNote}</p>`}
+
 /* ---------- shell ---------- */
 function head(){const x=t(),d=new Date(),g=d.getHours(),greet=g<5?x.gN:g<12?x.gM:g<17?x.gA:g<22?x.gE:x.gN;
  $("#sub").innerHTML=`${greet}. ${x.gSub}<span class="dt">${d.toLocaleDateString(locale(),{weekday:"long",day:"numeric",month:"long"})}</span>`}
 function render(){const x=t(),ar=lang==="ar";
  document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
  $("#h1").textContent=x.h1;head();$("#lock").setAttribute("aria-label",x.lock);$("#back").setAttribute("aria-label",x.back);$("#lang").setAttribute("aria-label",x.langA);
- $("#tabs").innerHTML=[["reports","chart"],["menu","book"],["settings","sliders"]].map(([k,i])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?"on":""}" data-tab="${k}">${ic(i)}<span>${x[k]}</span></button>`).join("");
- $("#view").innerHTML=`<div class="page${tab==="reports"?" wide":""}">`+(tab==="reports"?reports():tab==="menu"?menuView():settingsView())+`</div>`;
- if(tab==="menu")filterMenu()}
+ $("#tabs").innerHTML=[["reports","chart"],["menu","book"],["tables","qr"],["settings","sliders"]].map(([k,i])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?"on":""}" data-tab="${k}">${ic(i)}<span>${x[k]}</span></button>`).join("");
+ $("#view").innerHTML=`<div class="page${tab==="reports"?" wide":""}">`+(tab==="reports"?reports():tab==="menu"?menuView():tab==="tables"?tablesView():settingsView())+`</div>`;
+ if(tab==="menu")filterMenu();if(tab==="tables")KZQR.paint($("#view"),TQ)}
 
 function csvOrders(){const O=KZ.list("orders");if(!O.length){toast(t().noOrdersX,1);return}
- const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"',L=["date,time,table,status,items,subtotal,service,tax,total,note"];
+ const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"',L=["date,time,table,status,items,subtotal,service,tax,total,note,waiter,reason"];
  O.forEach(o=>{const d=new Date(o.ts),pad2=n=>String(n).padStart(2,"0");
-  L.push([`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`,`${pad2(d.getHours())}:${pad2(d.getMinutes())}`,o.table,o.status,(o.items||[]).map(i=>i.qty+"x "+i.en).join("; "),o.total||0,o.service||"",o.tax||"",o.grand||"",o.note||""].map(q).join(","))});
+  L.push([`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`,`${pad2(d.getHours())}:${pad2(d.getMinutes())}`,o.table,o.status,(o.items||[]).map(i=>i.qty+"x "+i.en+(i.note?" ("+i.note+")":"")).join("; "),o.total||0,o.service||"",o.tax||"",o.grand||"",o.note||"",o.waiter?KZ.wname(o.waiter,"en"):"",KZ.reasonText(o,"en")].map(q).join(","))});
  dl("kanzel-orders.csv","﻿"+L.join("\n"),"text/csv;charset=utf-8")}
 function dl(name,txt,type){const u=URL.createObjectURL(new Blob([txt],{type})),l=document.createElement("a");l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
 
@@ -494,7 +558,12 @@ document.addEventListener("click",e=>{
  if(a==="impgo"){applyImport();return}
  if(a==="impexp"){imp.txt=toCsv();const ta=$("#impTxt");if(ta)ta.value=imp.txt;impStatus();return}
  if(a==="impdl"){dl("kanzel-menu.csv","﻿"+toCsv(),"text/csv;charset=utf-8");return}
+ if(a==="tqprint"){if(TQ.some(t=>tqBad(t.label,t.id))){toast(x.dup,1);return}KZQR.ready.then(()=>KZQR.print(TQ));return}
+ if(a==="tqdl"){const tb=TQ.find(t=>t.id===b.dataset.id);if(tb&&!tqBad(tb.label,tb.id))KZQR.ready.then(()=>KZQR.download(tb));else toast(x.dup,1);return}
+ if(a==="tqdel"){arm(b,x.delSure,()=>{TQ=TQ.filter(t=>t.id!==b.dataset.id);if(!TQ.length)TQ=KZQR.defaults();KZQR.save(TQ);render()});return}
+ if(a==="tqadd"){const nums=TQ.map(t=>parseInt(t.label,10)).filter(n=>!isNaN(n)),nx=nums.length?Math.max(...nums)+1:TQ.length+1;TQ.push({id:KZ.uid(),label:String(nx)});KZQR.save(TQ);render();scrollTo({top:document.body.scrollHeight,behavior:"smooth"});return}
  if(a==="showpin"){const i=b.parentElement.querySelector("input"),s=i.type==="password";i.type=s?"text":"password";i.style.letterSpacing=s?".3em":".3em";b.textContent=s?x.hide:x.show;return}
+ if(a==="sold"){const d=raw[ci][2][di];KZ.setSold(d[0],!KZ.isSold(d[0]));open.add(ci);openD.add(ci+"-"+di);render();return}
  if(a==="dadd"){raw[ci][2].push([x.newDish,x.newDish,0,"","","",0]);clearD();keep(raw[ci][2].length-1)}
  else if(a==="ddel")arm(b,x.delSure,()=>{raw[ci][2].splice(di,1);clearD();keep()});
  else if(a==="dup"){move(raw[ci][2],di,di-1);clearD();keep(di-1)}else if(a==="ddn"){move(raw[ci][2],di,di+1);clearD();keep(di+1)}
@@ -502,10 +571,14 @@ document.addEventListener("click",e=>{
  else if(a==="cadd"){raw.push([x.newCat,x.newCat,[]]);open=new Set([raw.length-1]);clearD();saveMenu();render()}
  else if(a==="cdel")arm(b,x.delSure,()=>{raw.splice(ci,1);open=new Set();clearD();saveMenu();render()});
  else if(a==="cup"){move(raw,ci,ci-1);open=new Set([ci-1]);clearD();saveMenu();render()}else if(a==="cdn"){move(raw,ci,ci+1);open=new Set([ci+1]);clearD();saveMenu();render()}
- else if(a==="savesettings"){const s=KZ.settings(),sp=$("#sStaff").value.trim(),ap=$("#sAdmin").value.trim();
+ else if(a==="addw"){wsE.push({id:KZ.uid(),en:"",ar:""});render()}
+  else if(a==="delw"){wsE.splice(+b.dataset.i,1);render()}
+  else if(a==="savesettings"){const s=KZ.settings(),sp=$("#sStaff").value.trim(),ap=$("#sAdmin").value.trim();
   if(!/^\d{4}$/.test(sp)||!/^\d{4}$/.test(ap)){toast(x.pinBad,1);return}
   const mu=$("#sMaps").value.trim();if(mu&&!/^https?:\/\//i.test(mu)){toast(x.mapsBad,1);return}
-  s.mapsUrl=$("#sMaps").value.trim()||s.mapsUrl;s.staffPin=sp;s.adminPin=ap;KZ.saveSettings(s);toast(x.saved)}
+  const wl=(wsE||[]).map(w=>({id:w.id,en:w.en.trim(),ar:w.ar.trim()}));if(!wl.length||wl.some(w=>!w.en&&!w.ar)){toast(x.wMin,1);return}
+   s.waiters=wl;wsE=null;
+   s.mapsUrl=$("#sMaps").value.trim()||s.mapsUrl;s.staffPin=sp;s.adminPin=ap;KZ.saveSettings(s);render();toast(x.saved)}
  else if(a==="reset")arm(b,x.resetSure,()=>{KZ.resetMenu();raw=null;toast(x.saved)});
  else if(a==="clear")arm(b,x.clearSure,()=>{["orders","bookings","events","calls"].forEach(n=>KZ.saveList(n,[]));toast(x.cleared)});
  else if(a==="exportO")csvOrders();

@@ -1,4 +1,4 @@
-Kanzel site v44  ->  https://kanzel-eg.vercel.app
+Kanzel site v48  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -9,8 +9,8 @@ Public pages
   /table?t=5   guest ordering page, opened only by the QR code of table 5
 
 Private pages (open by link only, not indexed by Google)
-  /waiter      orders and table calls              staff PIN 7777
-  /reception   reservations + table QR codes       staff PIN 7777
+  /waiter      orders and table calls              staff PIN 7777, then each waiter picks their name (change names in /admin > Settings)
+  /reception   reservations + table QR codes       staff PIN 7777, then each waiter picks their name (change names in /admin > Settings)
   /admin       reports, menu editing, settings     owner PIN 1234
 
 Menu: /admin > Menu > "Import / export menu". Paste from Excel / Google Sheets (first row = category_en, category_ar, name_en, name_ar, price, desc_en, desc_ar), or CSV / JSON, or choose a file. Replace the whole menu or add to it. "Show current menu as CSV" gives you a file to edit and re-import.
@@ -52,3 +52,12 @@ v42: dish sheet for dishes without a photo - prev/next arrows moved beside the K
 v43 PIN screen (kz.js, used by /admin /waiter /reception): default is typing - 4 boxes, tap them and the phone's number keyboard opens (16px field, no zoom); one link switches to an on-screen keypad (clear lining numerals, round 68px keys, backspace icon) and the choice is remembered; double-tap zoom is off site-wide (touch-action:manipulation). sw cache v29.
 v44 table page (table.html): the guest menu on /table?t=N now uses the exact same menu engine and CSS as the public menu (4 tabs, photo side rail, photo rows, search, dish sheet). The only differences: the "Table N" chip instead of the Back button, the order-status banner + Call waiter / Ask for the bill buttons, and + / - controls on every dish with the "View order" bar at the bottom. Ordering, totals, confirmation screen and waiter flow are unchanged.
 v44 admin (admin.html): redesigned owner dashboard. Reports: greeting + date, big Sales card with a bar chart and change vs the previous period, "Right now" strip (active orders, open table calls), KPI cards with change arrows, highlights, top dishes with revenue, sales by category, busiest hours (peak marked), busiest days, top tables, service speed. Menu: search, collapsed dish rows (photo, name, price, availability switch) that expand to edit, counts. Settings: grouped cards, PIN fields hidden with Show, export all data and orders as CSV. Works on phone and desktop, English and Arabic. sw cache v30.
+
+v49:
+- /admin has a new "Table QR" tab: 20 QR codes (add or delete tables, edit the number, download one as PNG, print all on A4 4 per page). Each code opens /table?t=N. Same list as /reception > Tables & QR (default now 20). tqr.js is shared.
+- Waiter can Decline a new order or Cancel a confirmed / ready one, always with a reason (quick reasons or typed). The guest sees the reason on the order screen. Declined/cancelled orders are excluded from sales.
+- "Sold out" button on /waiter: search a dish, one tap, guests see "Sold out" and cannot add it; it is also removed from carts. /admin > Menu has the same switch per dish.
+- /admin > Reports: new Waiters panel (orders, sales, time to confirm / serve, declined/cancelled) and Declined & cancelled panel with top reasons. CSV export has waiter + reason columns.
+- Note per dish: the guest adds it in the order sheet (quick chips or typed), the waiter sees it on the order and can edit it in Edit order.
+- Language: pages open in Arabic on phones whose main language is Arabic, English otherwise. The AR/EN button still overrides and is remembered.
+- sw cache v34.

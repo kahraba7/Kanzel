@@ -100,7 +100,7 @@ $("#lock").onclick=()=>{KZ.logout("staff");location.reload()};
 addEventListener("storage",e=>{if(e.key===KZ.KEYS.bookings||e.key===KZ.KEYS.events)tick()});
 
 /* ---------- table QR codes ---------- */
-const DEFT=()=>Array.from({length:12},(_,i)=>({id:"t"+(i+1),label:String(i+1)}));
+const DEFT=()=>Array.from({length:20},(_,i)=>({id:"t"+(i+1),label:String(i+1)}));
 let TB=KZ.read("kanzel-tables",null);if(!Array.isArray(TB)||!TB.length)TB=DEFT();
 const saveTB=()=>KZ.write("kanzel-tables",TB);
 const baseUrl=()=>String(KZ.settings().siteUrl||"https://kanzel-eg.vercel.app").replace(/\/+$/,"");

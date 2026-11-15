@@ -17,6 +17,53 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Readex+Pro:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="staff.css">
+<style>
+.btn.row2{margin-top:8px}
+.tag{display:inline-block;margin-inline-start:8px;padding:3px 10px;border-radius:99px;border:1px solid rgba(143,209,158,.5);background:rgba(143,209,158,.12);color:var(--ok);font:400 12px var(--sans);vertical-align:middle}
+.tag.own{border-color:rgba(211,201,148,.55);background:rgba(211,201,148,.12);color:var(--gold)}
+.card.oth{opacity:.78}
+.who{display:inline-flex;align-items:center;gap:8px;margin:10px 0 0;padding:8px 16px;border-radius:99px;border:1px solid rgba(211,201,148,.5);background:#ffffff0a;color:var(--gold);font:400 13.5px var(--sans)}
+.eds{position:fixed;inset:0;z-index:50;display:none}.eds.on{display:block}
+.eds .bk{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.eds .pn{position:absolute;inset-inline:0;bottom:0;max-height:92dvh;display:flex;flex-direction:column;max-width:680px;margin:0 auto;background:#14281f;border:1px solid rgba(211,201,148,.35);border-bottom:0;border-radius:26px 26px 0 0}
+.eds .hh{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 20px 10px}
+.eds .hh h3{font:500 24px var(--serif)}
+.eds .bd2{overflow-y:auto;padding:0 20px 8px;flex:1}
+.eds .ln{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(211,201,148,.2)}
+.eds .ln:first-child{border-top:0}
+.eds .ln .nm{flex:1;font-size:14.5px;min-width:0}.eds .ln .nm small{display:block;color:var(--gold);font-size:12.5px;margin-top:2px}
+.eds .ctl{display:flex;align-items:center;gap:4px;direction:ltr}
+.eds .ctl button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(211,201,148,.6);color:var(--gold);font:400 22px/1 var(--sans);display:grid;place-items:center}
+.eds .ctl b{min-width:28px;text-align:center;font:500 16px var(--sans)}
+.eds .srch{display:block;width:100%;height:46px;margin-top:12px;padding:0 16px;border-radius:99px;border:1px solid rgba(211,201,148,.5);background:#ffffff0f;color:var(--cream);font:400 16px var(--sans)}
+.eds .srch::placeholder{color:rgba(244,239,221,.65)}
+.eds .res button{display:flex;justify-content:space-between;gap:12px;width:100%;padding:12px 4px;border-top:1px solid rgba(211,201,148,.15);text-align:start;font-size:14px}
+.eds .res button i{font-style:normal;color:var(--gold);white-space:nowrap}
+.eds .ft{padding:12px 20px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(211,201,148,.25)}
+.eds .sm2{display:flex;justify-content:space-between;font-size:13.5px;padding:2px 0}.eds .sm2.g{font:500 17px var(--sans);margin-top:4px}.eds .sm2 i{font-style:normal;color:var(--gold)}
+body.lockb{overflow:hidden}
+.inote{display:block;margin-top:4px;padding:3px 10px;border-radius:10px;background:rgba(211,201,148,.14);color:var(--gold);font:400 12.5px/1.5 var(--sans);width:fit-content;max-width:100%}
+.so{display:inline-block;margin-inline-start:8px;padding:1px 9px;border-radius:99px;border:1px solid rgba(229,154,143,.55);color:var(--bad);font:400 11.5px var(--sans);font-style:normal}
+.row2b{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.row2b .btn{margin:0;padding:12px 8px;font-size:13.5px}
+.card.dead{opacity:.8;border-style:dashed}.card.dead .why{margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(229,154,143,.12);color:var(--bad);font-size:13px;line-height:1.6}
+.tag.bd{border-color:rgba(229,154,143,.55);background:rgba(229,154,143,.12);color:var(--bad)}
+.chp{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.chp button{padding:10px 14px;border-radius:99px;border:1px solid rgba(211,201,148,.5);color:var(--cream);font:400 14px var(--sans);transition:background .15s}
+.chp button.on{background:var(--gold);color:var(--forest);border-color:var(--gold);font-weight:500}
+.eds .lbl{font-size:13px;color:rgba(244,239,221,.88);margin:6px 0 2px}
+.eds textarea{margin-top:6px;min-height:64px}
+.btn.dng{background:#e59a8f;color:#2a1410}
+.ln .nin{width:100%;margin-top:6px;padding:8px 12px;border-radius:12px;font-size:16px}
+.eds .ln{flex-wrap:wrap}.eds .ln .nm{flex:1 1 55%}
+.eds .ln .nw{flex:1 1 100%}
+.sdl{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
+.sdl button{display:inline-flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-radius:99px;border:1px solid rgba(229,154,143,.55);color:var(--bad);font:400 13.5px var(--sans)}
+.sdl button b{padding:3px 10px;border-radius:99px;background:rgba(143,209,158,.16);color:var(--ok);font:500 12px var(--sans)}
+.res button.sd{color:var(--cream)}.res button.sd i{color:var(--bad)}.res button.sd.is{opacity:.75}
+.bt2{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.bt2 .who{margin:0}
+.who.so2{border-color:rgba(229,154,143,.55);color:var(--bad)}
+</style>
 </head>
 <body>
 <div class="wrap" id="app" hidden>
@@ -28,64 +75,186 @@
    <button class="rnd" id="lang" aria-label="Language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7.2c2.2 1.3 4.9 2 8 2s5.8-.7 8-2M4 16.8c2.2-1.3 4.9-2 8-2s5.8.7 8 2"/></svg></button>
   </div>
  </div>
- <div class="mh"><h1 id="h1"></h1><p id="sub"></p></div>
+ <div class="mh"><h1 id="h1"></h1><p id="sub"></p><div class="bt2"><button class="who" id="who" type="button"></button><button class="who so2" id="soldBtn" type="button"></button></div></div>
  <div class="tabs"><a class="tab on" href="/waiter" data-go="waiter" id="tabW"></a><a class="tab" href="/reception" data-go="reception" id="tabR"></a></div>
  <div class="stats"><div class="stat"><b id="n1">0</b><span id="l1"></span></div><div class="stat"><b id="n2">0</b><span id="l2"></span></div><div class="stat"><b id="n3">0</b><span id="l3"></span></div><div class="stat"><b id="n4">0</b><span id="l4"></span></div></div>
  <div id="callS" hidden><div class="hd"><h2 id="hCall"></h2></div><div id="callL"></div></div>
  <div class="hd"><h2 id="hN"></h2></div><div id="newL"><div class="skl"></div><div class="skl"></div></div>
  <div class="hd"><h2 id="hP"></h2></div><div id="prepL"></div>
  <div class="hd"><h2 id="hR"></h2></div><div id="readyL"></div>
+ <div id="deadS" hidden><div class="hd"><h2 id="hX"></h2></div><div id="deadL"></div></div>
  <p class="note" id="foot"></p>
 </div>
+<div class="eds" id="eds" role="dialog" aria-modal="true" aria-labelledby="edT"><div class="bk" id="edBk"></div><div class="pn">
+ <div class="hh"><h3 id="edT"></h3><button class="rnd" id="edX" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+ <div class="bd2"><div id="edRows"></div><input class="srch" id="edQ" type="search" autocomplete="off" enterkeyhint="search"><div class="res" id="edRes"></div></div>
+ <div class="ft"><div id="edTot"></div><button class="btn" id="edSave" type="button"></button><button class="btn ghost row2" id="edCancel" type="button"></button></div>
+</div></div>
+<div class="eds" id="rjs" role="dialog" aria-modal="true" aria-labelledby="rjT"><div class="bk" id="rjBk"></div><div class="pn">
+ <div class="hh"><h3 id="rjT"></h3><button class="rnd" id="rjX" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+ <div class="bd2"><p class="lbl" id="rjSub"></p><div class="chp" id="rjChips"></div><textarea id="rjTxt" maxlength="140" rows="2"></textarea></div>
+ <div class="ft"><button class="btn dng" id="rjGo" type="button"></button><button class="btn ghost row2" id="rjCancel" type="button"></button></div>
+</div></div>
+<div class="eds" id="sds" role="dialog" aria-modal="true" aria-labelledby="sdT"><div class="bk" id="sdBk"></div><div class="pn">
+ <div class="hh"><h3 id="sdT"></h3><button class="rnd" id="sdX" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+ <div class="bd2"><p class="lbl" id="sdNow"></p><div class="sdl" id="sdList"></div><input class="srch" id="sdQ" type="search" autocomplete="off" enterkeyhint="search"><div class="res" id="sdRes"></div></div>
+ <div class="ft"><button class="btn ghost" id="sdDone" type="button"></button></div>
+</div></div>
 <script src="menu.js"></script>
 <script src="kz.js"></script>
 <script>
 const $=s=>document.querySelector(s),esc=KZ.esc,fmt=KZ.fmt;
-let lang=KZ.lang(),seenO=null,seenC=null;
+let lang=KZ.lang(),seenO=null,seenC=null,ME=null;
+const snap=()=>({id:ME.id,en:ME.en||"",ar:ME.ar||""}),nm=w=>KZ.wname(w,lang),oth=o=>!!(o.waiter&&o.waiter.id!==ME.id);
 const T={en:{h1:"Orders",sub:"Confirm, prepare and deliver each order. The guest sees every step.",tabW:"Orders",tabR:"Reception",
  l1:"New",l2:"Preparing",l3:"Ready",l4:"Calls",hCall:"Table requests",hN:"New orders",hP:"Preparing",hR:"Ready to serve",
  none:"Nothing here",table:"Table",egp:"EGP",note:"Note",total:"Total",
- a0:"Confirm order",a1:"Mark ready",a2:"Delivered to table",wC:"Calling the waiter",wB:"Asking for the bill",done:"Done",
+ a0:"Confirm order",you:"You",by:"Handled by",take:"Take over",takeQ:"Take over this order from",taken:"Already taken by",sw:"Switch",edit:"Edit order",editT:"Edit order",addQ:"Add an item: search the menu",save:"Save changes",saveC:"Save & confirm",cancel:"Cancel",minOne:"An order needs at least one item",saved:"Order updated and sent to the guest",edited:"Edited",subT:"Subtotal",svc:"Service 12%",vat:"Tax 14%",a1:"Mark ready",a2:"Delivered to table",wC:"Calling the waiter",wB:"Asking for the bill",done:"Done",
+ dec:"Decline",cnl:"Cancel order",rjD:"Decline this order",rjC:"Cancel this order",rjSub:"Choose a reason or write one. The guest will see it.",rjPh:"Or write a reason…",rjNeed:"Choose or write a reason",rjGoD:"Decline order",rjGoC:"Cancel order",keep:"Keep order",rjDone:"The guest was told why",hX:"Declined and cancelled",rejected:"Declined",cancelled:"Cancelled",reason:"Reason",
+ sBtn:"Sold out",sT:"Sold out dishes",sNow:"Marked sold out now (tap to bring back)",sNone:"Nothing is marked sold out right now.",sQ:"Search a dish to mark it sold out",sMark:"Sold out",sBack:"Back in stock",sTag:"Sold out",sDone:"Done",sOn:"Guests can no longer order it",sOff:"Back on the menu",nPh:"Note for this dish (optional)",
  foot:"Orders are stored in this browser for now. They sync with guest phones once the backend is connected.",lock:"Lock",back:"Back"},
  ar:{h1:"الطلبات",sub:"أكّد وجهّز وسلّم كل طلب. الضيف بيشوف كل خطوة.",tabW:"الطلبات",tabR:"الريسبشن",
  l1:"جديد",l2:"بيتجهز",l3:"جاهز",l4:"نداءات",hCall:"طلبات الترابيزات",hN:"طلبات جديدة",hP:"بيتجهز",hR:"جاهز للتسليم",
  none:"مفيش حاجة هنا",table:"ترابيزة",egp:"ج.م",note:"ملاحظة",total:"الإجمالي",
- a0:"أكّد الطلب",a1:"الطلب جاهز",a2:"اتسلّم للترابيزة",wC:"بينادي الويتر",wB:"بيطلب الحساب",done:"تم",
+ a0:"أكّد الطلب",you:"انت",by:"مع",take:"استلم الطلب",takeQ:"تستلم الطلب ده من",taken:"الطلب اتاخد بالفعل مع",sw:"غيّر",edit:"عدّل الطلب",editT:"تعديل الطلب",addQ:"ضيف صنف: ابحث في المنيو",save:"احفظ التعديل",saveC:"احفظ وأكّد",cancel:"إلغاء",minOne:"لازم يفضل صنف واحد على الأقل في الطلب",saved:"الطلب اتعدّل واتبعت للضيف",edited:"معدّل",subT:"المجموع",svc:"خدمة 12%",vat:"ضريبة 14%",a1:"الطلب جاهز",a2:"اتسلّم للترابيزة",wC:"بينادي الويتر",wB:"بيطلب الحساب",done:"تم",
+ dec:"ارفض",cnl:"إلغاء الطلب",rjD:"رفض الطلب",rjC:"إلغاء الطلب",rjSub:"اختار سبب أو اكتبه. الضيف هيشوفه.",rjPh:"أو اكتب السبب…",rjNeed:"اختار سبب أو اكتبه",rjGoD:"ارفض الطلب",rjGoC:"الغي الطلب",keep:"سيب الطلب",rjDone:"الضيف عرف السبب",hX:"المرفوض والملغي",rejected:"مرفوض",cancelled:"ملغي",reason:"السبب",
+ sBtn:"نفد",sT:"أصناف نفدت",sNow:"نفدت دلوقتي (دوس عشان ترجّعه)",sNone:"مفيش أصناف نفدت دلوقتي.",sQ:"ابحث عن صنف عشان تعلّم إنه نفد",sMark:"نفد",sBack:"رجع متاح",sTag:"نفد",sDone:"تم",sOn:"الضيوف مش هيقدروا يطلبوه",sOff:"رجع في المنيو",nPh:"ملاحظة على الصنف (اختياري)",
  foot:"الطلبات متخزنة في المتصفح ده دلوقتي. هتتزامن مع موبايلات الضيوف لما نربط الباك إند.",lock:"قفل",back:"رجوع"}};
 const NEXT=["confirmed","ready","served"],STAMP=["confirmedAt","readyAt","servedAt"],IDX={new:0,confirmed:1,ready:2};
-function card(o){const t=T[lang],ar=lang==="ar",k=IDX[o.status];
- return`<div class="card${o.status==="new"?" hl":""}"><div class="top"><div class="tb"><small>${t.table}</small>${esc(o.table)}</div><div class="tm">${KZ.clock(o.ts,lang)}<br>${KZ.ago(o.ts,lang)}</div></div>
- <div class="items">${o.items.map(x=>`<div class="r"><span>${x.qty} × ${esc(ar?x.ar:x.en)}</span><i>${fmt(x.price*x.qty)} ${t.egp}</i></div>`).join("")}</div>
+function card(o){const t=T[lang],ar=lang==="ar",k=IDX[o.status],dead=KZ.dead(o);
+ return`<div class="card${o.status==="new"?" hl":""}${oth(o)?" oth":""}"><div class="top"><div class="tb"><small>${t.table}</small>${esc(o.table)}${o.waiter?`<span class="tag own">${oth(o)?esc(nm(o.waiter)):t.you}</span>`:""}${o.edited?`<span class="tag">${t.edited}</span>`:""}</div><div class="tm">${KZ.clock(o.ts,lang)}<br>${KZ.ago(o.ts,lang)}</div></div>
+ <div class="items">${o.items.map(x=>`<div class="r"><span>${x.qty} × ${esc(ar?x.ar:x.en)}${!dead&&KZ.isSold(x.en)?`<em class="so">${t.sTag}</em>`:""}${x.note?`<small class="inote">${esc(x.note)}</small>`:""}</span><i>${fmt(x.price*x.qty)} ${t.egp}</i></div>`).join("")}</div>
  ${o.note?`<div class="nt">${t.note}: ${esc(o.note)}</div>`:""}
  <div class="tt"><span>${t.total}</span><i>${fmt(o.grand||o.total)} ${t.egp}</i></div>${o.grand?`<div class="nt">${fmt(o.total)} + ${t.egp==="EGP"?"service":"خدمة"} ${fmt(o.service)} + ${t.egp==="EGP"?"tax":"ضريبة"} ${fmt(o.tax)}</div>`:""}
- <button class="btn" data-id="${esc(o.id)}" data-k="${k}">${t["a"+k]}</button></div>`}
+ ${oth(o)?`<button class="btn ghost" data-take="${esc(o.id)}">${t.take}</button>`:`<button class="btn" data-id="${esc(o.id)}" data-k="${k}">${t["a"+k]}</button><div class="row2b">${k<2?`<button class="btn ghost" data-edit="${esc(o.id)}">${t.edit}</button>`:""}<button class="btn bad" data-end="${esc(o.id)}"${k>=2?' style="grid-column:1/-1"':""}>${k===0?t.dec:t.cnl}</button></div>`}</div>`}
+function deadCard(o){const t=T[lang],ar=lang==="ar";
+ return`<div class="card dead"><div class="top"><div class="tb"><small>${t.table}</small>${esc(o.table)}<span class="tag bd">${o.status==="rejected"?t.rejected:t.cancelled}</span></div><div class="tm">${KZ.clock(o.endedAt||o.ts,lang)}<br>${KZ.ago(o.endedAt||o.ts,lang)}</div></div>
+ <div class="items">${o.items.map(x=>`<div class="r"><span>${x.qty} × ${esc(ar?x.ar:x.en)}</span><i>${fmt(x.price*x.qty)} ${t.egp}</i></div>`).join("")}</div>
+ <div class="why">${t.reason}: ${esc(KZ.reasonText(o,lang)||"–")}${o.reasonBy?` · ${esc(nm(o.reasonBy))}`:""}</div></div>`}
 function callCard(c){const t=T[lang];
  return`<div class="card hl"><div class="top"><div class="tb"><small>${t.table}</small>${esc(c.table)}</div><div class="tm">${KZ.clock(c.ts,lang)}<br>${KZ.ago(c.ts,lang)}</div></div>
  <div class="tt"><span>${c.type==="bill"?t.wB:t.wC}</span></div><button class="btn" data-call="${esc(c.id)}">${t.done}</button></div>`}
 function render(){const t=T[lang],ar=lang==="ar";
  document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
  const all=KZ.list("orders").filter(o=>o&&o.items&&Date.now()-o.ts<12*3600e3),by=s=>all.filter(o=>o.status===s).sort((a,b)=>a.ts-b.ts);
+ const dd=KZ.list("orders").filter(o=>o&&o.items&&KZ.dead(o)&&Date.now()-(o.endedAt||o.ts)<12*3600e3).sort((a,b)=>(b.endedAt||b.ts)-(a.endedAt||a.ts)).slice(0,15);
  const nw=by("new"),pr=by("confirmed"),rd=by("ready"),calls=KZ.list("calls").filter(c=>!c.done).sort((a,b)=>a.ts-b.ts);
  const ids=new Set(nw.map(o=>o.id)),cids=new Set(calls.map(c=>c.id));
  if((seenO&&nw.some(o=>!seenO.has(o.id)))||(seenC&&calls.some(c=>!seenC.has(c.id))))beep();seenO=ids;seenC=cids;
- $("#h1").textContent=t.h1;$("#sub").textContent=t.sub;$("#tabW").textContent=t.tabW;$("#tabR").textContent=t.tabR;
+ $("#h1").textContent=t.h1;$("#who").textContent=`${nm(ME)}  ·  ${t.sw}`;$("#sub").textContent=t.sub;$("#tabW").textContent=t.tabW;$("#tabR").textContent=t.tabR;
  [1,2,3,4].forEach(i=>$("#l"+i).textContent=t["l"+i]);$("#n1").textContent=nw.length;$("#n2").textContent=pr.length;$("#n3").textContent=rd.length;$("#n4").textContent=calls.length;
  $("#hCall").textContent=t.hCall;$("#hN").textContent=t.hN;$("#hP").textContent=t.hP;$("#hR").textContent=t.hR;$("#foot").textContent=t.foot;
  $("#lock").setAttribute("aria-label",t.lock);$("#back").setAttribute("aria-label",t.back);$("#lang").setAttribute("aria-label",ar?"English":"العربية");
  $("#callS").hidden=!calls.length;$("#callL").innerHTML=calls.map(callCard).join("");
- const L=(a)=>a.length?a.map(card).join(""):`<div class="empty">${t.none}</div>`;
+ const L=(a)=>a.length?a.slice().sort((x,y)=>oth(x)-oth(y)).map(card).join(""):`<div class="empty">${t.none}</div>`;
  $("#newL").innerHTML=L(nw);$("#prepL").innerHTML=L(pr);$("#readyL").innerHTML=L(rd);
+ $("#deadS").hidden=!dd.length;$("#hX").textContent=t.hX;$("#deadL").innerHTML=dd.map(deadCard).join("");
+ const so=Object.keys(KZ.sold()).length;$("#soldBtn").textContent=t.sBtn+(so?` · ${so}`:"");
  document.title=(nw.length+calls.length?"("+(nw.length+calls.length)+") ":"")+"Kanzel Waiter"}
 function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.4);o.stop(a.currentTime+.45)}catch(e){}}
 document.addEventListener("click",e=>{
  const b=e.target.closest("button[data-id]");
- if(b){const k=+b.dataset.k;KZ.update("orders",b.dataset.id,o=>{o.status=NEXT[k];o[STAMP[k]]=Date.now()});render();return}
+ if(b){const k=+b.dataset.k;let other=null;
+  KZ.update("orders",b.dataset.id,o=>{
+   if(IDX[o.status]!==k){if(oth(o))other=o.waiter;return}
+   if(k>0&&oth(o)){other=o.waiter;return}
+   o.waiter=snap();o.status=NEXT[k];o[STAMP[k]]=Date.now()});
+  if(other)KZ.toast(`${T[lang].taken} ${nm(other)}`,1);render();return}
+ const tk=e.target.closest("button[data-take]");
+ if(tk){const o=KZ.list("orders").find(x=>x.id===tk.dataset.take);if(!o||!oth(o))return;
+  if(!confirm(`${T[lang].takeQ} ${nm(o.waiter)}?`))return;
+  KZ.update("orders",o.id,x=>{if(x.status!=="served"){x.waiter=snap();x.takenAt=Date.now()}});render();return}
  const c=e.target.closest("button[data-call]");
  if(c){KZ.update("calls",c.dataset.call,o=>{o.done=true;o.doneAt=Date.now()});render()}});
-$("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);render()};
+
+/* ---------- edit an order (new or preparing): change quantities, remove or add dishes ---------- */
+let ed=null;
+const calc=sub=>{const sv=Math.round(sub*.12),tx=Math.round(sub*.14);return{sub,sv,tx,grand:sub+sv+tx}};
+function menuFlat(){const m=typeof MENU!=="undefined"?MENU:[]; /* same filtered list the guest page uses, so dish ids match */
+ const out=[];m.forEach((c,k)=>(c[2]||[]).forEach((x,j)=>out.push({id:k+"-"+j,en:x[0],ar:x[1],price:x[2]})));return out}
+const nrm=s=>String(s||"").toLowerCase().replace(/[\u064B-\u065F]/g,"").replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه");
+function paintEd(){const t=T[lang],ar=lang==="ar";if(!ed)return;
+ $("#edT").textContent=`${t.editT} · ${t.table} ${ed.table}`;$("#edQ").placeholder=t.addQ;
+ $("#edRows").innerHTML=ed.items.map((x,i)=>`<div class="ln"><div class="nm">${esc(ar?x.ar:x.en)}<small>${fmt(x.price)} ${t.egp}</small></div><div class="ctl"><button type="button" data-q="${i}" data-d="-1" aria-label="-">−</button><b>${x.qty}</b><button type="button" data-q="${i}" data-d="1" aria-label="+">+</button></div><div class="nw"><input class="nin" data-n="${i}" maxlength="100" value="${esc(x.note||"")}" placeholder="${t.nPh}"></div></div>`).join("");
+ const c=calc(ed.items.reduce((a,x)=>a+x.price*x.qty,0));
+ $("#edTot").innerHTML=`<div class="sm2"><span>${t.subT}</span><i>${fmt(c.sub)} ${t.egp}</i></div><div class="sm2"><span>${t.svc}</span><i>${fmt(c.sv)} ${t.egp}</i></div><div class="sm2"><span>${t.vat}</span><i>${fmt(c.tx)} ${t.egp}</i></div><div class="sm2 g"><span>${t.total}</span><i>${fmt(c.grand)} ${t.egp}</i></div>`;
+ $("#edSave").textContent=ed.status==="new"?t.saveC:t.save;$("#edCancel").textContent=t.cancel;paintRes()}
+function paintRes(){const t=T[lang],ar=lang==="ar",q=nrm($("#edQ").value.trim());
+ if(!q){$("#edRes").innerHTML="";return}
+ const r=menuFlat().filter(x=>nrm(x.en).includes(q)||nrm(x.ar).includes(q)).slice(0,8);
+ $("#edRes").innerHTML=r.map(x=>`<button type="button" data-add="${x.id}"><span>${esc(ar?x.ar:x.en)}</span><i>${fmt(x.price)} ${t.egp}</i></button>`).join("")}
+function openEdit(id){const o=KZ.list("orders").find(x=>x.id===id);if(!o||(o.status!=="new"&&o.status!=="confirmed"))return;
+ ed={id,table:o.table,status:o.status,items:o.items.map(x=>({id:x.id,en:x.en,ar:x.ar,price:x.price,qty:x.qty,note:x.note||""}))};
+ $("#edQ").value="";$("#eds").classList.add("on");document.body.classList.add("lockb");paintEd()}
+function closeEdit(){ed=null;$("#eds").classList.remove("on");document.body.classList.remove("lockb")}
+function saveEdit(){if(!ed)return;const t=T[lang],items=ed.items.filter(x=>x.qty>0);
+ if(!items.length){KZ.toast(t.minOne,1);return}
+ let ok=true,other=null;
+ const done=KZ.update("orders",ed.id,o=>{
+  if(o.status!=="new"&&o.status!=="confirmed"){ok=false;return}
+  if(oth(o)){ok=false;other=o.waiter;return}
+  const base=o.orig||{items:o.items.map(x=>({id:x.id,en:x.en,ar:x.ar,price:x.price,qty:x.qty,note:x.note||""})),total:o.total,grand:o.grand};
+  const was={},now={};base.items.forEach(x=>was[x.id]=x);items.forEach(x=>now[x.id]=x);
+  const ch=[];Object.keys(was).forEach(id=>{const a=was[id].qty,b=now[id]?now[id].qty:0;if(a!==b)ch.push({id,en:was[id].en,ar:was[id].ar,from:a,to:b})});
+  Object.keys(now).forEach(id=>{if(!was[id])ch.push({id,en:now[id].en,ar:now[id].ar,from:0,to:now[id].qty})});
+  const c=calc(items.reduce((a,x)=>a+x.price*x.qty,0));
+  o.orig=base;o.items=items;o.total=c.sub;o.service=c.sv;o.tax=c.tx;o.grand=c.grand;
+  o.edited=ch.length>0;o.changes=ch;if(ch.length)o.editedAt=Date.now();else delete o.editedAt;
+  o.waiter=snap();if(o.status==="new"){o.status="confirmed";o.confirmedAt=Date.now()}});
+ if(!ok||!done){KZ.toast(other?`${t.taken} ${nm(other)}`:t.none,1);closeEdit();render();return}
+ closeEdit();render();KZ.toast(t.saved)}
+$("#edX").onclick=$("#edCancel").onclick=$("#edBk").onclick=closeEdit;$("#edSave").onclick=saveEdit;$("#edQ").oninput=paintRes;
+$("#eds").addEventListener("input",e=>{const n=e.target.closest&&e.target.closest("input[data-n]");if(n&&ed&&ed.items[+n.dataset.n])ed.items[+n.dataset.n].note=n.value.trim().slice(0,100)});
+$("#eds").addEventListener("click",e=>{if(!ed)return;
+ const q=e.target.closest("button[data-q]");if(q){const x=ed.items[+q.dataset.q];if(x){x.qty=Math.max(0,Math.min(20,x.qty+ +q.dataset.d));if(!x.qty)ed.items.splice(+q.dataset.q,1);paintEd()}return}
+ const a=e.target.closest("button[data-add]");if(a){const m=menuFlat().find(x=>x.id===a.dataset.add);if(m){const h=ed.items.find(x=>x.id===m.id);if(h)h.qty=Math.min(20,h.qty+1);else ed.items.push({id:m.id,en:m.en,ar:m.ar,price:m.price,qty:1,note:""});$("#edQ").value="";paintEd()}}});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&ed)closeEdit()});
+document.addEventListener("click",e=>{const b=e.target.closest("button[data-edit]");if(b)openEdit(b.dataset.edit)});
+/* ---------- decline (new) or cancel (confirmed / ready) an order, always with a reason ---------- */
+let rj=null;
+function paintRj(){const t=T[lang],ar=lang==="ar";if(!rj)return;
+ $("#rjT").textContent=`${rj.kind==="rejected"?t.rjD:t.rjC} · ${t.table} ${rj.table}`;$("#rjSub").textContent=t.rjSub;$("#rjTxt").placeholder=t.rjPh;
+ $("#rjChips").innerHTML=KZ.REASONS.map(r=>`<button type="button" data-r="${r.id}" class="${rj.rid===r.id?"on":""}" aria-pressed="${rj.rid===r.id}">${ar?r.ar:r.en}</button>`).join("");
+ $("#rjGo").textContent=rj.kind==="rejected"?t.rjGoD:t.rjGoC;$("#rjCancel").textContent=t.keep}
+function openRj(id){const o=KZ.list("orders").find(x=>x.id===id);if(!o||!(o.status in IDX))return;
+ if(oth(o)){KZ.toast(`${T[lang].taken} ${nm(o.waiter)}`,1);return}
+ rj={id,table:o.table,kind:o.status==="new"?"rejected":"cancelled",rid:"",};$("#rjTxt").value="";$("#rjs").classList.add("on");document.body.classList.add("lockb");paintRj()}
+function closeRj(){rj=null;$("#rjs").classList.remove("on");document.body.classList.remove("lockb")}
+function saveRj(){if(!rj)return;const t=T[lang],text=$("#rjTxt").value.trim().slice(0,140);
+ if(!rj.rid&&!text){KZ.toast(t.rjNeed,1);return}
+ let ok=true,other=null;
+ const done=KZ.update("orders",rj.id,o=>{
+  if(!(o.status in IDX)){ok=false;return}
+  if(oth(o)){ok=false;other=o.waiter;return}
+  o.status=o.status==="new"?"rejected":"cancelled";o.reason={id:rj.rid,text};o.reasonBy=snap();o.endedAt=Date.now()});
+ if(!ok||!done){KZ.toast(other?`${t.taken} ${nm(other)}`:t.none,1);closeRj();render();return}
+ closeRj();render();KZ.toast(t.rjDone)}
+$("#rjChips").addEventListener("click",e=>{const b=e.target.closest("button[data-r]");if(!b||!rj)return;rj.rid=rj.rid===b.dataset.r?"":b.dataset.r;paintRj()});
+$("#rjX").onclick=$("#rjCancel").onclick=$("#rjBk").onclick=closeRj;$("#rjGo").onclick=saveRj;
+document.addEventListener("click",e=>{const b=e.target.closest("button[data-end]");if(b)openRj(b.dataset.end)});
+
+/* ---------- sold out ("نفد"): one tap and guests can no longer order the dish ---------- */
+let sdOpen=false;
+function paintSd(){const t=T[lang],ar=lang==="ar",q=nrm($("#sdQ").value.trim()),S=KZ.sold();
+ $("#sdT").textContent=t.sT;$("#sdQ").placeholder=t.sQ;$("#sdDone").textContent=t.sDone;
+ const menu=(typeof MENU!=="undefined"?MENU:[]),byKey={};menu.forEach(c=>(c[2]||[]).forEach(x=>{byKey[KZ.soldKey(x[0])]=x}));
+ const cur=Object.keys(S).sort((a,b)=>S[b]-S[a]);
+ $("#sdNow").textContent=cur.length?t.sNow:t.sNone;
+ $("#sdList").innerHTML=cur.map(k=>{const x=byKey[k];const name=x?(ar?x[1]:x[0]):k;return`<button type="button" data-sold="${esc(x?x[0]:k)}" data-on="0">${esc(name)}<b>${t.sBack}</b></button>`}).join("");
+ if(!q){$("#sdRes").innerHTML="";return}
+ const r=[];menu.forEach(c=>(c[2]||[]).forEach(x=>{if(r.length<12&&(nrm(x[0]).includes(q)||nrm(x[1]).includes(q)))r.push(x)}));
+ $("#sdRes").innerHTML=r.map(x=>{const on=!!S[KZ.soldKey(x[0])];return`<button type="button" class="sd${on?" is":""}" data-sold="${esc(x[0])}" data-on="${on?0:1}"><span>${esc(ar?x[1]:x[0])}</span><i>${on?t.sBack:t.sMark}</i></button>`}).join("")}
+function openSd(){sdOpen=true;$("#sdQ").value="";$("#sds").classList.add("on");document.body.classList.add("lockb");paintSd()}
+function closeSd(){sdOpen=false;$("#sds").classList.remove("on");document.body.classList.remove("lockb");render()}
+$("#soldBtn").onclick=openSd;$("#sdX").onclick=$("#sdDone").onclick=$("#sdBk").onclick=closeSd;$("#sdQ").oninput=paintSd;
+$("#sds").addEventListener("click",e=>{const b=e.target.closest("button[data-sold]");if(!b)return;const on=b.dataset.on==="1";
+ if(!KZ.setSold(b.dataset.sold,on)){KZ.toast(T[lang].none,1);return}KZ.toast(on?T[lang].sOn:T[lang].sOff);paintSd()});
+addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(rj)closeRj();else if(sdOpen)closeSd()});
+$("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);render();if(ed)paintEd();if(rj)paintRj();if(sdOpen)paintSd()};
+$("#who").onclick=()=>{KZ.switchWaiter();location.reload()};
 $("#lock").onclick=()=>{KZ.logout("staff");location.reload()};
-addEventListener("storage",e=>{if(e.key===KZ.KEYS.orders||e.key===KZ.KEYS.calls)render()});
-KZ.gate("staff").then(()=>{$("#app").hidden=false;render();setInterval(render,3000)});
+addEventListener("storage",e=>{if(e.key===KZ.KEYS.orders||e.key===KZ.KEYS.calls||e.key==="kanzel-soldout")render()});
+KZ.gate("staff").then(()=>KZ.pickWaiter()).then(w=>{ME=w;$("#app").hidden=false;render();setInterval(render,3000)});
 </script>
 </body>
 </html>

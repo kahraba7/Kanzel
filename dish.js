@@ -53,6 +53,11 @@ const CSS=`
 .sx+nav{padding-top:10px!important}
 body.searching .stk nav{display:none!important}
 .stk .sx{padding-bottom:0!important}
+.stk .svc{padding:8px 16px 0!important}
+.stk .svc button{padding:8px 10px!important;font-size:13px;transition:padding .25s}
+.min .stk .svc{padding-top:6px!important}
+.min .stk .svc button{padding:6px 10px!important}
+.stk .sx{margin-top:8px!important}
 .stk>nav{margin-top:0!important}
 body.searching section .items,body.searching section .items-g{display:block!important}
 body.searching section .chev{opacity:.0}
@@ -140,6 +145,7 @@ function init(o){
  sx.innerHTML='<svg class="mg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>'+
   '<input type="search" enterkeyhint="search" autocomplete="off" autocorrect="off" spellcheck="false">'+
   '<button type="button" class="xc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
+ const svc=document.querySelector("#menuView .svc");if(svc)stk.appendChild(svc);
  stk.appendChild(sx);stk.appendChild(navEl);
  input=sx.querySelector("input");clr=sx.querySelector(".xc");
  empty=document.createElement("p");empty.className="sx-none sx-hide";empty.setAttribute("role","status");

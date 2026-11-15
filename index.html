@@ -419,7 +419,7 @@ body.searching #menuView .mbody{grid-template-columns:1fr;padding-inline-start:0
 <script src="ph.js"></script>
 <script>window.KZX=window.KZX||{hay:function(){return""},init:function(){},setLang:function(){},reapply:function(){},open:function(){},refresh:function(){},reset:function(){},close:function(){}}</script>
 <script>
-let lang=(()=>{try{return localStorage.getItem("kanzel-lang")==="ar"?"ar":"en"}catch(e){return "en"}})(),skipR=false,busy=false;
+let lang=(()=>{try{return KZ.lang()}catch(e){return "en"}})(),skipR=false,busy=false;
 const view=()=>document.body.classList.contains("is-menu");
 function route(){if(window.KZX)KZX.reset();const m=location.hash==="#menu";document.body.classList.toggle("is-menu",m);
  const v=document.querySelector("video.bg");if(v){if(m)v.pause();else{const p=v.play();if(p&&p.catch)p.catch(()=>{})}}

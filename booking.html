@@ -179,7 +179,7 @@ body.lswap #bookView .bh,body.lswap #bookView .pane{opacity:0;transform:translat
 </div></div>
 <script src="kz.js"></script>
 <script>
-let lang=(()=>{try{const q=new URLSearchParams(location.search).get('lang');if(q==='ar'||q==='en')return q;return localStorage.getItem('kanzel-lang')==='ar'?'ar':'en'}catch(e){return 'en'}})();
+let lang=(()=>{try{const q=new URLSearchParams(location.search).get('lang');if(q==='ar'||q==='en')return q;return KZ.lang()}catch(e){return 'en'}})();
 const $=s=>document.querySelector(s);
 function toggleLang(e){const b=e&&e.currentTarget,sv=b&&b.querySelector('svg');
  if(sv){sv.classList.remove('spin');void sv.getBoundingClientRect();sv.classList.add('spin')}

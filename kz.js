@@ -9,7 +9,9 @@ KZ.write=(k,v)=>S.set(k,JSON.stringify(v));
 KZ.esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 KZ.fmt=n=>Number(n||0).toLocaleString("en");
 KZ.uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-KZ.lang=()=>S.get("kanzel-lang")==="ar"?"ar":"en";
+/* language: an explicit choice (the language button) wins; otherwise follow the phone's main language (Arabic phone -> Arabic, anything else -> English) */
+KZ.phoneLang=()=>{try{const l=(navigator.languages&&navigator.languages[0])||navigator.language||"en";return/^ar(\b|-|_)/i.test(String(l))?"ar":"en"}catch(e){return"en"}};
+KZ.lang=()=>{const v=S.get("kanzel-lang");return v==="ar"||v==="en"?v:KZ.phoneLang()};
 KZ.setLang=l=>S.set("kanzel-lang",l);
 KZ.clock=(ts,l)=>new Date(ts).toLocaleTimeString(l==="ar"?"ar-EG":"en-GB",{hour:"2-digit",minute:"2-digit"});
 KZ.ago=(ts,l)=>{const m=Math.floor((Date.now()-ts)/6e4),a=l==="ar";if(m<1)return a?"دلوقتي":"just now";if(m<60)return a?"من "+m+" دقيقة":m+" min ago";const h=Math.floor(m/60);return a?"من "+h+" ساعة و"+(m%60)+" دقيقة":h+" h "+(m%60)+" min ago"};
@@ -50,7 +52,7 @@ addEventListener("error",e=>{if(e.target===window)oops()});addEventListener("unh
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[data-go]");if(!a)return;e.preventDefault();KZ.go(a.dataset.go)});
 
 /* ---------- settings ---------- */
-const DEF={staffPin:"7777",adminPin:"1234",siteUrl:"https://kanzel-eg.vercel.app",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Kanzel+Restaurant+%26+Lounge"};
+const DEF={waiters:[{id:"w1",en:"Ahmed",ar:"أحمد"},{id:"w2",en:"Nour",ar:"نور"}],staffPin:"7777",adminPin:"1234",siteUrl:"https://kanzel-eg.vercel.app",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Kanzel+Restaurant+%26+Lounge"};
 KZ.settings=()=>Object.assign({},DEF,KZ.read("kanzel-settings",{}));
 KZ.saveSettings=o=>KZ.write("kanzel-settings",o);
 
@@ -66,13 +68,33 @@ if(typeof MENU!=="undefined"){const o=KZ.read("kanzel-menu",null);
 
 /* ---------- data lists ---------- */
 KZ.KEYS={orders:"kanzel-orders",calls:"kanzel-calls",bookings:"kanzel-bookings",events:"kanzel-events"};
+/* ---------- order status helpers ----------
+   status: new -> confirmed -> ready -> served. A waiter can also end an order early:
+   "rejected" (before confirming) or "cancelled" (after), always with a reason: o.reason, o.reasonBy {id,en,ar}, o.endedAt */
+KZ.dead=o=>!!o&&(o.status==="rejected"||o.status==="cancelled");
+KZ.REASONS=[
+ {id:"stock",en:"Out of stock",ar:"الصنف نفد"},
+ {id:"kitchen",en:"Kitchen can’t make it now",ar:"المطبخ مش قادر يجهزه دلوقتي"},
+ {id:"guest",en:"Guest asked to cancel",ar:"الضيف طلب الإلغاء"},
+ {id:"dup",en:"Duplicate order",ar:"طلب متكرر"},
+ {id:"table",en:"Wrong table",ar:"ترابيزة غلط"},
+ {id:"closed",en:"Kitchen is closed",ar:"المطبخ قفل"}];
+KZ.reasonText=(o,l)=>{if(!o||!o.reason)return"";const r=KZ.REASONS.find(x=>x.id===o.reason.id);const t=o.reason.text||"";
+ const base=r?(l==="ar"?r.ar:r.en):"";return[base,t].filter(Boolean).join(" · ")};
+
+/* ---------- sold out ("نفد"): a quick switch for waiters, kept by dish English name so it survives menu edits ---------- */
+KZ.soldKey=en=>String(en==null?"":en).trim().toLowerCase();
+KZ.sold=()=>{const o=KZ.read("kanzel-soldout",{});return o&&typeof o==="object"&&!Array.isArray(o)?o:{}};
+KZ.isSold=en=>!!KZ.sold()[KZ.soldKey(en)];
+KZ.setSold=(en,on)=>{const o=KZ.sold(),k=KZ.soldKey(en);if(!k)return false;if(on)o[k]=Date.now();else delete o[k];return KZ.write("kanzel-soldout",o)};
+KZ.clearSold=()=>KZ.write("kanzel-soldout",{});
 KZ.list=n=>{const a=KZ.read(KZ.KEYS[n],[]);return Array.isArray(a)?a:[]};
 KZ.saveList=(n,a)=>KZ.write(KZ.KEYS[n],a);
 KZ.push=(n,o)=>{const a=KZ.list(n);a.push(o);return KZ.saveList(n,a)};
 KZ.update=(n,id,fn)=>{const a=KZ.list(n),o=a.find(x=>x.id===id);if(!o)return false;fn(o);return KZ.saveList(n,a)};
 
 /* ---------- PIN gate (front-end only; real protection comes with the backend) ---------- */
-KZ.logout=role=>{try{sessionStorage.removeItem("kz-auth-"+role)}catch(e){}};
+KZ.logout=role=>{try{sessionStorage.removeItem("kz-auth-"+role);if(role==="staff")sessionStorage.removeItem("kz-waiter")}catch(e){}};
 KZ.gate=role=>new Promise(res=>{
  const key="kz-auth-"+role;try{if(sessionStorage.getItem(key)==="1"){res();return}}catch(e){}
  const ar=KZ.lang()==="ar",st=document.createElement("style");
@@ -145,6 +167,28 @@ KZ.gate=role=>new Promise(res=>{
  o.tabIndex=-1;o.style.outline="0";
  if(mode==="type")setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},60);else o.focus({preventScroll:true});
 });
+
+
+/* ---------- waiter accounts: one shared staff PIN, then each waiter picks their own name ---------- */
+KZ.waiters=()=>{const a=KZ.settings().waiters;return(Array.isArray(a)?a:[]).filter(w=>w&&w.id&&(w.en||w.ar))};
+KZ.wname=(w,l)=>w?(l==="ar"?(w.ar||w.en):(w.en||w.ar))||"":"";
+KZ.me=()=>{try{const id=sessionStorage.getItem("kz-waiter");return KZ.waiters().find(x=>x.id===id)||null}catch(e){return null}};
+KZ.switchWaiter=()=>{try{sessionStorage.removeItem("kz-waiter")}catch(e){}};
+KZ.pickWaiter=()=>new Promise(res=>{
+ const cur=KZ.me();if(cur){res(cur);return}
+ const ws=KZ.waiters();if(!ws.length){res({id:"staff",en:"Staff",ar:"موظف"});return}
+ const l=KZ.lang(),ar=l==="ar",F="'Readex Pro',system-ui,-apple-system,sans-serif";
+ const st=document.createElement("style");
+ st.textContent=".kzw{position:fixed;inset:0;z-index:9999;background:#10211a;color:#f4efdd;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;overflow-y:auto;font-family:"+F+";font-weight:300}"+
+ ".kzw img{width:110px;height:auto}.kzw h1{font:500 30px/1.15 'Cormorant Garamond','Readex Pro',Georgia,serif;margin:0;text-align:center}.kzw p{font-size:14px;color:rgba(244,239,221,.9);margin:0 0 6px;text-align:center}"+
+ ".kzw .ls{display:grid;gap:10px;width:min(360px,100%)}.kzw .ls button{padding:18px 20px;border-radius:99px;border:1px solid rgba(211,201,148,.55);background:#ffffff0d;color:#f4efdd;font:500 19px "+F+";cursor:pointer;transition:background .15s,transform .12s}"+
+ ".kzw .ls button:active{background:rgba(211,201,148,.3);transform:scale(.97)}.kzw .ls button:focus-visible{outline:2px solid #d3c994;outline-offset:3px}";
+ document.head.appendChild(st);
+ const o=document.createElement("div");o.className="kzw";o.dir=ar?"rtl":"ltr";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");
+ o.innerHTML="<img src='logo.png' alt='Kanzel'><h1>"+(ar?"مين بيشتغل دلوقتي؟":"Who is on shift?")+"</h1><p>"+(ar?"اختار اسمك. الطلبات اللي تأكدها هتكمل عليها انت.":"Pick your name. Orders you confirm stay with you.")+"</p><div class='ls'></div>";
+ const box=o.querySelector(".ls");
+ ws.forEach(w=>{const b=document.createElement("button");b.type="button";b.textContent=KZ.wname(w,l);b.onclick=()=>{try{sessionStorage.setItem("kz-waiter",w.id)}catch(e){}o.remove();st.remove();res(w)};box.appendChild(b)});
+ document.body.appendChild(o)});
 
 /* ---------- PWA ---------- */
 if(!KZ.embed&&!window.__NOSW&&"serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){
