@@ -1,4 +1,4 @@
-Kanzel site v30  ->  https://kanzel-eg.vercel.app
+Kanzel site v33  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -31,3 +31,9 @@ v27 home: live open/closed status (Cairo time, 10 AM-3 AM), time-based tagline, 
 v29: videos moved to video/ (like img/ for images). v28 video: new 720p videos (watermark cropped out). Home background changes by Cairo time: morning (6-12) home-morning.mp4, day (12-18) home-day.mp4, night home-night.mp4. Booking uses band-day.mp4 and events band-night.mp4 as a soft header band. Old bg.mp4 removed. Poster jpgs sit next to each video.
 
 v30 menu page (index.html): 4 big tabs (Food / Drinks / Desserts / Shisha) hold the 24 categories (matched by English name, edit GROUPS in index.html); each category header is a banner with its top dish photo and a line icon; the open category title stays pinned under the tabs; categories with mostly photos (Pizza, Pasta, Main Dishes...) show a 2-column big-photo grid, drink categories stay compact lists; the menu opens on a section that fits Cairo time (edit TOD): morning Breakfast, otherwise Main Dishes, drinks tab picks Hot Drinks / Fresh Juice / Virgin Cocktail; photos fade in from a blur (ph.js holds the placeholder colours) and cards rise in as they appear.
+
+v31: redrawn category icons with animated parts (steam, flame, bubbles, spinning snowflake, lifting cloche...) that play while the section is open or the tab is selected; round icon badge that fills gold when open; slow zoom on the open banner; count pill; pop animation on tabs.
+
+v32 home: opening "Book" now keeps the video (photo only fades in at 50%), darker veil, hides the dish strip and shrinks the logo so both booking options fit on screen, and scrolls them into view.
+
+v33 home: language button shows a globe + AR/EN (page stays English by default); footer buttons now show captions (WhatsApp / Location / Instagram / Rate us); darker soft scrim and text shadow behind Menu/Book; share-card title and description now English + Arabic (WhatsApp caches previews: share the link with ?v=2 to refresh).
