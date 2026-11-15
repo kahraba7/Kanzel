@@ -290,6 +290,31 @@ body.searching #menuView section.gh{display:block}
 .rows{position:relative;isolation:isolate}
 .rows::before{content:"";position:absolute;left:-30px;right:-30px;top:-34px;bottom:-120px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(16,33,26,0),rgba(16,33,26,.5) 22%,rgba(16,33,26,.7) 70%,rgba(16,33,26,.9))}
 .row .w,.row .s{text-shadow:0 2px 16px rgba(0,0,0,.75)}
+
+/* v34 category headers: tinted card + the dish photo shown whole (no dark crop), price chip on grid photos */
+#menuView .acch{height:96px;gap:12px;padding:0 14px;border-radius:22px;background:linear-gradient(100deg,rgba(16,33,26,.95) 38%,rgba(16,33,26,.7)),var(--ph,#1b3a2a);box-shadow:0 10px 24px -14px rgba(0,0,0,.85)}
+#menuView section.open .acch{height:60px;border-radius:18px}
+#menuView .tx{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+#menuView .acch .tx small{order:-1;padding:0;border:0;border-radius:0;background:none;font:500 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);opacity:.85}
+[dir=rtl] #menuView .acch .tx small{letter-spacing:0;text-transform:none;font-size:12px}
+#menuView .acch .tx .nm{flex:none;font:italic 600 26px/1.08 var(--serif);color:var(--cream);text-shadow:0 1px 10px rgba(0,0,0,.5)}
+#menuView section.open .tx{flex-direction:row;align-items:center;gap:10px}
+#menuView section.open .acch .tx small{order:1}
+#menuView section.open .acch .tx .nm{font-size:22px;color:var(--gold)}
+#menuView .plt{position:relative;flex:none;width:76px;height:76px;border-radius:50%;overflow:hidden;border:2px solid rgba(211,201,148,.75);background:var(--ph,#2a4a2f);box-shadow:0 8px 18px -6px rgba(0,0,0,.75),0 0 0 4px rgba(211,201,148,.12);transition:width .28s,height .28s,box-shadow .28s}
+#menuView .plt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;filter:blur(10px);transform:scale(1.1);transition:opacity .5s,filter .6s,transform .6s}
+#menuView .plt img.ok{opacity:1;filter:none;transform:none}
+#menuView section.open .plt{width:40px;height:40px;border-width:1.5px;box-shadow:none}
+#menuView .acch .chev{position:absolute;inset-inline-end:10px;bottom:7px;margin:0;width:24px;height:24px;border:0;border-radius:50%;background:var(--gold);transform:none;box-shadow:0 2px 8px rgba(0,0,0,.5);transition:all .3s}
+#menuView .acch .chev::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border:solid var(--forest);border-width:0 2px 2px 0;transform:translate(-50%,-72%) rotate(45deg);transition:transform .3s}
+#menuView section.open .acch .chev{transform:none;width:19px;height:19px;bottom:6px;inset-inline-end:7px}
+#menuView section.open .acch .chev::before{transform:translate(-50%,-30%) rotate(-135deg)}
+#menuView .acch.nopl .chev{bottom:auto;top:50%;margin-top:-12px}
+#menuView section.open .acch.nopl .chev{margin-top:-10px}
+#menuView .card.gc{border-radius:20px;border:1px solid rgba(211,201,148,.18)}
+#menuView .gc .ph .pr{position:absolute;z-index:2;inset-inline-end:8px;bottom:8px;margin:0;padding:6px 10px;border-radius:99px;background:rgba(16,33,26,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(211,201,148,.4);font:700 14px/1 var(--sans);color:#e8d98a}
+#menuView .gc .ph .pr small{font-size:10.5px}
+@media(prefers-reduced-motion:reduce){#menuView .plt img{transition:none;filter:none;transform:none}}
 </style>
 </head>
 <body>
@@ -450,7 +475,7 @@ function renderMenu(){const t=MT[lang],i=lang==="ar"?1:0,first=grp<0,prev=openK;
  nav.innerHTML=gs.map((g,n)=>`<button type="button" data-g="${g}" style="--c:${n}"><i class="ti">${ico(GROUPS[g].ic)}</i><b>${GROUPS[g][lang]}</b></button>`).join("");
  $("#mlist").innerHTML=!MENU.length?`<p class="emptyM">${lang==="ar"?"المنيو بيتحدّث دلوقتي. جرّب كمان شوية.":"The menu is being updated. Please check back soon."}</p>`:MENU.map((m,k)=>{
   const it=m[2],np=it.filter(x=>x[5]).length,top=it.find(x=>x[5]),grid=GROUPS[secG[k]].id!=="drinks"&&np>=4&&np/it.length>=.6;
-  return`<section data-g="${secG[k]}"><h2><button type="button" class="acch" aria-expanded="false"><span class="bn" style="--ph:${top?phOf(top[5]):"#2a4a2f"}">${top?imgT(top[5]):""}</span><span class="ci">${ico(m[0])}</span><span class="nm">${m[i]}</span><small>${it.length}</small><i class="chev"></i></button></h2><div class="items${grid?" g":""}">${it.map((x,j)=>`<div class="card${x[5]?(grid?" gc":""):" np"}" data-k="${k}" data-j="${j}" data-s="${KZX.hay(m[0],m[1],x[0],x[1],x[3],x[4])}" style="--i:${j%4}">${x[5]?`<div class="ph" style="--ph:${phOf(x[5])}">${imgT(x[5])}</div>`:""}<div><h3>${x[i]}</h3><p>${x[i+3]}</p><b class="pr">${x[2].toLocaleString("en")}<small>${t.egp}</small></b></div></div>`).join("")}</div></section>`}).join("");
+  return`<section data-g="${secG[k]}"><h2><button type="button" class="acch${top?"":" nopl"}" aria-expanded="false" style="--ph:${top?phOf(top[5]):"#1b3a2a"}"><span class="ci">${ico(m[0])}</span><span class="tx"><small>${it.length} ${it.length===1?t.one:t.many}</small><span class="nm">${m[i]}</span></span>${top?`<span class="plt">${imgT(top[5])}</span>`:""}<i class="chev"></i></button></h2><div class="items${grid?" g":""}">${it.map((x,j)=>`<div class="card${x[5]?(grid?" gc":""):" np"}" data-k="${k}" data-j="${j}" data-s="${KZX.hay(m[0],m[1],x[0],x[1],x[3],x[4])}" style="--i:${j%4}">${(()=>{const pr=`<b class="pr">${x[2].toLocaleString("en")}<small>${t.egp}</small></b>`,g2=grid&&x[5];return(x[5]?`<div class="ph" style="--ph:${phOf(x[5])}">${imgT(x[5])}${g2?pr:""}</div>`:"")+`<div><h3>${x[i]}</h3><p>${x[i+3]}</p>${g2?"":pr}</div>`})()}</div>`).join("")}</div></section>`}).join("");
  $("#mtop").setAttribute("aria-label",t.top);
  secs=[...document.querySelectorAll("#menuView section")];tabs=[...nav.children];
  secs.forEach((sc,k)=>sc.querySelector(".acch").onclick=()=>openSec(k,false));
