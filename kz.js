@@ -76,31 +76,74 @@ KZ.logout=role=>{try{sessionStorage.removeItem("kz-auth-"+role)}catch(e){}};
 KZ.gate=role=>new Promise(res=>{
  const key="kz-auth-"+role;try{if(sessionStorage.getItem(key)==="1"){res();return}}catch(e){}
  const ar=KZ.lang()==="ar",st=document.createElement("style");
- st.textContent=".kzg{position:fixed;inset:0;z-index:9999;background:#10211a;color:#f4efdd;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;font-family:'Readex Pro',system-ui,sans-serif;font-weight:300}"+
- ".kzg h1{font:500 34px/1.1 'Cormorant Garamond','Readex Pro',Georgia,serif}.kzg p{font-size:13px;color:rgba(244,239,221,.85);min-height:20px}"+
- ".kzg .dots{display:flex;gap:14px;direction:ltr}.kzg .dots i{width:14px;height:14px;border-radius:50%;border:1.5px solid #d3c994;transition:background .15s}.kzg .dots i.on{background:#d3c994}"+
- ".kzg .pad{display:grid;grid-template-columns:repeat(3,72px);gap:12px;direction:ltr}.kzg .pad button{height:64px;border-radius:50%;border:1px solid rgba(211,201,148,.45);background:#ffffff0a;color:#f4efdd;font:500 24px 'Cormorant Garamond',Georgia,serif;cursor:pointer;transition:background .15s,transform .15s}"+
- ".kzg .pad button:active{background:rgba(211,201,148,.25);transform:scale(.94)}.kzg .pad button:focus-visible{outline:2px solid #d3c994;outline-offset:3px}.kzg .pad .x{border:0;background:none;font:300 14px 'Readex Pro',sans-serif;color:#d3c994}"+
- ".kzg a{font-size:14px;color:#d3c994;border:1px solid rgba(211,201,148,.5);border-radius:99px;padding:11px 26px;text-decoration:none;cursor:pointer;margin-top:8px}@keyframes kzs{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}.kzg .dots.bad{animation:kzs .4s}";
+ const F="'Readex Pro',system-ui,-apple-system,sans-serif";
+ st.textContent=[
+ ".kzg{position:fixed;inset:0;z-index:9999;background:#10211a;color:#f4efdd;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;overflow-y:auto;font-family:"+F+";font-weight:300;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}",
+ ".kzg *{touch-action:manipulation;-webkit-tap-highlight-color:transparent}",
+ ".kzg.t{justify-content:flex-start;padding-top:max(7vh,40px)}",
+ ".kzg img{width:120px;height:auto}.kzg.p img{width:104px}",
+ ".kzg h1{font:500 32px/1.15 'Cormorant Garamond','Readex Pro',Georgia,serif;margin:0}",
+ ".kzg p{font-size:14px;color:rgba(244,239,221,.9);min-height:20px;margin:0;text-align:center}",
+ ".kzg .dw{position:relative}",
+ ".kzg .dots{display:flex;gap:12px;direction:ltr}",
+ ".kzg .dots i{display:grid;place-items:center;width:14px;height:14px;border-radius:50%;border:1.5px solid #d3c994;transition:background .15s,border-color .15s,box-shadow .15s}",
+ ".kzg .dots i.on{background:#d3c994}",
+ ".kzg.t .dots i{width:56px;height:64px;border-radius:16px;border-color:rgba(211,201,148,.55);background:#ffffff0a}",
+ ".kzg.t .dots i.on{background:#ffffff0a}",
+ ".kzg.t .dots i.on::after{content:'';width:15px;height:15px;border-radius:50%;background:#d3c994}",
+ ".kzg.t .dots i.cur{border-color:#d3c994;box-shadow:0 0 0 3px rgba(211,201,148,.22)}",
+ ".kzg .pin{position:absolute;inset:0;width:100%;height:100%;opacity:0;font:400 16px "+F+";border:0;background:none;color:transparent;caret-color:transparent;padding:0;margin:0;-webkit-appearance:none;appearance:none;cursor:pointer}",
+ ".kzg.p .pin{display:none}",
+ ".kzg .pad{display:none;grid-template-columns:repeat(3,68px);gap:12px;direction:ltr}.kzg.p .pad{display:grid}",
+ ".kzg .pad button{width:68px;height:68px;padding:0;border-radius:50%;border:1px solid rgba(211,201,148,.5);background:#ffffff0d;color:#f4efdd;font:500 28px/1 "+F+";font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1;cursor:pointer;transition:background .12s,transform .12s;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}",
+ ".kzg .pad button:active{background:rgba(211,201,148,.3);transform:scale(.93)}",
+ ".kzg .pad button:focus-visible,.kzg .tg:focus-visible,.kzg a:focus-visible{outline:2px solid #d3c994;outline-offset:3px}",
+ ".kzg .pad .x{border:0;background:none;color:#d3c994}.kzg .pad .x svg{width:30px;height:30px}",
+ ".kzg .tg{background:none;border:0;color:#d3c994;font:400 15px "+F+";text-decoration:underline;text-underline-offset:4px;padding:10px 14px;cursor:pointer}",
+ ".kzg a{font-size:14px;color:#d3c994;border:1px solid rgba(211,201,148,.5);border-radius:99px;padding:11px 26px;text-decoration:none;cursor:pointer;margin-top:4px}",
+ "@keyframes kzs{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}.kzg .dw.bad{animation:kzs .4s}.kzg p.err{color:#ffb4a8}"
+ ].join("");
  document.head.appendChild(st);
- const T={title:role==="admin"?(ar?"دخول المالك":"Owner access"):(ar?"دخول الموظفين":"Staff access"),hint:ar?"اكتب الرقم السري":"Enter your PIN",bad:ar?"الرقم غلط":"Wrong PIN",lock:ar?"استنى شوية وجرّب تاني":"Too many tries, wait a moment",home:ar?"الرئيسية":"Home",del:ar?"مسح":"Del"};
- const o=document.createElement("div");o.className="kzg";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.dir=ar?"rtl":"ltr";
- o.innerHTML="<img src='logo.png' alt='Kanzel' style='width:132px;height:auto;margin-bottom:4px'><h1>"+T.title+"</h1><div class='dots'><i></i><i></i><i></i><i></i></div><p aria-live='polite'>"+T.hint+"</p><div class='pad'>"+
-  [1,2,3,4,5,6,7,8,9].map(n=>"<button data-k='"+n+"'>"+n+"</button>").join("")+"<span></span><button data-k='0'>0</button><button class='x' data-k='del'>"+T.del+"</button></div><a id='kzhome' href='"+(KZ.embed?"#":"/")+"'>"+T.home+"</a>";
+ const T={title:role==="admin"?(ar?"دخول المالك":"Owner access"):(ar?"دخول الموظفين":"Staff access"),
+  hintT:ar?"اكتب الرقم السري (4 أرقام)":"Type your 4-digit PIN",hintP:ar?"اختار الرقم السري":"Tap your PIN",
+  bad:ar?"الرقم غلط":"Wrong PIN",lock:ar?"استنى شوية وجرّب تاني":"Too many tries, wait a moment",home:ar?"الرئيسية":"Home",del:ar?"مسح":"Delete",
+  toPad:ar?"اختار من لوحة الأرقام":"Use the keypad",toType:ar?"اكتب بالكيبورد":"Type instead"};
+ let mode="type";try{if(localStorage.getItem("kz-pin-mode")==="pad")mode="pad"}catch(e){}
+ const o=document.createElement("div");o.className="kzg "+(mode==="pad"?"p":"t");o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-label",T.title);o.dir=ar?"rtl":"ltr";
+ const BK="<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 5h10a2 2 0 012 2v10a2 2 0 01-2 2H9l-6-7z'/><path d='M13 10l4 4M17 10l-4 4'/></svg>";
+ o.innerHTML="<img src='logo.png' alt='Kanzel'><h1>"+T.title+"</h1>"+
+  "<div class='dw'><div class='dots'><i></i><i></i><i></i><i></i></div><input class='pin' type='text' inputmode='numeric' pattern='[0-9]*' maxlength='4' autocomplete='off' autocorrect='off' autocapitalize='off' spellcheck='false' enterkeyhint='done' aria-label='"+T.hintT+"'></div>"+
+  "<p aria-live='polite'></p><div class='pad'>"+
+  [1,2,3,4,5,6,7,8,9].map(n=>"<button type='button' data-k='"+n+"'>"+n+"</button>").join("")+
+  "<span></span><button type='button' data-k='0'>0</button><button type='button' class='x' data-k='del' aria-label='"+T.del+"'>"+BK+"</button></div>"+
+  "<button type='button' class='tg'></button><a id='kzhome' href='"+(KZ.embed?"#":"/")+"'>"+T.home+"</a>";
  document.body.appendChild(o);
- let v="",fails=0,until=0;const dots=[...o.querySelectorAll(".dots i")],msg=o.querySelector("p"),dw=o.querySelector(".dots");
- const paint=()=>dots.forEach((d,i)=>d.classList.toggle("on",i<v.length));
- function press(k){if(Date.now()<until){msg.textContent=T.lock;return}
-  if(k==="del"){v=v.slice(0,-1);paint();return}
-  if(v.length>=4)return;v+=k;paint();msg.textContent=T.hint;
-  if(v.length===4){const pin=KZ.settings()[role==="admin"?"adminPin":"staffPin"];
-   if(v===String(pin)){try{sessionStorage.setItem(key,"1")}catch(e){}document.removeEventListener("keydown",kd);o.remove();st.remove();res()}
-   else{fails++;msg.textContent=T.bad;dw.classList.remove("bad");void dw.offsetWidth;dw.classList.add("bad");setTimeout(()=>{v="";paint()},350);if(fails>=5){until=Date.now()+30000;fails=0;msg.textContent=T.lock}}}}
+ let v="",fails=0,until=0;
+ const dots=[...o.querySelectorAll(".dots i")],msg=o.querySelector("p"),dw=o.querySelector(".dw"),inp=o.querySelector(".pin"),tg=o.querySelector(".tg");
+ const paint=()=>dots.forEach((d,i)=>{d.classList.toggle("on",i<v.length);d.classList.toggle("cur",mode==="type"&&document.activeElement===inp&&i===Math.min(v.length,3))});
+ const setV=n=>{v=n;if(inp.value!==n)inp.value=n;paint()};
+ const hint=()=>{msg.classList.remove("err");msg.textContent=mode==="pad"?T.hintP:T.hintT};
+ function setMode(m){mode=m;o.className="kzg "+(m==="pad"?"p":"t");try{localStorage.setItem("kz-pin-mode",m)}catch(e){}
+  tg.textContent=m==="pad"?T.toType:T.toPad;hint();if(m==="type")inp.focus({preventScroll:true});else inp.blur();paint()}
+ function check(){const pin=KZ.settings()[role==="admin"?"adminPin":"staffPin"];
+  if(v===String(pin)){try{sessionStorage.setItem(key,"1")}catch(e){}document.removeEventListener("keydown",kd);o.remove();st.remove();res();return}
+  fails++;msg.textContent=T.bad;msg.classList.add("err");dw.classList.remove("bad");void dw.offsetWidth;dw.classList.add("bad");
+  setTimeout(()=>{setV("");if(fails>0)setTimeout(hint,900)},350);
+  if(fails>=5){until=Date.now()+30000;fails=0;msg.textContent=T.lock}}
+ function press(k){if(Date.now()<until){msg.classList.add("err");msg.textContent=T.lock;return}
+  if(k==="del"){setV(v.slice(0,-1));return}
+  if(v.length>=4)return;setV(v+k);hint();if(v.length===4)check()}
+ inp.addEventListener("input",()=>{if(Date.now()<until){setV("");msg.classList.add("err");msg.textContent=T.lock;return}
+  setV(inp.value.replace(/\D/g,"").slice(0,4));hint();if(v.length===4)check()});
+ inp.addEventListener("focus",paint);inp.addEventListener("blur",paint);
  o.addEventListener("click",e=>{const b=e.target.closest("button[data-k]");if(b)press(b.dataset.k)});
+ tg.onclick=()=>setMode(mode==="pad"?"type":"pad");
  o.querySelector("#kzhome").onclick=e=>{e.preventDefault();KZ.go("index")};
- function kd(e){if(/^\d$/.test(e.key))press(e.key);else if(e.key==="Backspace")press("del")}
+ function kd(e){if(document.activeElement===inp)return;if(/^\d$/.test(e.key))press(e.key);else if(e.key==="Backspace")press("del")}
  document.addEventListener("keydown",kd);
- o.tabIndex=-1;o.style.outline="0";o.focus({preventScroll:true});
+ tg.textContent=mode==="pad"?T.toType:T.toPad;hint();paint();
+ o.tabIndex=-1;o.style.outline="0";
+ if(mode==="type")setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},60);else o.focus({preventScroll:true});
 });
 
 /* ---------- PWA ---------- */
@@ -109,4 +152,4 @@ if(!KZ.embed&&!window.__NOSW&&"serviceWorker" in navigator&&/^https?:$/.test(loc
 }
 })();
 /* iOS zooms the page when a focused field is under 16px: keep every field at 16px on touch screens */
-(function(){var s=document.createElement("style");s.textContent="@media (hover:none) and (pointer:coarse){input,select,textarea{font-size:16px!important}}html{-webkit-text-size-adjust:100%}";(document.head||document.documentElement).appendChild(s)})();
+(function(){var s=document.createElement("style");s.textContent="@media (hover:none) and (pointer:coarse){input,select,textarea{font-size:16px!important}}html{-webkit-text-size-adjust:100%;touch-action:manipulation}";(document.head||document.documentElement).appendChild(s)})();

@@ -100,6 +100,10 @@ html[dir=rtl] .dz .ey{letter-spacing:0;text-transform:none;font-size:13px}
 .dz .nv.nx{inset-inline-end:8px}
 .dz .nv svg{width:20px;height:20px}
 html[dir=rtl] .dz .nv svg{transform:scaleX(-1)}
+/* no-photo header is only 84px tall: arrows sit either side of the K so they never cover the counter or the close button */
+.dz .pn.np .nv{top:20px}
+.dz .pn.np .nv.pv{inset-inline-start:calc(50% - 94px)}
+.dz .pn.np .nv.nx{inset-inline-end:calc(50% - 94px)}
 .dz .nv:disabled{opacity:0;pointer-events:none}
 .dz .nv[hidden],.dz .ct[hidden]{display:none}
 .dz .ct{position:absolute;z-index:5;top:21px;inset-inline-start:14px;padding:6px 11px;border-radius:99px;background:rgba(16,33,26,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(211,201,148,.4);color:#f4efdd;font:600 12.5px/1 var(--sans,system-ui);letter-spacing:.04em;font-variant-numeric:tabular-nums}
