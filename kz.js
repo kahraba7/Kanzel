@@ -108,3 +108,5 @@ if(!KZ.embed&&!window.__NOSW&&"serviceWorker" in navigator&&/^https?:$/.test(loc
  addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 }
 })();
+/* iOS zooms the page when a focused field is under 16px: keep every field at 16px on touch screens */
+(function(){var s=document.createElement("style");s.textContent="@media (hover:none) and (pointer:coarse){input,select,textarea{font-size:16px!important}}html{-webkit-text-size-adjust:100%}";(document.head||document.documentElement).appendChild(s)})();

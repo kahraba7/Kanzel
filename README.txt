@@ -1,4 +1,4 @@
-Kanzel site v33  ->  https://kanzel-eg.vercel.app
+Kanzel site v38  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -37,3 +37,11 @@ v31: redrawn category icons with animated parts (steam, flame, bubbles, spinning
 v32 home: opening "Book" now keeps the video (photo only fades in at 50%), darker veil, hides the dish strip and shrinks the logo so both booking options fit on screen, and scrolls them into view.
 
 v33 home: language button shows a globe + AR/EN (page stays English by default); footer buttons now show captions (WhatsApp / Location / Instagram / Rate us); darker soft scrim and text shadow behind Menu/Book; share-card title and description now English + Arabic (WhatsApp caches previews: share the link with ?v=2 to refresh).
+
+v34 menu: category headers redesigned - tinted card (colour taken from the dish), dish photo shown whole in a gold-ringed plate circle (no dark crop), small caption with dish count, gold chevron dot; opens into a slim pinned bar with a small plate; grid photos carry a price chip.
+
+v35 menu: idea 5 "side index" - a pinned rail of round dish photos for the categories of the chosen tab (Food/Drinks/Desserts/Shisha); tapping one shows that category as clean photo rows. Search still covers everything. Old accordion/banner CSS is now unused.
+
+v36: fields are 16px on touch screens (kz.js + dish.js) so iPhone no longer zooms the page when the keyboard opens.
+v37 home: redesigned home page (merge of "Clear Path" + "Golden Hour"): full-bleed photo/video, arch dish cards with prices, big Menu + gold Book rows with icons, labelled round action buttons. Only index.html CSS/markup changed (+ sw cache v23).
+v38 home: "From our kitchen" strip is now small wide tiles (name only, no prices), swipe instead of auto-scroll. sw cache v24.

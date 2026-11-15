@@ -28,7 +28,7 @@ const CSS=`
 .stk nav{position:static!important;background:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 .sx{position:relative;margin:10px 16px 0!important;padding:0!important}
 .sx svg.mg{position:absolute;inset-inline-start:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:#d3c994;pointer-events:none}
-.sx input{display:block;width:100%;height:46px;padding:0 44px!important;margin:0!important;box-sizing:border-box;border-radius:99px;border:1px solid rgba(211,201,148,.5);background:#ffffff0f;color:#f4efdd;font:400 15px var(--sans,system-ui);-webkit-appearance:none;appearance:none;transition:height .3s,border-color .2s}
+.sx input{display:block;width:100%;height:46px;padding:0 44px!important;margin:0!important;box-sizing:border-box;border-radius:99px;border:1px solid rgba(211,201,148,.5);background:#ffffff0f;color:#f4efdd;font:400 16px var(--sans,system-ui);-webkit-appearance:none;appearance:none;transition:height .3s,border-color .2s}
 .sx input::placeholder{color:rgba(244,239,221,.65)}
 .sx input:focus{outline:0;border-color:#d3c994;background:#ffffff16}
 .sx input::-webkit-search-cancel-button{display:none}

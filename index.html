@@ -108,6 +108,32 @@ button:focus-visible,.ig:focus-visible{outline:2px solid var(--gold);outline-off
 .toast.on{opacity:1;transform:translate(-50%,0)}
 @media(min-width:820px){.hero img{width:240px}.rows{padding-bottom:22px}}
 
+/* v37 home: "Clear Path" + "Golden Hour" merge. Big tappable rows with icons, gold Book, arch dish cards, labelled round actions */
+.scene .veil{background:linear-gradient(180deg,rgba(16,33,26,.88),rgba(16,33,26,.5) 24%,rgba(16,33,26,.36) 42%,rgba(16,33,26,.84) 66%,rgba(16,33,26,.97))}
+.rows{padding:0 18px 4px}
+.row{grid-template-columns:auto 1fr auto;column-gap:14px;padding:13px 16px;border:1px solid rgba(255,255,255,.18);border-radius:20px;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);margin-bottom:10px;transition:transform .15s,background .2s}
+.row:active{transform:scale(.985)}
+.row .ri{grid-row:1/3;grid-column:1;width:50px;height:50px;border-radius:15px;background:rgba(211,201,148,.14);display:grid;place-items:center;color:var(--gold)}
+.row .ri svg{width:25px;height:25px}
+#homeView .row .w,#homeView .row .s{text-shadow:none}.row .w{grid-column:2;font:600 clamp(24px,6.8vw,28px)/1.1 var(--serif)}[dir=rtl] .row .w{font-weight:500}
+.row .s{grid-column:2;margin-top:2px}.row .ic{grid-column:3;grid-row:1/3}
+#homeView .row.g{background:var(--gold);color:var(--forest);border-color:var(--gold)}
+.row.g .s{color:rgba(16,33,26,.78)}.row.g .ri{background:rgba(16,33,26,.13);color:var(--forest)}.row.g .pl::before,.row.g .pl::after{background:var(--forest)}
+.sub>div>.o:first-child{margin-top:0}
+.o{padding:8px 12px 8px 8px;border:1px solid rgba(211,201,148,.3);border-radius:16px;background:rgba(255,255,255,.08);margin-top:8px}[dir=rtl] .o{padding:8px 8px 8px 12px}
+.o b{font:600 19px/1.15 var(--serif)}[dir=rtl] .o b{font-weight:500}.o .th{width:46px;height:46px;border-radius:12px}
+.pick{margin-bottom:14px}.pick .pl2{margin:0 20px 8px;font-size:16px}
+.mq{overflow-x:auto;scrollbar-width:none;scroll-padding:0 18px}.mq::-webkit-scrollbar{display:none}
+.mt{animation:none}.mg{gap:8px;padding:0 0 0 18px}.mg+.mg{display:none}.mg{padding-right:18px}
+.pc{width:124px;height:84px;border-radius:16px;border-color:rgba(211,201,148,.4)}.pc::after{background:linear-gradient(180deg,transparent 42%,rgba(10,22,16,.9))}
+.pc b{inset:auto 8px 6px;font-size:13.5px;line-height:1.1;text-align:start}.pc b[dir=rtl]{font-size:12.5px}
+.foot{max-width:520px;width:100%;margin:0 auto;justify-content:space-around;gap:6px;padding:6px 18px 16px}
+.fl .pill{width:auto;height:auto;flex-direction:column;gap:7px;border:0;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:0;font-size:11.5px;color:var(--cream)}
+.fl .pill:hover{background:none}
+.fl .pill svg{box-sizing:content-box;width:22px;height:22px;padding:12px;border:1px solid rgba(211,201,148,.7);border-radius:50%;color:var(--gold);transition:background .2s}.fl .pill:active svg{background:rgba(211,201,148,.18)}
+.fl .pill span{position:static;width:auto;height:auto;overflow:visible;clip:auto}
+@media(min-width:820px){.rows{padding-bottom:10px}}
+
 .wsheet{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center}.wsheet[hidden]{display:none}
 .wbd{position:absolute;inset:0;background:rgba(0,0,0,.6);animation:wf .25s both}
 .wpn{position:relative;width:100%;max-width:520px;padding:22px 20px calc(20px + env(safe-area-inset-bottom,0px));background:#162b21;border-top:1px solid rgba(211,201,148,.5);border-radius:28px 28px 0 0;display:grid;gap:10px;animation:wu .35s cubic-bezier(.2,.7,.2,1) both}
@@ -360,8 +386,8 @@ body.searching #menuView .mbody{grid-template-columns:1fr;padding-inline-start:0
   <div class="sp"></div>
   <section class="pick" id="pick" aria-labelledby="pickL" hidden><p class="pl2" id="pickL"></p><div class="mq"><div class="mt" id="pickT"></div></div></section>
   <nav class="rows" aria-label="Main">
-    <button class="row" id="mn" data-go="menu"><b class="w" data-t="menu"></b><span class="s" data-t="menuS"></span><span class="ic"><i class="go"></i></span></button>
-    <button class="row" id="bk" aria-expanded="false" aria-controls="sb"><b class="w" data-t="book"></b><span class="s" data-t="bookS"></span><span class="ic"><i class="pl"></i></span></button>
+    <button class="row" id="mn" data-go="menu"><i class="ri" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v8M5 3v5a2 2 0 004 0V3M7 11v10M17 21V3c-2.5 1.5-3 5-3 8h3"/></svg></i><b class="w" data-t="menu"></b><span class="s" data-t="menuS"></span><span class="ic"><i class="go"></i></span></button>
+    <button class="row g" id="bk" aria-expanded="false" aria-controls="sb"><i class="ri" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></i><b class="w" data-t="book"></b><span class="s" data-t="bookS"></span><span class="ic"><i class="pl"></i></span></button>
     <div class="sub" id="sb"><div>
       <button class="o" data-go="booking-regular" data-l="1"><i class="th" style="background-image:url(bg-2.jpg)"></i><span><b data-t="regT"></b><span class="s" data-t="regS"></span></span></button>
       <button class="o" data-go="booking-event" data-l="2"><i class="th" style="background-image:url(bg-3.jpg)"></i><span><b data-t="evT"></b><span class="s" data-t="evS"></span></span></button>
