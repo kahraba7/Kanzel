@@ -1,4 +1,4 @@
-Kanzel site v38  ->  https://kanzel-eg.vercel.app
+Kanzel site v39  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 
@@ -45,3 +45,6 @@ v35 menu: idea 5 "side index" - a pinned rail of round dish photos for the categ
 v36: fields are 16px on touch screens (kz.js + dish.js) so iPhone no longer zooms the page when the keyboard opens.
 v37 home: redesigned home page (merge of "Clear Path" + "Golden Hour"): full-bleed photo/video, arch dish cards with prices, big Menu + gold Book rows with icons, labelled round action buttons. Only index.html CSS/markup changed (+ sw cache v23).
 v38 home: "From our kitchen" strip is now small wide tiles (name only, no prices), swipe instead of auto-scroll. sw cache v24.
+v39 home: "From our kitchen" auto-scrolls again (slow, seamless loop) but stops as soon as the guest touches/drags/scrolls it and resumes after 2.5s. Off for reduced-motion. sw cache v25.
+v40 dish sheet (dish.js + small hooks in index.html / table.html): phone Back button closes the sheet instead of leaving the page; drag the handle/photo down to close; the photo is shown whole (never stretched or cropped, blurred copy fills the sides) and the dish name + category sit on the photo; the card photo flies into the sheet; swipe left/right (or arrows / arrow keys) goes to the next/previous dish of the same category, with a "3 / 12" counter; 44px touch targets, focus trap, background made inert, visible focus ring. KZX.open(cfg, cardEl) and KZX.init({resolve}) are the new hooks. sw cache v26.
+v41 menu rail: the side photo rail fades its top/bottom edge when more categories are hidden there, centres the open category (smoothly when you tap one), and gives a small one-time scroll nudge (first 2 visits per device, stops when touched, off for reduced-motion). sw cache v27.

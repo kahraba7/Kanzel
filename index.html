@@ -124,7 +124,7 @@ button:focus-visible,.ig:focus-visible{outline:2px solid var(--gold);outline-off
 .o b{font:600 19px/1.15 var(--serif)}[dir=rtl] .o b{font-weight:500}.o .th{width:46px;height:46px;border-radius:12px}
 .pick{margin-bottom:14px}.pick .pl2{margin:0 20px 8px;font-size:16px}
 .mq{overflow-x:auto;scrollbar-width:none;scroll-padding:0 18px}.mq::-webkit-scrollbar{display:none}
-.mt{animation:none}.mg{gap:8px;padding:0 0 0 18px}.mg+.mg{display:none}.mg{padding-right:18px}
+.mt{animation:none}.mg{gap:8px;padding:0 0 0 18px}.mg{padding-right:18px}
 .pc{width:124px;height:84px;border-radius:16px;border-color:rgba(211,201,148,.4)}.pc::after{background:linear-gradient(180deg,transparent 42%,rgba(10,22,16,.9))}
 .pc b{inset:auto 8px 6px;font-size:13.5px;line-height:1.1;text-align:start}.pc b[dir=rtl]{font-size:12.5px}
 .foot{max-width:520px;width:100%;margin:0 auto;justify-content:space-around;gap:6px;padding:6px 18px 16px}
@@ -348,6 +348,8 @@ body.searching #menuView section.gh{display:block}
 body.searching #menuView .mbody{grid-template-columns:1fr;padding-inline-start:0}body.searching #menuView #mrail{display:none}
 #menuView #mrail{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--stkh,128px) + 8px);max-height:calc(100dvh - var(--stkh,128px) - 80px);overflow-y:auto;scrollbar-width:none;padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:14px;background:rgba(8,16,12,.6);border:1px solid rgba(211,201,148,.22);border-radius:26px}
 #menuView #mrail::-webkit-scrollbar{display:none}
+#menuView #mrail{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--mt,0px),#000 calc(100% - var(--mb,0px)),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 var(--mt,0px),#000 calc(100% - var(--mb,0px)),transparent 100%)}
+#menuView #mrail.up{--mt:38px}#menuView #mrail.dn{--mb:38px}
 #menuView .av{flex:none;width:68px;padding:0;border:0;background:none;color:#b9b393;font:500 10px/1.25 var(--sans);text-align:center;cursor:pointer}
 #menuView .av[hidden]{display:none}
 #menuView .av span{position:relative;display:grid;place-items:center;width:46px;height:46px;margin:0 auto 5px;border-radius:50%;overflow:hidden;border:2px solid transparent;background:var(--ph,#1b3a2a);color:var(--gold);opacity:.72;transition:opacity .25s,transform .3s,border-color .25s,box-shadow .25s}
@@ -539,7 +541,24 @@ function renderMenu(){const t=MT[lang],i=lang==="ar"?1:0,first=grp<0,prev=openK;
  if(gs.indexOf(grp)<0)grp=gs.length?gs[0]:0;
  paintG();openK=-1;const want=first||prev<0?defK(grp):prev;if(want>=0&&secs[want])openSec(want,true,true);
  KZX.setLang(lang);KZX.reapply();spy();
+ setTimeout(railHint,1600);
  if(pendingDish){const[k,j]=pendingDish;pendingDish=null;openSec(k,true);setTimeout(()=>{const c=document.querySelector('#mlist .card[data-k="'+k+'"][data-j="'+j+'"]');if(c){c.scrollIntoView({block:"center"});c.click()}},380)}}
+/* side rail helpers: fade edges that have more items, keep the open category centred, one-time nudge */
+function railUp(){const r=$("#mrail");if(!r||!r.offsetParent)return;r.classList.toggle("up",r.scrollTop>4);r.classList.toggle("dn",r.scrollTop+r.clientHeight<r.scrollHeight-4)}
+function railCenter(smooth){const r=$("#mrail"),a=avs[openK];if(!r||!a||!a.offsetParent)return;
+ const top=Math.max(0,a.offsetTop-(r.clientHeight-a.offsetHeight)/2);
+ if(smooth&&r.scrollTo&&!matchMedia("(prefers-reduced-motion:reduce)").matches)r.scrollTo({top,behavior:"smooth"});else r.scrollTop=top;railUp()}
+function railHint(){const r=$("#mrail");let n=0;try{n=+localStorage.getItem("kz-rail-hint")||0}catch(e){}
+ if(n>=2||!r||!view()||!r.offsetParent||KZX.isOpen()||matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+ const room=r.scrollHeight-r.clientHeight;if(room<24)return;
+ try{localStorage.setItem("kz-rail-hint",n+1)}catch(e){}
+ const from=r.scrollTop,dir=(room-from>from)?1:-1,dist=Math.min(48,dir>0?room-from:from);let stop=false,t0=null;
+ const evs=["touchstart","pointerdown","wheel"],halt=()=>{stop=true;evs.forEach(e=>r.removeEventListener(e,halt))};
+ evs.forEach(e=>r.addEventListener(e,halt,{passive:true}));
+ const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+ const step=ts=>{if(stop)return;if(t0==null)t0=ts;const p=Math.min(1,(ts-t0)/1400),w=p<.5?ease(p*2):ease(2-p*2);
+  r.scrollTop=from+dir*dist*w;if(p<1)requestAnimationFrame(step);else halt()};
+ requestAnimationFrame(step)}
 function paintG(){secs.forEach((sc,k)=>sc.classList.toggle("gh",secG[k]!==grp));avs.forEach(b=>b.hidden=+b.dataset.g!==grp);
  $(".mbody").classList.toggle("norail",secG.filter(x=>x===grp).length<2);
  tabs.forEach(b=>{const o=+b.dataset.g===grp;b.classList.toggle("on",o);b.setAttribute("aria-pressed",o)})}
@@ -550,7 +569,7 @@ function pickGroup(g){if(g===grp)return;grp=g;paintG();openK=-1;const k=defK(g);
 /* side index: tap a round photo to switch category; the rail stays pinned while you scroll */
 function openSec(k,force,quiet){if(!secs[k])return;if(secG[k]!==grp){grp=secG[k];paintG()}
  secs.forEach((sc,j)=>sc.classList.toggle("open",j===k));avs.forEach((b,j)=>b.classList.toggle("on",j===k));openK=k;
- const r=$("#mrail"),a=avs[k];if(a&&r&&a.offsetParent)r.scrollTop=a.offsetTop-r.clientHeight/2+a.offsetHeight/2;
+ railCenter(!quiet&&!!openSec.done);if(quiet)setTimeout(()=>{railCenter(false);railUp()},150);openSec.done=1;
  if(!quiet){const s=$(".stk"),sy=s?s.offsetHeight:0,top=$(".mbody").getBoundingClientRect().top;if(top<sy)requestAnimationFrame(()=>scrollTo({top:scrollY+$(".mbody").getBoundingClientRect().top-sy-8,behavior:"auto"}))}}
 function spy(){if(!view())return;const y=scrollY;if(y>160)mv0.classList.add("min");else if(y<60)mv0.classList.remove("min");
  $("#mtop").classList.toggle("on",y>500)}
@@ -573,13 +592,25 @@ function homeLive(){
  const ar=lang==="ar",card=([k,j])=>{const m=MENU[k],x=m&&m[2][j];if(!x||!x[5])return"";const n=x[ar?1:0];return`<button type="button" class="pc" data-k="${k}" data-j="${j}" style="background-image:url('${x[5]}')"><b${ar?' dir="rtl"':""}>${n}</b></button>`},one=PICKS.map(card).join("");
  const pk=$("#pick");if(!one){pk.hidden=true;return}
  $("#pickL").textContent=d.pick;$("#pickT").innerHTML=`<div class="mg">${one}</div><div class="mg" aria-hidden="true">${one.replace(/<button /g,'<button tabindex="-1" ')}</div>`;pk.hidden=false}
+/* From our kitchen: auto-scroll that yields to the guest. Touch/wheel/drag pauses it, it resumes after 2.5s of stillness. */
+(function(){const mq=document.querySelector("#pick .mq");if(!mq||matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+ let pos=0,last=0,hold=0,down=false;const now=()=>performance.now(),touch=()=>{hold=now()};
+ ["pointerdown","touchstart","wheel","keydown"].forEach(e=>mq.addEventListener(e,()=>{touch();if(e!=="wheel"&&e!=="keydown")down=true},{passive:true}));
+ ["pointerup","pointercancel","touchend","touchcancel"].forEach(e=>addEventListener(e,()=>{if(down){down=false;touch()}},{passive:true}));
+ mq.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")touch()});mq.addEventListener("pointermove",e=>{if(e.pointerType==="mouse")touch()});
+ mq.addEventListener("scroll",()=>{if(Math.abs(mq.scrollLeft-pos)>2){pos=mq.scrollLeft;touch()}},{passive:true});
+ (function tick(t){const g=mq.querySelector(".mg");
+  if(g&&!document.body.classList.contains("is-menu")&&!down&&now()-hold>2500&&mq.offsetParent){const w=g.offsetWidth,dt=Math.min(t-(last||t),50);pos+=dt*0.028;if(w&&pos>=w)pos-=w;mq.scrollLeft=pos}else pos=mq.scrollLeft;
+  last=t;requestAnimationFrame(tick)})(0)})();
 $("#pickT").addEventListener("click",e=>{const b=e.target.closest(".pc");if(!b)return;pendingDish=[+b.dataset.k,+b.dataset.j];location.hash="#menu"});
 setInterval(()=>{if(!document.body.classList.contains("is-menu"))homeLive()},60000);
-KZX.init({list:"#mlist",nav:"#mnav"});
+const dishCfg=c=>{const x=MENU[+c.dataset.k][2][+c.dataset.j],ar=lang==="ar",t=MT[lang];
+ return{img:x[5]||"",title:x[ar?1:0],desc:x[ar?4:3],price:x[2].toLocaleString("en")+"<small>"+t.egp+"</small>"}};
+KZX.init({list:"#mlist",nav:"#mnav",resolve:dishCfg});
 (function(){const s=document.querySelector("#menuView .stk");if(!s)return;const set=()=>mv0.style.setProperty("--stkh",s.offsetHeight+"px");if(window.ResizeObserver)new ResizeObserver(set).observe(s);addEventListener("resize",set);set()})();
 $("#mlist").addEventListener("click",e=>{const c=e.target.closest(".card");if(!c)return;
- const x=MENU[+c.dataset.k][2][+c.dataset.j],ar=lang==="ar",t=MT[lang];
- KZX.open({img:x[5]||"",title:x[ar?1:0],desc:x[ar?4:3],price:x[2].toLocaleString("en")+"<small>"+t.egp+"</small>"})});
+ KZX.open(dishCfg(c),c)});
+$("#mrail").addEventListener("scroll",railUp,{passive:true});addEventListener("resize",railUp);
 route();
 </script>
 </body>

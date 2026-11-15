@@ -306,10 +306,12 @@ nav.addEventListener("click",e=>{const b=e.target.closest("button");if(b)openSec
 $("#totop").onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});
 
 /* ---------- dish detail window ---------- */
-KZX.init({list:"#list",nav:"#nav"});
+const dishCfg=c=>{const id=c.dataset.id,d=DISH[id];if(!d)return null;
+ return{img:d.img,title:nm(d),desc:lang==="ar"?d.dAr:d.dEn,price:fmt(d.price)+"<small>"+tr().egp+"</small>",foot:()=>`<div class="ctl">${ctl(id)}</div>`}};
+KZX.init({list:"#list",nav:"#nav",resolve:dishCfg});
 document.addEventListener("click",e=>{if(e.target.closest("[data-a]"))return;
- const c=e.target.closest(".card[data-id]");if(!c)return;const id=c.dataset.id,d=DISH[id];if(!d)return;
- KZX.open({img:d.img,title:nm(d),desc:lang==="ar"?d.dAr:d.dEn,price:fmt(d.price)+"<small>"+tr().egp+"</small>",foot:()=>`<div class="ctl">${ctl(id)}</div>`})});
+ const c=e.target.closest(".card[data-id]");if(!c)return;const o=dishCfg(c);if(!o)return;
+ KZX.open(o,c)});
 
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;
