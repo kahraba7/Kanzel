@@ -52,7 +52,7 @@ addEventListener("error",e=>{if(e.target===window)oops()});addEventListener("unh
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[data-go]");if(!a)return;e.preventDefault();KZ.go(a.dataset.go)});
 
 /* ---------- settings ---------- */
-const DEF={waiters:[{id:"w1",en:"Ahmed",ar:"أحمد"},{id:"w2",en:"Nour",ar:"نور"}],staffPin:"7777",adminPin:"1234",siteUrl:"https://kanzel-eg.vercel.app",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Kanzel+Restaurant+%26+Lounge"};
+const DEF={waiters:[{id:"w1",en:"Ahmed",ar:"أحمد"},{id:"w2",en:"Nour",ar:"نور"}],staffPin:"7777",adminPin:"1234",waNums:["201040311118","201040311119"],siteUrl:"https://kanzel-eg.vercel.app",mapsUrl:"https://search.google.com/local/writereview?placeid=ChIJKcsKm55HWBQR6VZJkVt9Ous"};
 KZ.settings=()=>Object.assign({},DEF,KZ.read("kanzel-settings",{}));
 KZ.saveSettings=o=>KZ.write("kanzel-settings",o);
 

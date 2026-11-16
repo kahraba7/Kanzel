@@ -1,4 +1,4 @@
-Kanzel site v48  ->  https://kanzel-eg.vercel.app
+Kanzel site v49g  ->  https://kanzel-eg.vercel.app
 
 Deploy: upload the contents of this folder to the Vercel project root (vercel.json turns on clean URLs).
 

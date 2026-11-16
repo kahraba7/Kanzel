@@ -53,14 +53,14 @@ let lang=KZ.lang(),kind="bookings",flt="new",seen=null;
 const T={en:{ tables:"Tables & QR",tH:"Table QR codes",tSub:"Print one code per table. A guest scans it and orders from their phone.",siteUrl:"Website address",addT:"Add table",printAll:"Print all",dl:"Download",del:"Delete",delSure:"Tap again",tLabel:"Table number or name",dup:"Already used",urlBad:"The address must start with https://",saved:"Saved",
  qrNote:"Each code opens the guest page for that table. If you change the website address, print the codes again.",h1:"Reservations",sub:"Table bookings and event requests from the website",tabW:"Orders",tabR:"Reception",
  bookings:"Table bookings",events:"Event requests",new:"New",confirmed:"Confirmed",cancelled:"Cancelled",
- none:"Nothing here yet",guests:"guests",call:"Call",wa:"WhatsApp",confirm:"Confirm",cancel:"Cancel",reopen:"Move back to new",
+ none:"Nothing here yet",guests:"guests",call:"Call",wa:"WhatsApp",confirm:"Confirm",tno:"Table number (optional)",cancel:"Cancel",reopen:"Move back to new",
  date:"Date",time:"Time",needs:"Needs",notes:"Notes",received:"Received",lock:"Lock",back:"Back",
  foot:"Requests are stored in this browser for now. They arrive from the website once the backend is connected. Event requests also reach you on WhatsApp, this list just keeps track of them.",
  waMsg:(n,d,tm)=>"Hello "+n+", this is Kanzel. Your reservation on "+d+" at "+tm+" is confirmed. We look forward to seeing you."},
  ar:{ tables:"الترابيزات والـ QR",tH:"أكواد الترابيزات",tSub:"اطبع كود لكل ترابيزة. الضيف بيمسحه ويطلب من موبايله.",siteUrl:"عنوان الموقع",addT:"أضف ترابيزة",printAll:"اطبع الكل",dl:"حمّل",del:"حذف",delSure:"دوس تاني",tLabel:"رقم أو اسم الترابيزة",dup:"مستخدم قبل كده",urlBad:"العنوان لازم يبدأ بـ https://",saved:"اتحفظ",
  qrNote:"كل كود بيفتح صفحة الضيف للترابيزة دي. لو غيّرت عنوان الموقع اطبع الأكواد تاني.",h1:"الحجوزات",sub:"حجوزات الترابيزات وطلبات المناسبات من الموقع",tabW:"الطلبات",tabR:"الريسبشن",
  bookings:"حجز ترابيزة",events:"طلبات المناسبات",new:"جديد",confirmed:"متأكد",cancelled:"ملغي",
- none:"مفيش حاجة لسه",guests:"أفراد",call:"اتصل",wa:"واتساب",confirm:"أكّد",cancel:"إلغاء",reopen:"رجّعه جديد",
+ none:"مفيش حاجة لسه",guests:"أفراد",call:"اتصل",wa:"واتساب",confirm:"أكّد",tno:"رقم الترابيزة (اختياري)",cancel:"إلغاء",reopen:"رجّعه جديد",
  date:"التاريخ",time:"الوقت",needs:"المطلوب",notes:"ملاحظات",received:"وصل",lock:"قفل",back:"رجوع",
  foot:"الطلبات متخزنة في المتصفح ده دلوقتي. هتوصل من الموقع لما نربط الباك إند. طلبات المناسبات بتوصلك على واتساب كمان، والقائمة دي للمتابعة بس.",
  waMsg:(n,d,tm)=>"أهلاً "+n+"، معاك كنزل. حجزك يوم "+d+" الساعة "+tm+" اتأكد. في انتظارك."}};
@@ -68,16 +68,17 @@ const digits=p=>String(p||"").replace(/\D/g,"");
 function wa(p){let d=digits(p);if(d.startsWith("00"))d=d.slice(2);else if(d.startsWith("0"))d="2"+d;return d}
 const fD=(d,l)=>{try{return new Date(d+"T00:00:00").toLocaleDateString(l==="ar"?"ar-EG-u-nu-latn":"en-GB",{weekday:"long",day:"numeric",month:"long"})}catch(e){return d}};
 const fT=(tm,l)=>{const p=String(tm||"").split(":"),h=+p[0],mi=+p[1];if(isNaN(h))return tm;const a=l==="ar";return (h%12||12)+":"+String(mi||0).padStart(2,"0")+" "+(h>=12&&h<24?(a?"م":"PM"):(a?"ص":"AM"))};
+function bk(b){const p=String(b.time||"0:0").split(":"),h=+p[0]||0;return String(b.date||"")+" "+String(h+(h<6?24:0)).padStart(2,"0")+":"+String(p[1]||"00")}
 function bookCard(b){const t=T[lang];
  return`<div class="card${b.status==="new"?" hl":""}"><div class="top"><div class="tb">${esc(b.name)}</div><div class="tm">${t.received} ${KZ.clock(b.ts,lang)}<br>${KZ.ago(b.ts,lang)}</div></div>
- <div class="items"><div class="r"><span>${t.date}</span><i>${esc(fD(b.date,lang))}</i></div><div class="r"><span>${t.time}</span><i>${esc(fT(b.time,lang))}</i></div><div class="r"><span>${b.guests} ${t.guests}</span><i dir="ltr">${esc(b.phone)}</i></div></div>
+ <div class="items"><div class="r"><span>${t.date}</span><i>${esc(fD(b.date,lang))}</i></div><div class="r"><span>${t.time}</span><i>${esc(fT(b.time,lang))}</i></div><div class="r"><span>${b.guests} ${t.guests}</span><i dir="ltr">${esc(b.phone)}</i></div>${b.tableNo?`<div class="r"><span>${t.tno}</span><i>${esc(b.tableNo)}</i></div>`:""}${b.note?`<div class="nt">${esc(b.note)}</div>`:""}</div>
  <div class="row"><a class="btn sm ghost" href="tel:${esc(digits(b.phone))}">${t.call}</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://wa.me/${wa(b.phone)}?text=${encodeURIComponent(t.waMsg(b.name,fD(b.date,lang),fT(b.time,lang)))}">${t.wa}</a></div>${acts(b)}</div>`}
 function evCard(b){const t=T[lang],ar=lang==="ar",needs=(ar?b.needsAr:b.needsEn)||[];
  return`<div class="card${b.status==="new"?" hl":""}"><div class="top"><div class="tb">${esc(b.name)}</div><div class="tm">${t.received} ${KZ.clock(b.ts,lang)}<br>${KZ.ago(b.ts,lang)}</div></div>
  <div class="items"><div class="r"><span>${esc(ar?b.occAr:b.occEn)}</span><i>${b.guests} ${t.guests}</i></div>${b.date?`<div class="r"><span>${t.date}</span><i>${esc(b.date)}</i></div>`:""}${needs.length?`<div class="r"><span>${t.needs}</span><i style="white-space:normal;text-align:end">${esc(needs.join("، "))}</i></div>`:""}</div>
  ${b.notes?`<div class="nt">${t.notes}: ${esc(b.notes)}</div>`:""}${acts(b)}</div>`}
 function acts(b){const t=T[lang];
- if(b.status==="new")return`<div class="row"><button class="btn sm" data-id="${esc(b.id)}" data-s="confirmed">${t.confirm}</button><button class="btn sm bad" data-id="${esc(b.id)}" data-s="cancelled">${t.cancel}</button></div>`;
+ if(b.status==="new")return`${kind==="bookings"?`<input class="tin" data-tn="${esc(b.id)}" maxlength="8" placeholder="${t.tno}" style="width:100%;margin-top:10px;padding:10px 14px;border-radius:12px;border:1px solid #ffffff33;background:#ffffff0f;color:inherit;font:inherit">`:""}<div class="row"><button class="btn sm" data-id="${esc(b.id)}" data-s="confirmed">${t.confirm}</button><button class="btn sm bad" data-id="${esc(b.id)}" data-s="cancelled">${t.cancel}</button></div>`;
  return`<div class="row"><span class="pill ${b.status==="confirmed"?"ok":"no"}"><i class="dot"></i>${t[b.status]}</span><button class="btn sm ghost" data-id="${esc(b.id)}" data-s="new">${t.reopen}</button></div>`}
 function render(){const t=T[lang],ar=lang==="ar";
  document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
@@ -88,7 +89,7 @@ function render(){const t=T[lang],ar=lang==="ar";
  $("#chips").hidden=kind==="tables";
  $("#chips").innerHTML=["new","confirmed","cancelled"].map(s=>`<button class="tab${flt===s?" on":""}" data-flt="${s}">${t[s]}<b>${KZ.list(kind).filter(x=>x.status===s).length}</b></button>`).join("");
  if(kind==="tables"){if($("#list").dataset.m!=="tables")renderTables()}else{$("#list").dataset.m="";
- const L=KZ.list(kind).filter(x=>x.status===flt).sort((a,b)=>flt==="new"?a.ts-b.ts:(b.ts-a.ts));
+ const L=KZ.list(kind).filter(x=>x.status===flt).sort(kind==="bookings"&&flt!=="cancelled"?((a,b)=>bk(a).localeCompare(bk(b))):((a,b)=>flt==="new"?a.ts-b.ts:(b.ts-a.ts)));
  $("#list").innerHTML=L.length?L.map(kind==="bookings"?bookCard:evCard).join(""):`<div class="empty">${t.none}</div>`}
  const n=cnt("bookings","new")+cnt("events","new");document.title=(n?"("+n+") ":"")+"Kanzel Reception"}
 function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=660;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.4);o.stop(a.currentTime+.45)}catch(e){}}
@@ -97,7 +98,7 @@ function tick(){const ids=new Set([...KZ.list("bookings"),...KZ.list("events")].
 document.addEventListener("click",e=>{
  const k=e.target.closest("[data-kind]");if(k){kind=k.dataset.kind;$("#list").dataset.m="";render();return}
  const f=e.target.closest("[data-flt]");if(f){flt=f.dataset.flt;render();return}
- const b=e.target.closest("button[data-id]");if(b){KZ.update(kind,b.dataset.id,o=>{o.status=b.dataset.s;o.updatedAt=Date.now()});render()}});
+ const b=e.target.closest("button[data-id]");if(b){const ti=b.closest(".card").querySelector("[data-tn]"),tn=ti?ti.value.trim().slice(0,8):"";KZ.update(kind,b.dataset.id,o=>{o.status=b.dataset.s;o.updatedAt=Date.now();if(kind==="bookings"&&b.dataset.s==="confirmed"&&tn)o.tableNo=tn});render()}});
 $("#lang").onclick=()=>{lang=lang==="ar"?"en":"ar";KZ.setLang(lang);$("#list").dataset.m="";render()};
 $("#lock").onclick=()=>{KZ.logout("staff");location.reload()};
 addEventListener("storage",e=>{if(e.key===KZ.KEYS.bookings||e.key===KZ.KEYS.events)tick()});

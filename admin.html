@@ -205,6 +205,7 @@
 em.so{color:var(--bad);font-style:normal}
 .btn.ghost.on{border-color:var(--bad);color:var(--bad)}
 @media print{.tqg{display:none}}
+.hid{display:none!important}
 </style>
 </head>
 <body>
@@ -251,10 +252,10 @@ const T={en:{h1:"Owner dashboard",
  impMode:"Import mode",impRep:"Replace the whole menu",impAdd:"Add to the current menu",impGo:"Import now",impExp:"Show current menu as CSV",impDl:"Download CSV",impFile:"Choose a file",
  impNone:"Nothing to import yet.",impBad:"Couldn’t read this text. Check the column names.",impDone:"Menu imported",impClose:"Close", saved:"Saved",full:"Couldn’t save: storage is full. Use a smaller photo.",invalid:"Not saved yet: every dish and category needs an English and an Arabic name.",imgErr:"Couldn’t read this image. Try a JPG or PNG.",mapsBad:"The link must start with https://",resetMenu:"Reset menu to default",resetSure:"Tap again to reset",
  sGuest:"Guest rating",maps:"Google Maps review link",mapsH:"Opens when a guest taps the rating button after their meal. Paste your place link from Google Maps (Share, then Copy link).",
- sWait:"Waiters",sWaitD:"Each waiter picks their name after typing the staff PIN. The waiter who confirms an order keeps it until it is served.",wEn:"Name (English)",wAr:"Name (Arabic)",wAdd:"Add waiter",wDel:"Remove",wMin:"Keep at least one waiter, each with a name",sAccess:"Access",sAccessD:"Four digits each. Change them if a staff member leaves.",sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",show:"Show",hide:"Hide",
+ sWait:"Waiters",sWaitD:"Each waiter picks their name after typing the staff PIN. The waiter who confirms an order keeps it until it is served.",wEn:"Name (English)",wAr:"Name (Arabic)",wAdd:"Add waiter",waH:"WhatsApp numbers",waD:"Shown on the home page and used for event requests. Write each number with the country code, e.g. 201012345678.",waBad:"WhatsApp numbers must be 10 to 15 digits",hideW:"Hide the waiter sales ranking on the dashboard",demoH:"Demo data",demoD:"For the presentation only: fills the dashboard with sample orders, bookings and calls. Remove it before handing over.",demoLoad:"Load demo data",demoClear:"Clear demo data",demoDone:"Demo data loaded",demoGone:"Demo data cleared",wDel:"Remove",wMin:"Keep at least one waiter, each with a name",sAccess:"Access",sAccessD:"Four digits each. Change them if a staff member leaves.",sPin:"Staff PIN (waiter and reception)",aPin:"Owner PIN (this page)",pinH:"4 digits",save:"Save settings",pinBad:"PINs must be exactly 4 digits",show:"Show",hide:"Hide",
  data:"Data",dataD:"Everything is stored on this device for now. Export a copy from time to time.",export:"Export all data",exportO:"Export orders (CSV)",clearData:"Clear orders, bookings and calls",clearSure:"Tap again to clear",cleared:"Cleared",noOrdersX:"No orders to export yet.",
  note:"The PIN protects the page on this device only. Real protection arrives with the backend.",lock:"Lock",back:"Back",langA:"العربية",
- tables:"Table QR",tqStyle:"Card style",tqDark:"Dark (stands, print shop)",tqLight:"Light (office printer, saves ink)",tqH:"Table QR codes",tqSub:"One code per table. Print them, stick one on each table: the guest scans it and the ordering page opens already set to that table number.",siteUrl:"Website address",addT:"Add table",printAll:"Print all",dl:"Download",tLabel:"Table number or name",dup:"Already used",urlBad:"The address must start with https://",qrNote:"Print on A4: 4 codes per page. If you change the website address, print the codes again.",
+ tabTables:"Table QR",tqStyle:"Card style",tqDark:"Dark (stands, print shop)",tqLight:"Light (office printer, saves ink)",tqH:"Table QR codes",tqSub:"One code per table. Print them, stick one on each table: the guest scans it and the ordering page opens already set to that table number.",siteUrl:"Website address",addT:"Add table",printAll:"Print all",dl:"Download",tLabel:"Table number or name",dup:"Already used",urlBad:"The address must start with https://",qrNote:"Print on A4: 4 codes per page. If you change the website address, print the codes again.",
  wRep:"Waiters",wRepH:"Performance of each waiter",wOrders:"orders",wSales:"sales",wConf:"to confirm",wServe:"to serve",wCanc:"declined / cancelled",wNone:"Orders will show here once waiters start confirming them.",
  cancH:"Declined and cancelled",cancTop:"Why orders were stopped",rej:"Declined",canc:"Cancelled",by:"by",noReason:"No reason",
  soldOut:"Sold out",soldMark:"Mark sold out",soldBack:"Back in stock",soldNote:"Waiters can also mark a dish sold out from their screen.",itemNote:"Note"},
@@ -278,10 +279,10 @@ const T={en:{h1:"Owner dashboard",
  impMode:"طريقة الاستيراد",impRep:"استبدل المنيو كله",impAdd:"أضف على المنيو الحالي",impGo:"استورد دلوقتي",impExp:"اعرض المنيو الحالي كـ CSV",impDl:"حمّل CSV",impFile:"اختار ملف",
  impNone:"مفيش حاجة للاستيراد لسه.",impBad:"معرفناش نقرأ النص ده. راجع أسماء الأعمدة.",impDone:"المنيو اتستورد",impClose:"قفل", saved:"اتحفظ",full:"معرفناش نحفظ: المساحة خلصت. استخدم صورة أصغر.",invalid:"لسه متحفظش: كل طبق وقسم محتاج اسم عربي واسم إنجليزي.",imgErr:"معرفناش نقرأ الصورة دي. جرّب JPG أو PNG.",mapsBad:"اللينك لازم يبدأ بـ https://",resetMenu:"رجّع المنيو للأصل",resetSure:"دوس تاني للرجوع",
  sGuest:"تقييم الضيوف",maps:"لينك تقييم جوجل ماب",mapsH:"بيفتح لما الضيف يدوس على زر التقييم بعد الأكل. الصق لينك مكانك من جوجل ماب (مشاركة ثم نسخ الرابط).",
- sWait:"الويترز",sWaitD:"كل ويتر بيختار اسمه بعد ما يكتب رقم الموظفين. الويتر اللي بيأكد الطلب هو اللي بيكمله لحد ما يتسلّم.",wEn:"الاسم بالإنجليزي",wAr:"الاسم بالعربي",wAdd:"أضف ويتر",wDel:"شيل",wMin:"لازم يفضل ويتر واحد على الأقل وليه اسم",sAccess:"الدخول",sAccessD:"4 أرقام لكل واحد. غيّرهم لو حد من الموظفين سابك.",sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",show:"إظهار",hide:"إخفاء",
+ sWait:"الويترز",sWaitD:"كل ويتر بيختار اسمه بعد ما يكتب رقم الموظفين. الويتر اللي بيأكد الطلب هو اللي بيكمله لحد ما يتسلّم.",wEn:"الاسم بالإنجليزي",wAr:"الاسم بالعربي",wAdd:"أضف ويتر",waH:"أرقام الواتساب",waD:"بتظهر في الصفحة الرئيسية وبتتبعت عليها طلبات المناسبات. اكتب الرقم بكود الدولة، مثل 201012345678.",waBad:"رقم الواتساب لازم يكون من 10 لـ 15 رقم",hideW:"إخفاء ترتيب مبيعات الويترز من الداشبورد",demoH:"بيانات تجريبية",demoD:"للعرض التجريبي بس: بتملا الداشبورد بطلبات وحجوزات ونداءات وهمية. امسحها قبل التسليم.",demoLoad:"تحميل بيانات تجريبية",demoClear:"مسح البيانات التجريبية",demoDone:"اتحملت البيانات التجريبية",demoGone:"اتمسحت البيانات التجريبية",wDel:"شيل",wMin:"لازم يفضل ويتر واحد على الأقل وليه اسم",sAccess:"الدخول",sAccessD:"4 أرقام لكل واحد. غيّرهم لو حد من الموظفين سابك.",sPin:"رقم الموظفين (الويتر والريسبشن)",aPin:"رقم المالك (الصفحة دي)",pinH:"4 أرقام",save:"احفظ الإعدادات",pinBad:"الرقم لازم يكون 4 أرقام بالظبط",show:"إظهار",hide:"إخفاء",
  data:"البيانات",dataD:"كل حاجة متخزنة على الجهاز ده دلوقتي. صدّر نسخة من وقت للتاني.",export:"صدّر كل البيانات",exportO:"صدّر الطلبات (CSV)",clearData:"امسح الطلبات والحجوزات والنداءات",clearSure:"دوس تاني للمسح",cleared:"اتمسح",noOrdersX:"مفيش طلبات تتصدّر لسه.",
  note:"الرقم السري بيحمي الصفحة على الجهاز ده بس. الحماية الحقيقية هتيجي مع الباك إند.",lock:"قفل",back:"رجوع",langA:"English",
- tables:"QR الترابيزات",tqStyle:"شكل الكارت",tqDark:"غامق (ستاند، مطبعة)",tqLight:"فاتح (طابعة عادية، يوفر حبر)",tqH:"أكواد QR للترابيزات",tqSub:"كود لكل ترابيزة. اطبعهم والصق كود على كل ترابيزة: الضيف بيمسحه وصفحة الطلب بتفتح على رقم ترابيزته على طول.",siteUrl:"عنوان الموقع",addT:"أضف ترابيزة",printAll:"اطبع الكل",dl:"حمّل",tLabel:"رقم أو اسم الترابيزة",dup:"مستخدم قبل كده",urlBad:"العنوان لازم يبدأ بـ https://",qrNote:"الطباعة A4: 4 أكواد في الصفحة. لو غيّرت عنوان الموقع اطبع الأكواد تاني.",
+ tabTables:"QR الترابيزات",tqStyle:"شكل الكارت",tqDark:"غامق (ستاند، مطبعة)",tqLight:"فاتح (طابعة عادية، يوفر حبر)",tqH:"أكواد QR للترابيزات",tqSub:"كود لكل ترابيزة. اطبعهم والصق كود على كل ترابيزة: الضيف بيمسحه وصفحة الطلب بتفتح على رقم ترابيزته على طول.",siteUrl:"عنوان الموقع",addT:"أضف ترابيزة",printAll:"اطبع الكل",dl:"حمّل",tLabel:"رقم أو اسم الترابيزة",dup:"مستخدم قبل كده",urlBad:"العنوان لازم يبدأ بـ https://",qrNote:"الطباعة A4: 4 أكواد في الصفحة. لو غيّرت عنوان الموقع اطبع الأكواد تاني.",
  wRep:"الويترز",wRepH:"أداء كل ويتر",wOrders:"طلب",wSales:"مبيعات",wConf:"للتأكيد",wServe:"للتسليم",wCanc:"مرفوض / ملغي",wNone:"الطلبات هتظهر هنا أول ما الويترز يبدأوا يأكدوها.",
  cancH:"المرفوض والملغي",cancTop:"أسباب إيقاف الطلبات",rej:"مرفوض",canc:"ملغي",by:"بواسطة",noReason:"من غير سبب",
  soldOut:"نفد",soldMark:"علّم إنه نفد",soldBack:"رجع متاح",soldNote:"الويتر كمان يقدر يعلّم الصنف إنه نفد من شاشته.",itemNote:"ملاحظة"}};
@@ -332,8 +333,8 @@ const hr12=h=>`${h%12||12} ${lang==="ar"?(h<12?"ص":"م"):(h<12?"AM":"PM")}`;
 const hrS=h=>`${h%12||12}${lang==="ar"?(h<12?"ص":"م"):(h<12?"a":"p")}`;
 const dShort=ts=>new Date(ts).toLocaleDateString(locale(),{day:"numeric",month:"short"});
 function series(O,b){/* sales buckets for the hero chart */
- if(range==="1"){const a=Array(24).fill(0);O.forEach(o=>a[new Date(o.ts).getHours()]+=o.total||0);
-  return{v:a,lab:i=>hr12(i),l0:hr12(0),l1:hr12(23),now:new Date().getHours()}}
+ if(range==="1"){const a=Array(24).fill(0);O.forEach(o=>a[cd(o.ts).getHours()]+=o.total||0);
+  return{v:a,lab:i=>hr12(i),l0:hr12(0),l1:hr12(23),now:cd(Date.now()).getHours()}}
  let start=b.from;if(range==="all"){const m=Math.min(...O.map(o=>o.ts));start=sod(isFinite(m)?m:Date.now())}
  const span=Math.round((sod()-start)/DAY)+1,wk=span>45,n=wk?Math.ceil(span/7):span,a=Array(n).fill(0);
  O.forEach(o=>{const di=Math.round((sod(o.ts)-start)/DAY),i=Math.min(n-1,Math.max(0,wk?Math.floor(di/7):di));a[i]+=o.total||0});
@@ -351,7 +352,7 @@ function reports(){const x=t(),ar=lang==="ar",b=bounds(),inR=o=>o.ts>=b.from,all
  const dish={},tb={},cat={},hr=Array(24).fill(0),wd=Array(7).fill(0),wdv=Array(7).fill(0),conf=[],serve=[],cm=catMap();
  O.forEach(o=>{o.items.forEach(i=>{const k=i.en,d=dish[k]||(dish[k]={en:i.en,ar:i.ar,q:0,v:0});d.q+=i.qty;d.v+=i.qty*i.price;
    const c=cm[String(i.en).toLowerCase()]||[x.other,x.other],ck=c[0],g=cat[ck]||(cat[ck]={n:c[ar?1:0],v:0});g.v+=i.qty*i.price});
-  const g=tb[o.table]||(tb[o.table]={n:0,v:0});g.n++;g.v+=o.total||0;const dt=new Date(o.ts);hr[dt.getHours()]++;wd[dt.getDay()]++;wdv[dt.getDay()]+=o.total||0;
+  const g=tb[o.table]||(tb[o.table]={n:0,v:0});g.n++;g.v+=o.total||0;const dt=cd(o.ts);hr[dt.getHours()]++;wd[dt.getDay()]++;wdv[dt.getDay()]+=o.total||0;
   if(o.confirmedAt)conf.push((o.confirmedAt-o.ts)/6e4);if(o.servedAt)serve.push((o.servedAt-o.ts)/6e4)});
  const mean=a=>a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length):null,mc=mean(conf),ms=mean(serve);
  const topD=Object.values(dish).sort((a,b)=>b.q-a.q||b.v-a.v).slice(0,6).map(d=>({name:ar?d.ar:d.en,v:d.q,label:`${d.q} ${x.sold}`,sub:`${fmt(d.v)} ${x.egp}`}));
@@ -401,10 +402,10 @@ function reports(){const x=t(),ar=lang==="ar",b=bounds(),inR=o=>o.ts>=b.from,all
  <section class="pnl"><h2>${x.days}<small>${x.daysH}</small></h2>${O.length?`<div class="cols wk" role="img" aria-label="${x.days}">${order.map(d=>`<div class="${wd[d]===0?"z":wd[d]===Math.max(...wd)?"pk":""}" title="${wdName(d)} · ${wd[d]}"><i style="height:${Math.max(3,Math.round(wd[d]/wm*100))}%"></i><span>${wdName(d)}</span></div>`).join("")}</div>`:`<p class="none">${x.none}</p>`}</section>
  <section class="pnl"><h2>${x.tables}</h2>${topT.length?bars(topT):`<p class="none">${x.none}</p>`}</section>
  <section class="pnl"><h2>${x.speed}</h2><div class="spd"><div><b>${mc==null?"–":mc}${mc==null?"":`<small>${x.minU}</small>`}</b><span>${x.toConfirm}</span></div><div><b>${ms==null?"–":ms}${ms==null?"":`<small>${x.minU}</small>`}</b><span>${x.toServe}</span></div></div></section>
- <section class="pnl full"><h2>${x.wRep}<small>${x.wRepH}</small></h2>${WR.length?`<div class="wlist">${WR.map(g=>`<div class="wr"><div class="wh"><b>${esc(g.name)}</b><span>${fmt(g.v)} ${x.egp}</span></div><div class="tr"><i style="width:${Math.max(4,Math.round(g.v/wmx*100))}%"></i></div>
+ <section class="pnl full${KZ.settings().hideWRank?" hid":""}"><h2>${x.wRep}<small>${x.wRepH}</small></h2>${WR.length?`<div class="wlist">${WR.map(g=>`<div class="wr"><div class="wh"><b>${esc(g.name)}</b><span>${fmt(g.v)} ${x.egp}</span></div><div class="tr"><i style="width:${Math.max(4,Math.round(g.v/wmx*100))}%"></i></div>
    <div class="wm"><span><i>${g.n}</i>${x.wOrders}</span><span><i>${g.it}</i>${x.items}</span><span><i>${mn(g.conf)}</i>${x.wConf}</span><span><i>${mn(g.serve)}</i>${x.wServe}</span><span class="${g.canc?"bd":""}"><i>${g.canc}</i>${x.wCanc}</span></div></div>`).join("")}</div>`:`<p class="none">${x.wNone}</p>`}</section>
  ${D.length?`<section class="pnl full"><h2>${x.cancH}<small>${D.length} ${x.wOrders}</small></h2><h3 class="sub3">${x.cancTop}</h3>${bars(WHY.map(r=>({name:r[0],v:r[1],label:String(r[1])})))}
-   <div class="cl">${lastD.map(o=>`<div><b>${x.table} ${esc(o.table)}</b><span>${o.status==="rejected"?x.rej:x.canc}${o.reasonBy?` ${x.by} ${esc(KZ.wname(o.reasonBy,lang))}`:""} · ${esc(KZ.reasonText(o,lang)||x.noReason)}</span><i>${KZ.clock(o.endedAt||o.ts,lang)}</i></div>`).join("")}</div></section>`:""}
+   <div class="cl">${lastD.map(o=>`<div><b>${x.table} ${esc(o.table)}</b><span>${o.status==="rejected"?x.rej:x.canc}${o.reasonBy?` ${x.by} ${esc(KZ.wname(o.reasonBy,lang))}`:""} · ${esc(KZ.reasonText(o,lang)||x.noReason)}</span><i>${cd(o.endedAt||o.ts).toLocaleDateString(lang==="ar"?"ar-EG":"en-GB",{day:"numeric",month:"short"})} · ${KZ.clock(o.endedAt||o.ts,lang)}</i></div>`).join("")}</div></section>`:""}
  </div>
  <p class="foot2">${x.taxNote}</p>`}
 
@@ -505,10 +506,25 @@ document.addEventListener("change",e=>{const el=e.target;
 let wsE=null;
 function wsRows(){const x=t();if(!wsE)wsE=KZ.waiters().map(w=>({id:w.id,en:w.en||"",ar:w.ar||""}));
  return wsE.map((w,i)=>`<div class="wrow" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:10px"><label class="fld" style="margin:0"><span>${x.wEn}</span><input data-w="${i}" data-f="en" value="${esc(w.en)}" dir="ltr" maxlength="24"></label><label class="fld" style="margin:0"><span>${x.wAr}</span><input data-w="${i}" data-f="ar" value="${esc(w.ar)}" dir="rtl" maxlength="24"></label><button type="button" class="btn sm bad" data-a="delw" data-i="${i}">${x.wDel}</button></div>`).join("")}
+/* ---- demo data (presentation only: remove this block and the demo buttons before handover) ---- */
+function cd(ts){const p={};new Intl.DateTimeFormat('en-US',{timeZone:'Africa/Cairo',hourCycle:'h23',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric',second:'numeric'}).formatToParts(new Date(ts)).forEach(x=>p[x.type]=+x.value);return new Date(p.year,p.month-1,p.day,p.hour,p.minute,p.second)}
+function demoLoad(){demoClear();const M=(typeof MENU!=="undefined"?MENU:[]).flatMap(c=>c[2]||[]).filter(d=>d[2]>=60&&d[2]<=700),W=KZ.waiters(),now=Date.now(),D=864e5;let seed=7;const R=()=>(seed=(seed*16807)%2147483647)/2147483647,P=a=>a[Math.floor(R()*a.length)];
+ if(!M.length)return;const orders=KZ.list("orders"),calls=KZ.list("calls"),bk=KZ.list("bookings");
+ for(let d=14;d>=0;d--){const n=6+Math.floor(R()*9)+(new Date(now-d*D).getDay()%6===5?5:0);
+  for(let i=0;i<n;i++){const hr=13+Math.floor(R()*11),ts=new Date(now-d*D).setHours(hr%24,Math.floor(R()*60),0,0);if(ts>now-6e4)continue;
+   const items=Array.from({length:1+Math.floor(R()*4)},()=>{const x=P(M);return{id:KZ.uid()+Math.floor(R()*1e4),en:x[0],ar:x[1],price:x[2],qty:1+Math.floor(R()*2)}}),sub=items.reduce((a,x)=>a+x.price*x.qty,0),sv=Math.round(sub*.12),tx=Math.round((sub+sv)*.14),w=P(W),wo={id:w.id,en:w.en,ar:w.ar},cx=R()<.06;
+   const o={id:KZ.uid()+i,demo:true,table:String(1+Math.floor(R()*12)),items,note:"",total:sub,service:sv,tax:tx,grand:sub+sv+tx,ts,status:cx?"cancelled":"served",waiter:wo,confirmedAt:ts+(1+Math.floor(R()*3))*6e4};
+   if(cx){o.reason={id:"guest"};o.reasonBy=wo;o.endedAt=o.confirmedAt+3e5}else o.servedAt=o.confirmedAt+(12+Math.floor(R()*14))*6e4;orders.push(o)}}
+ calls.push({id:KZ.uid()+"a",demo:true,table:"4",type:"waiter",ts:now-9e5,done:true},{id:KZ.uid()+"b",demo:true,table:"7",type:"bill",ts:now-6e5,done:true});
+ bk.push({id:KZ.uid()+"c",demo:true,ts:now-3*D,status:"new",name:"Mona Hassan",phone:"01012345678",date:new Date(now+2*D).toISOString().slice(0,10),time:"20:00",guests:6},{id:KZ.uid()+"d",demo:true,ts:now-D,status:"confirmed",name:"Omar Adel",phone:"01112345678",date:new Date(now+4*D).toISOString().slice(0,10),time:"21:30",guests:4});
+ KZ.saveList("orders",orders);KZ.saveList("calls",calls);KZ.saveList("bookings",bk)}
+function demoClear(){["orders","calls","bookings"].forEach(n=>KZ.saveList(n,KZ.list(n).filter(x=>!x.demo)))}
 function settingsView(){const x=t(),s=KZ.settings();
  return`<div class="set"><h2><span class="ic">${ic("star")}</span>${x.sGuest}</h2><p class="d">${x.mapsH}</p>
   <label class="fld"><span>${x.maps}</span><input id="sMaps" type="url" dir="ltr" value="${esc(s.mapsUrl)}"></label></div>
- <div class="set"><h2><span class="ic">${ic("key")}</span>${x.sWait}</h2><p class="d">${x.sWaitD}</p><div id="wsBox">${wsRows()}</div><div class="addrow"><button class="btn sm ghost" type="button" data-a="addw">${x.wAdd}</button></div></div>
+ <div class="set"><h2><span class="ic">${ic("key")}</span>${x.sWait}</h2><p class="d">${x.sWaitD}</p><div id="wsBox">${wsRows()}</div><div class="addrow"><button class="btn sm ghost" type="button" data-a="addw">${x.wAdd}</button></div><label style="display:flex;gap:10px;align-items:center;margin-top:14px"><input id="sHideW" type="checkbox"${s.hideWRank?" checked":""} style="width:20px;height:20px;min-height:0"><span>${x.hideW}</span></label></div>
+ <div class="set"><h2><span class="ic">${ic("star")}</span>${x.demoH}</h2><p class="d">${x.demoD}</p><div class="addrow"><button class="btn sm ghost" type="button" data-a="demoOn">${x.demoLoad}</button> <button class="btn sm bad" type="button" data-a="demoOff">${x.demoClear}</button></div></div>
+ <div class="set"><h2><span class="ic">${ic("star")}</span>${x.waH}</h2><p class="d">${x.waD}</p><div class="g1"><label class="fld"><span>1</span><input id="sWa1" type="tel" inputmode="numeric" dir="ltr" value="${esc((s.waNums||[])[0]||"")}"></label><label class="fld"><span>2</span><input id="sWa2" type="tel" inputmode="numeric" dir="ltr" value="${esc((s.waNums||[])[1]||"")}"></label></div></div>
  <div class="set"><h2><span class="ic">${ic("key")}</span>${x.sAccess}</h2><p class="d">${x.sAccessD}</p>
   <div class="g1"><label class="fld"><span>${x.sPin}</span><div class="pw"><input id="sStaff" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="${x.pinH}" value="${esc(s.staffPin)}" dir="ltr"><button type="button" data-a="showpin">${x.show}</button></div></label>
   <label class="fld"><span>${x.aPin}</span><div class="pw"><input id="sAdmin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="${x.pinH}" value="${esc(s.adminPin)}" dir="ltr"><button type="button" data-a="showpin">${x.show}</button></div></label></div></div>
@@ -532,7 +548,7 @@ function tablesView(){const x=t();if(!TQ)TQ=KZQR.tables();
   <p class="note">${x.qrNote}</p>`}
 
 /* ---------- shell ---------- */
-function head(){const x=t(),d=new Date(),g=d.getHours(),greet=g<5?x.gN:g<12?x.gM:g<17?x.gA:g<22?x.gE:x.gN;
+function head(){const x=t(),d=cd(Date.now()),g=d.getHours(),greet=g<5?x.gN:g<12?x.gM:g<17?x.gA:g<22?x.gE:x.gN;
  $("#sub").innerHTML=`${greet}. ${x.gSub}<span class="dt">${d.toLocaleDateString(locale(),{weekday:"long",day:"numeric",month:"long"})}</span>`}
 function render(){const x=t(),ar=lang==="ar";
  document.documentElement.lang=lang;document.documentElement.dir=ar?"rtl":"ltr";
@@ -543,7 +559,7 @@ function render(){const x=t(),ar=lang==="ar";
 
 function csvOrders(){const O=KZ.list("orders");if(!O.length){toast(t().noOrdersX,1);return}
  const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"',L=["date,time,table,status,items,subtotal,service,tax,total,note,waiter,reason"];
- O.forEach(o=>{const d=new Date(o.ts),pad2=n=>String(n).padStart(2,"0");
+ O.forEach(o=>{const d=cd(o.ts),pad2=n=>String(n).padStart(2,"0");
   L.push([`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`,`${pad2(d.getHours())}:${pad2(d.getMinutes())}`,o.table,o.status,(o.items||[]).map(i=>i.qty+"x "+i.en+(i.note?" ("+i.note+")":"")).join("; "),o.total||0,o.service||"",o.tax||"",o.grand||"",o.note||"",o.waiter?KZ.wname(o.waiter,"en"):"",KZ.reasonText(o,"en")].map(q).join(","))});
  dl("kanzel-orders.csv","﻿"+L.join("\n"),"text/csv;charset=utf-8")}
 function dl(name,txt,type){const u=URL.createObjectURL(new Blob([txt],{type})),l=document.createElement("a");l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
@@ -573,14 +589,14 @@ document.addEventListener("click",e=>{
  else if(a==="cadd"){raw.push([x.newCat,x.newCat,[]]);open=new Set([raw.length-1]);clearD();saveMenu();render()}
  else if(a==="cdel")arm(b,x.delSure,()=>{raw.splice(ci,1);open=new Set();clearD();saveMenu();render()});
  else if(a==="cup"){move(raw,ci,ci-1);open=new Set([ci-1]);clearD();saveMenu();render()}else if(a==="cdn"){move(raw,ci,ci+1);open=new Set([ci+1]);clearD();saveMenu();render()}
- else if(a==="addw"){wsE.push({id:KZ.uid(),en:"",ar:""});render()}
+ else if(a==="demoOn"){demoLoad();render();toast(t().demoDone)}else if(a==="demoOff"){demoClear();render();toast(t().demoGone)}else if(a==="addw"){wsE.push({id:KZ.uid(),en:"",ar:""});render()}
   else if(a==="delw"){wsE.splice(+b.dataset.i,1);render()}
   else if(a==="savesettings"){const s=KZ.settings(),sp=$("#sStaff").value.trim(),ap=$("#sAdmin").value.trim();
   if(!/^\d{4}$/.test(sp)||!/^\d{4}$/.test(ap)){toast(x.pinBad,1);return}
   const mu=$("#sMaps").value.trim();if(mu&&!/^https?:\/\//i.test(mu)){toast(x.mapsBad,1);return}
   const wl=(wsE||[]).map(w=>({id:w.id,en:w.en.trim(),ar:w.ar.trim()}));if(!wl.length||wl.some(w=>!w.en&&!w.ar)){toast(x.wMin,1);return}
    s.waiters=wl;wsE=null;
-   s.mapsUrl=$("#sMaps").value.trim()||s.mapsUrl;s.staffPin=sp;s.adminPin=ap;KZ.saveSettings(s);render();toast(x.saved)}
+   s.mapsUrl=$("#sMaps").value.trim()||s.mapsUrl;s.hideWRank=$("#sHideW").checked;{const w=[$("#sWa1").value,$("#sWa2").value].map(v=>v.replace(/\D/g,"")).filter(Boolean);if(!w.length||w.some(v=>v.length<10||v.length>15)){toast(x.waBad,1);return}s.waNums=w}s.staffPin=sp;s.adminPin=ap;KZ.saveSettings(s);render();toast(x.saved)}
  else if(a==="reset")arm(b,x.resetSure,()=>{KZ.resetMenu();raw=null;toast(x.saved)});
  else if(a==="clear")arm(b,x.clearSure,()=>{["orders","bookings","events","calls"].forEach(n=>KZ.saveList(n,[]));toast(x.cleared)});
  else if(a==="exportO")csvOrders();

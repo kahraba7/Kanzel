@@ -96,6 +96,8 @@ button:focus-visible,.ig:focus-visible,a:focus-visible{outline:2px solid var(--g
 #bookView .lnk{background:none;border:0;color:var(--gold);font:300 13px var(--sans);padding:6px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(211,201,148,.5)}
 #bookView .fld{margin-bottom:16px}
 #bookView label,#bookView .lb{display:block;font-size:12.5px;color:rgba(244,239,221,.88);margin-bottom:7px}
+#bookView textarea{display:block;width:100%;padding:14px 16px;border-radius:18px 6px 18px 18px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);color:var(--cream);font:400 16px var(--sans);outline:0;resize:none}
+#bookView textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(211,201,148,.15)}
 #bookView input,#bookView select{display:block;width:100%;height:52px;min-height:52px;padding:0 16px;border-radius:18px 6px 18px 18px;border:1px solid rgba(211,201,148,.3);background:rgba(255,255,255,.06);color:var(--cream);font:400 16px var(--sans);outline:0;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;appearance:none}
 #bookView select{background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23d3c994%27 stroke-width=%271.6%27 stroke-linecap=%27round%27%3E%3Cpath d=%27M6 9l6 6 6-6%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-size:18px;background-position:right 16px center;padding-inline-end:44px}
 [dir=rtl] #bookView select{background-position:left 16px center}
@@ -168,6 +170,7 @@ body.lswap #bookView .bh,body.lswap #bookView .pane{opacity:0;transform:translat
   <div class='fld'><span class='lb' data-bt='fGuests'></span><div class='stp'><button type='button' id='gm' aria-label='-'>&minus;</button><output id='gv'>2</output><button type='button' id='gp' aria-label='+'>+</button></div></div>
   <div class='fld'><label for='fPhone' data-bt='fPhone'></label><input id='fPhone' type='tel' inputmode='tel' autocomplete='tel' dir='ltr' maxlength='20'><em class='err' id='ePhone'></em></div>
   <div class='fld'><label for='fTime' data-bt='fTime'></label><select id='fTime'></select><em class='err' id='eTime'></em></div>
+  <div class='fld'><label for='fNote' data-bt='fNote'></label><textarea id='fNote' maxlength='200' rows='2'></textarea></div>
   <div class='bnote' id='bnote'><div></div></div>
   <div class='cta'><button class='btn' id='bsubmit'></button><button class='lnk' id='bbackc'></button></div>
  </section>
@@ -194,14 +197,14 @@ const BT={
   pol:'Reservation policy & timing',
   rules:[['Restaurant hours','10:00 AM to 3:00 AM','Breakfast · Lunch · Dinner · Late dinner'],
    ['Minimum order','A food & beverage order is required per person.',''],
-   ['Weekends (Thursday · Friday · Saturday)','Average check of at least 1,000 EGP per person from 6:00 PM.',''],
-   ['Groups of 10 or more','Minimum 1,000 EGP per person, on weekdays and weekends.',''],
-   ['Birthdays','Cake service: 500 EGP.','Decorations and birthday song are not allowed.']],
+   ['Weekends (Thursday · Friday · Saturday)','Minimum spend of 1,000 EGP per person from 6:00 PM.',''],
+   ['Groups of 10 or more','Minimum spend of 1,000 EGP per person, on weekdays and weekends.',''],
+   ['Birthdays','Cake service: 500 EGP.','To keep the place calm, we do not offer decorations or birthday songs.']],
   q:'If you have any questions, please do not hesitate to contact us',agree:'I agree, continue',back:'Back',
-  fDate:'Date',fName:'Reservation name',fGuests:'Total number of guests',fPhone:'Phone number',fTime:'Arrival time',pick:'Select a time',
+  fDate:'Date',fName:'Reservation name',fGuests:'Total number of guests',fPhone:'Phone number',fTime:'Arrival time',fNote:'Special requests (optional)',pick:'Select a time',
   submit:'Request reservation',backc:'Back to conditions',eReq:'Required',
-ePast:'This time has already passed today',ePhone:'Enter a valid phone number',
-  nWeek:'Weekend date: average check of at least 1,000 EGP per person from 6:00 PM.',nGroup:'Groups of 10 or more: minimum 1,000 EGP per person.',
+ePast:'This time has already passed today',ePhone:'Enter an Egyptian mobile number, e.g. 01012345678',
+  nWeek:'Weekend date: minimum spend of 1,000 EGP per person from 6:00 PM.',nGroup:'Groups of 10 or more: minimum spend of 1,000 EGP per person.',
   doneT:'Request received',doneP:(n,p)=>'Thank you, '+n+'. We will contact you on '+p+' to confirm your reservation.',home:'Back to home'},
  ar:{title:'ترابيزة عادية',sub:'عشاء أو قعدة مع الأصحاب',
   intro:'عزيزي الضيف، عشان نكمّل حجزك محتاجين منك البيانات دي:',
@@ -209,14 +212,14 @@ ePast:'This time has already passed today',ePhone:'Enter a valid phone number',
   pol:'سياسة الحجز والمواعيد',
   rules:[['مواعيد المطعم','من 10:00 صباحًا لحد 3:00 صباحًا','فطار · غدا · عشا · عشا متأخر'],
    ['الحد الأدنى للطلب','لازم طلب أكل ومشروبات لكل فرد.',''],
-   ['الويك إند (الخميس · الجمعة · السبت)','متوسط الفاتورة لا يقل عن 1000 ج.م للفرد من الساعة 6:00 مساءً.',''],
-   ['المجموعات من 10 أفراد فأكتر','الحد الأدنى 1000 ج.م للفرد في أيام الأسبوع والويك إند.',''],
-   ['أعياد الميلاد','خدمة التورتة: 500 ج.م.','التزيين وأغنية عيد الميلاد غير مسموح بيهم.']],
+   ['الويك إند (الخميس · الجمعة · السبت)','الحد الأدنى للإنفاق 1000 ج.م للفرد من الساعة 6:00 مساءً.',''],
+   ['المجموعات من 10 أفراد فأكتر','الحد الأدنى للإنفاق 1000 ج.م للفرد في أيام الأسبوع والويك إند.',''],
+   ['أعياد الميلاد','خدمة التورتة: 500 ج.م.','حفاظًا على هدوء المكان، مش بنقدم زينة أو أغاني أعياد ميلاد.']],
   q:'لو عندك أي استفسار، متترددش تتواصل معانا',agree:'موافق، كمّل',back:'رجوع',
-  fDate:'التاريخ',fName:'اسم الحجز',fGuests:'إجمالي عدد الأفراد',fPhone:'رقم الموبايل',fTime:'وقت الوصول',pick:'اختار الوقت',
+  fDate:'التاريخ',fName:'اسم الحجز',fGuests:'إجمالي عدد الأفراد',fPhone:'رقم الموبايل',fTime:'وقت الوصول',fNote:'طلبات خاصة (اختياري)',pick:'اختار الوقت',
   submit:'ابعت طلب الحجز',backc:'رجوع للشروط',eReq:'مطلوب',
-ePast:'الوقت ده عدّى النهارده',ePhone:'اكتب رقم موبايل صحيح',
-  nWeek:'اليوم ده ويك إند: متوسط الفاتورة لا يقل عن 1000 ج.م للفرد من الساعة 6:00 مساءً.',nGroup:'المجموعات من 10 أفراد فأكتر: الحد الأدنى 1000 ج.م للفرد.',
+ePast:'الوقت ده عدّى النهارده',ePhone:'اكتب رقم موبايل مصري صحيح، مثل 01012345678',
+  nWeek:'اليوم ده ويك إند: الحد الأدنى للإنفاق 1000 ج.م للفرد من الساعة 6:00 مساءً.',nGroup:'المجموعات من 10 أفراد فأكتر: الحد الأدنى للإنفاق 1000 ج.م للفرد.',
   doneT:'وصلنا طلبك',doneP:(n,p)=>'شكرًا يا '+n+'. هنكلمك على '+p+' عشان نأكد الحجز.',home:'رجوع للرئيسية'}};
 const ICO=['<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>','<path d="M6 3v6a2 2 0 004 0V3M8 3v18M17 21V3c-2.2 1.2-3.5 3.8-3.5 7v3H17"/>','<path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/>','<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5.2a3.2 3.2 0 010 5.6M18 14.3c1.8.8 3 2.6 3 4.7"/>','<path d="M4 20h16v-6H4zM4 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2M12 8V5.5"/>'];
 const bkS={step:1,g:2,data:null},esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -224,7 +227,7 @@ const slots=[];for(let m=600;m<=1590;m+=30){const h=Math.floor(m/60)%24,mi=m%60;
 function tl(h,mi){const ar=lang==='ar';return (h%12||12)+':'+String(mi).padStart(2,'0')+' '+(h>=12?(ar?'م':'PM'):(ar?'ص':'AM'))}
 function setStep(n,q){bkS.step=n;['p1','p2','p3'].forEach((id,i)=>$('#'+id).classList.toggle('on',i===n-1));
  document.querySelectorAll('#bookView .steps i').forEach((e,i)=>e.classList.toggle('on',i<n));if(!q)scrollTo(0,0)}
-function isPast(d,tm){if(!d||!tm)return false;const n=new Date(),ts=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');if(d!==ts)return false;const p=tm.split(':'),m=(+p[0])*60+(+p[1])+(+p[0]<6?1440:0);return m<=n.getHours()*60+n.getMinutes()}
+function isPast(d,tm){if(!d||!tm)return false;function cd(ts){const p={};new Intl.DateTimeFormat('en-US',{timeZone:'Africa/Cairo',hourCycle:'h23',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric',second:'numeric'}).formatToParts(new Date(ts)).forEach(x=>p[x.type]=+x.value);return new Date(p.year,p.month-1,p.day,p.hour,p.minute,p.second)}const n=cd(Date.now()),ts=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');if(d!==ts)return false;const p=tm.split(':'),m=(+p[0])*60+(+p[1])+(+p[0]<6?1440:0);return m<=n.getHours()*60+n.getMinutes()}
 function bkNote(){document.querySelectorAll('#fTime option[value]').forEach(o=>{if(o.value)o.disabled=isPast($('#fDate').value,o.value)});const ft=$('#fTime');if(ft.value&&isPast($('#fDate').value,ft.value))ft.value='';const t=BT[lang],n=[],d=$('#fDate').value;
  if(d){const w=new Date(d+'T00:00:00').getDay();if(w===4||w===5||w===6)n.push(t.nWeek)}
  if(bkS.g>=10)n.push(t.nGroup);
@@ -251,16 +254,16 @@ $('#gm').onclick=()=>gv(-1);$('#gp').onclick=()=>gv(1);
 document.querySelectorAll('#bookView input,#bookView select').forEach(e=>e.addEventListener('input',()=>{const f=e.closest('.fld');if(f)f.classList.remove('bad')}));
 $('#bagree').onclick=()=>setStep(2);$('#bbackc').onclick=()=>setStep(1);
 /* TODO backend: send the booking here (POST) and return its result */
-async function sendBooking(d){KZ.push('bookings',{id:KZ.uid(),ts:Date.now(),status:'new',name:d.name,phone:d.phone,date:d.date,time:d.time,guests:d.guests})||(()=>{throw new Error('store')})();return d}
-async function bkSubmit(){const t=BT[lang],v={date:$('#fDate').value,name:$('#fName').value.trim(),guests:bkS.g,phone:$('#fPhone').value.trim(),time:$('#fTime').value},dg=v.phone.replace(/\D/g,'');
- const bad={Date:!v.date,Name:v.name.length<2,Phone:dg.length<10||dg.length>15,Time:!v.time||isPast(v.date,v.time)};let first=null;
+async function sendBooking(d){KZ.push('bookings',{id:KZ.uid(),ts:Date.now(),status:'new',name:d.name,phone:d.phone,date:d.date,time:d.time,guests:d.guests,note:d.note||''})||(()=>{throw new Error('store')})();return d}
+async function bkSubmit(){const t=BT[lang],v={date:$('#fDate').value,name:$('#fName').value.trim(),guests:bkS.g,phone:$('#fPhone').value.trim(),time:$('#fTime').value,note:$('#fNote').value.trim().slice(0,200)},dg=v.phone.replace(/\D/g,'');
+ const bad={Date:!v.date,Name:v.name.length<2,Phone:!/^(20|0)?1[0125]\d{8}$/.test(dg),Time:!v.time||isPast(v.date,v.time)};let first=null;
  for(const k in bad){const el=$('#f'+k);el.closest('.fld').classList.toggle('bad',bad[k]);$('#e'+k).textContent=bad[k]?(k==='Phone'?t.ePhone:(k==='Time'&&v.time?t.ePast:t.eReq)):'';if(bad[k]&&!first)first=el}
  if(first){first.focus();return}
  const btn=$('#bsubmit');KZ.busy(btn,1);
  try{await new Promise(r=>setTimeout(r,450));await sendBooking(v)}catch(e){KZ.busy(btn,0);KZ.toast(lang==='ar'?'معرفناش نبعت الحجز. جرّب تاني أو كلمنا.':'We couldn’t send your reservation. Please try again or call us.',1);return}
  KZ.busy(btn,0);bkS.data=v;fillDone();setStep(3)}
 $('#bsubmit').onclick=bkSubmit;
-function bkReset(){['fDate','fName','fPhone','fTime'].forEach(id=>$('#'+id).value='');bkS.g=2;$('#gv').textContent=2;bkS.data=null;bkNote();setStep(1,true)}
+function bkReset(){['fDate','fName','fPhone','fTime','fNote'].forEach(id=>$('#'+id).value='');bkS.g=2;$('#gv').textContent=2;bkS.data=null;bkNote();setStep(1,true)}
 function leaveBooking(){if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.href=KZ.url("index");return}
  $('#bookView').classList.add('out');setTimeout(()=>{location.href=KZ.url("index")},330)}
 $('#bback').onclick=e=>{e.preventDefault();leaveBooking()};

@@ -169,7 +169,7 @@ document.addEventListener("click",e=>{
 
 /* ---------- edit an order (new or preparing): change quantities, remove or add dishes ---------- */
 let ed=null;
-const calc=sub=>{const sv=Math.round(sub*.12),tx=Math.round(sub*.14);return{sub,sv,tx,grand:sub+sv+tx}};
+const calc=sub=>{const sv=Math.round(sub*.12),tx=Math.round((sub+sv)*.14);return{sub,sv,tx,grand:sub+sv+tx}};
 function menuFlat(){const m=typeof MENU!=="undefined"?MENU:[]; /* same filtered list the guest page uses, so dish ids match */
  const out=[];m.forEach((c,k)=>(c[2]||[]).forEach((x,j)=>out.push({id:k+"-"+j,en:x[0],ar:x[1],price:x[2]})));return out}
 const nrm=s=>String(s||"").toLowerCase().replace(/[\u064B-\u065F]/g,"").replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه");

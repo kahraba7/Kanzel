@@ -208,7 +208,7 @@ body.searching #menuView .mbody{grid-template-columns:1fr;padding-inline-start:0
 .tbl{min-width:40px;height:40px;padding:0 15px;border-radius:99px;border:1px solid rgba(211,201,148,.55);color:var(--gold);display:inline-grid;place-items:center;font:500 13px var(--sans);white-space:nowrap;background:rgba(16,33,26,.35)}
 #menuView .card .cx{min-width:0}
 #menuView .card .prow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;min-height:38px}
-#menuView .card .prow .pr{margin:0}
+#menuView .card .prow .pr{margin:0;flex:1 1 auto;min-width:0}#menuView .card .prow .ctl{flex:none}
 #menuView .card.np>.cx{display:block}
 #menuView .card.np .prow .pr{grid-row:auto;grid-column:auto}
 #menuView .tax{padding-bottom:calc(110px + var(--sb))}
@@ -451,8 +451,8 @@ const tr=()=>T[lang],nm=d=>lang==="ar"?d.ar:d.en;
 const lines=()=>Object.keys(cart).map(id=>({...DISH[id],qty:cart[id]}));
 const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
 const total=()=>lines().reduce((a,l)=>a+l.price*l.qty,0);
-/* prices on the menu are before 12% service and 14% tax; both are charged on the subtotal */
-const calc=sub=>{const sv=Math.round(sub*.12),tx=Math.round(sub*.14);return{sub,sv,tx,grand:sub+sv+tx}};
+/* prices on the menu are before 12% service and 14% tax; tax is charged on subtotal + service */
+const calc=sub=>{const sv=Math.round(sub*.12),tx=Math.round((sub+sv)*.14);return{sub,sv,tx,grand:sub+sv+tx}};
 const saveCart=()=>store.set(CK(),JSON.stringify(cart));
 dropSold();
 function setQty(id,q){if(sold(id)&&q>(cart[id]||0)){toast(`${nm(DISH[id])}: ${tr().sold}`);paintAll();return}
